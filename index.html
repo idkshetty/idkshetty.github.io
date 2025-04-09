@@ -82,26 +82,18 @@
 
         .amount-options {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 16px;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
             margin-top: 10px;
         }
 
-        .amount-options button {
-            padding: 12px 20px;
-            background-color: #c8e6c9;
-            color: #1b5e20;
-            border: none;
-            font-weight: bold;
-            font-size: 15px;
+        .amount-options input {
+            padding: 10px;
             border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .amount-options button:hover {
-            background-color: #a5d6a7;
+            border: 1px solid #ccc;
+            width: 120px;
+            text-align: center;
         }
 
         .qr-wrapper {
@@ -139,12 +131,13 @@
 
     <!-- Step 2 -->
     <div id="card2" class="card">
-        <h1>Select an Amount</h1>
-        <p>Choose how much you'd like to donate:</p>
+        <h1>Minimum ₹200 Donation</h1>
+        <p>You may add an optional extra amount:</p>
         <div class="amount-options">
-            <button onclick="selectAmount(50)">₹50</button>
-            <button onclick="selectAmount(100)">₹100</button>
+            <label for="extra">Extra (optional):</label>
+            <input type="number" id="extra" placeholder="e.g., 50" min="0" />
         </div>
+        <button class="button" onclick="proceedWithAmount()">Continue</button>
     </div>
 
     <!-- Step 3 -->
@@ -167,25 +160,27 @@
 
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script>
-        let selectedAmount = 50;
-        const upiLinks = {
-            50: 'upi://pay?pa=9449991672@ibl&pn=Vishnu&tn=Support%20ABC&am=50&cu=INR',
-            100: 'upi://pay?pa=9449991672@ibl&pn=Vishnu&tn=Support%20ABC&am=100&cu=INR'
-        };
+        let baseAmount = 200;
+        let totalAmount = 200;
 
         function nextCard(n) {
             document.getElementById(`card${n}`).classList.remove('active');
             document.getElementById(`card${n + 1}`).classList.add('active');
         }
 
-        function selectAmount(amount) {
-            selectedAmount = amount;
+        function proceedWithAmount() {
+            const extra = parseInt(document.getElementById('extra').value) || 0;
+            totalAmount = baseAmount + extra;
+
+            const upiLink = `upi://pay?pa=9449991672@ibl&pn=Vishnu&tn=Support%20ABC&am=${totalAmount}&cu=INR`;
+            QRCode.toCanvas(document.getElementById('qr'), upiLink);
+            window.upiLink = upiLink;
+
             nextCard(2);
-            QRCode.toCanvas(document.getElementById('qr'), upiLinks[amount]);
         }
 
         function launchUpi() {
-            window.location.href = upiLinks[selectedAmount];
+            window.location.href = window.upiLink;
             setTimeout(() => {
                 nextCard(3);
             }, 3000);

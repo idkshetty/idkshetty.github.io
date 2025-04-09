@@ -2,272 +2,272 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mudball Federation Donation</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mudball Federation Donation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            flex-direction: column;
-            color: #2e7d32;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+      color: #2e7d32;
+    }
 
-        .card {
-            background: #ffffff;
-            padding: 6vw;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            display: none;
-            flex-direction: column;
-            gap: 20px;
-            animation: fade 0.4s ease-in-out;
-        }
+    .card {
+      background: #ffffff;
+      padding: 6vw;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      animation: fade 0.4s ease-in-out;
+    }
 
-        .card.active {
-            display: flex;
-        }
+    .card.active {
+      display: flex;
+    }
 
-        @keyframes fade {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        h1 {
-            font-size: clamp(20px, 5vw, 28px);
-            margin: 0;
-        }
+    h1 {
+      font-size: clamp(20px, 5vw, 28px);
+      margin: 0;
+    }
 
-        p {
-            font-size: clamp(14px, 3vw, 16px);
-            line-height: 1.5;
-            margin: 0;
-        }
+    p {
+      font-size: clamp(14px, 3vw, 16px);
+      line-height: 1.5;
+      margin: 0;
+    }
 
-        .button,
-        .perk-button {
-            padding: 12px 24px;
-            border: none;
-            background-color: #66bb6a;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            width: 100%;
-        }
+    .button,
+    .perk-button {
+      padding: 12px 24px;
+      border: none;
+      background-color: #66bb6a;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      width: 100%;
+    }
 
-        .button:hover,
-        .perk-button:hover {
-            background-color: #43a047;
-        }
+    .button:hover,
+    .perk-button:hover {
+      background-color: #43a047;
+    }
 
-        .perk-options,
-        .form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
+    .perk-options,
+    .form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
 
-        input {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            width: 100%;
-            max-width: 300px;
-            text-align: left;
-        }
+    input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 300px;
+      text-align: left;
+    }
 
-        .qr-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 10px;
-        }
+    .qr-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+    }
 
-        canvas {
-            width: 160px;
-            height: 160px;
-            max-width: 80vw;
-            max-height: 80vw;
-        }
+    canvas {
+      width: 160px;
+      height: 160px;
+      max-width: 80vw;
+      max-height: 80vw;
+    }
 
-        footer {
-            margin-top: 30px;
-            font-size: 13px;
-            color: #4b8b53;
-            text-align: center;
-            padding: 0 10px;
-        }
-    </style>
+    footer {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #4b8b53;
+      text-align: center;
+      padding: 0 10px;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="card1" class="card active">
-        <h1>🐾 Mudball Federation</h1>
-        <p>Support Animal Birth Control & Sustainable Farming.<br>Click below to start the donation process.</p>
-        <button class="button" onclick="nextCard(1)">Start</button>
+  <div id="card1" class="card active">
+    <h1>🐾 Mudball Federation</h1>
+    <p>Support Animal Birth Control & Sustainable Farming.<br>Click below to start the donation process.</p>
+    <button class="button" onclick="nextCard(1)">Start</button>
+  </div>
+
+  <div id="card2" class="card">
+    <h1>Select a Perk</h1>
+    <div class="perk-options">
+      <button class="perk-button" onclick="selectPerk(20, '1 pic')">₹20 - 1 Pic</button>
+      <button class="perk-button" onclick="selectPerk(50, '3 pics')">₹50 - 3 Pics</button>
+      <button class="perk-button" onclick="selectPerk(100, '1 week of pics')">₹100 - 1 Week of Pics</button>
+      <button class="perk-button" onclick="selectPerk(200, '18 pics')">₹200 - 18 Pics</button>
+      <button class="perk-button" onclick="selectPerk(500, '1 month of pics')">₹500 - 1 Month of Pics</button>
+      <button class="perk-button" onclick="selectPerk(800, 'Framed Pic')">₹800 - Framed Pic</button>
+      <button class="perk-button" onclick="selectPerk(1000, 'Autographed Pic')">₹1000 - Autographed Pic</button>
     </div>
+  </div>
 
-    <div id="card2" class="card">
-        <h1>Select a Perk</h1>
-        <div class="perk-options">
-            <button class="perk-button" onclick="selectPerk(20, '1 pic')">₹20 - 1 Pic</button>
-            <button class="perk-button" onclick="selectPerk(50, '3 pics')">₹50 - 3 Pics</button>
-            <button class="perk-button" onclick="selectPerk(100, '1 week of pics')">₹100 - 1 Week of Pics</button>
-            <button class="perk-button" onclick="selectPerk(200, '18 pics')">₹200 - 18 Pics</button>
-            <button class="perk-button" onclick="selectPerk(500, '1 month of pics')">₹500 - 1 Month of Pics</button>
-            <button class="perk-button" onclick="selectPerk(800, 'Framed Pic')">₹800 - Framed Pic</button>
-            <button class="perk-button" onclick="selectPerk(1000, 'Autographed Pic')">₹1000 - Autographed Pic</button>
-        </div>
+  <div id="card3" class="card">
+    <h1>Extra Donation (Optional)</h1>
+    <p>You can add a little more if you'd like:</p>
+    <input type="number" id="extra" placeholder="e.g., 50" min="0" />
+    <button class="button" onclick="proceedWithAmount()">Continue</button>
+  </div>
+
+  <div id="card4" class="card">
+    <h1>Donate Now</h1>
+    <p>Click below to pay via UPI or scan the QR code.</p>
+    <button class="button" onclick="launchUpi()">Open UPI App</button>
+    <div class="qr-wrapper">
+      <canvas id="qr" width="160" height="160"></canvas>
     </div>
+  </div>
 
-    <div id="card3" class="card">
-        <h1>Extra Donation (Optional)</h1>
-        <p>You can add a little more if you'd like:</p>
-        <input type="number" id="extra" placeholder="e.g., 50" min="0" />
-        <button class="button" onclick="proceedWithAmount()">Continue</button>
+  <div id="card5" class="card">
+    <h1>Enter Your Details</h1>
+    <div class="form">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="tel" id="phone" placeholder="Phone Number" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="text" id="house" placeholder="House No." required />
+      <input type="text" id="street" placeholder="Street Address" required />
+      <input type="text" id="pincode" placeholder="Pincode" required />
+      <input type="text" id="state" placeholder="State" required />
+      <button class="button" onclick="submitForm()">Submit</button>
     </div>
+  </div>
 
-    <div id="card4" class="card">
-        <h1>Donate Now</h1>
-        <p>Click below to pay via UPI or scan the QR code.</p>
-        <button class="button" onclick="launchUpi()">Open UPI App</button>
-        <div class="qr-wrapper">
-            <canvas id="qr" width="160" height="160"></canvas>
-        </div>
-    </div>
+  <div id="card6" class="card">
+    <h1>Thank You! ❤️</h1>
+    <p>Your support helps save lives and protect nature.<br>We truly appreciate your kindness.</p>
+  </div>
 
-    <div id="card5" class="card">
-        <h1>Enter Your Details</h1>
-        <div class="form">
-            <input type="text" id="name" placeholder="Full Name" required />
-            <input type="tel" id="phone" placeholder="Phone Number" required />
-            <input type="email" id="email" placeholder="Email" required />
-            <input type="text" id="house" placeholder="House No." required />
-            <input type="text" id="street" placeholder="Street Address" required />
-            <input type="text" id="pincode" placeholder="Pincode" required />
-            <input type="text" id="state" placeholder="State" required />
-            <button class="button" onclick="submitForm()">Submit</button>
-        </div>
-    </div>
+  <footer>Built with 💚 by Mudball Federation</footer>
 
-    <div id="card6" class="card">
-        <h1>Thank You! ❤️</h1>
-        <p>Your support helps save lives and protect nature.<br>We truly appreciate your kindness.</p>
-    </div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-    <footer>Built with 💚 by Mudball Federation</footer>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDy3BRM-BEZLFLR7GpQab6oxe4eW6HwyQA",
+      authDomain: "mudball-federation.firebaseapp.com",
+      projectId: "mudball-federation",
+      storageBucket: "mudball-federation.appspot.com",
+      messagingSenderId: "83239152087",
+      appId: "1:83239152087:web:12546d8ff9638e20948392",
+      measurementId: "G-RW0LDRJY5M",
+      databaseURL: "https://mudball-federation-default-rtdb.firebaseio.com"
+    };
 
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDy3BRM-BEZLFLR7GpQab6oxe4eW6HwyQA",
-            authDomain: "mudball-federation.firebaseapp.com",
-            projectId: "mudball-federation",
-            storageBucket: "mudball-federation.appspot.com",
-            messagingSenderId: "83239152087",
-            appId: "1:83239152087:web:12546d8ff9638e20948392",
-            measurementId: "G-RW0LDRJY5M",
-            databaseURL: "https://mudball-federation-default-rtdb.firebaseio.com"
-        };
+    let baseAmount = 0;
+    let totalAmount = 0;
+    let perkTitle = "";
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+    function nextCard(n) {
+      document.getElementById(`card${n}`).classList.remove('active');
+      document.getElementById(`card${n + 1}`).classList.add('active');
+    }
 
-        let baseAmount = 0;
-        let totalAmount = 0;
-        let perkTitle = "";
+    function selectPerk(amount, title) {
+      baseAmount = amount;
+      perkTitle = title;
+      nextCard(2);
+    }
 
-        function nextCard(n) {
-            document.getElementById(`card${n}`).classList.remove('active');
-            document.getElementById(`card${n + 1}`).classList.add('active');
+    function proceedWithAmount() {
+      const extra = parseInt(document.getElementById('extra').value) || 0;
+      totalAmount = baseAmount + extra;
+
+      const upiLink = `upi://pay?pa=9449991672@ibl&pn=Vishnu&tn=Support%20ABC&am=${totalAmount}&cu=INR`;
+      QRCode.toCanvas(document.getElementById('qr'), upiLink);
+      window.upiLink = upiLink;
+
+      nextCard(3);
+    }
+
+    function launchUpi() {
+      window.location.href = window.upiLink;
+      setTimeout(() => {
+        if (baseAmount >= 800) {
+          nextCard(4);
+        } else {
+          document.getElementById('card4').classList.remove('active');
+          document.getElementById('card6').classList.add('active');
         }
+      }, 3000);
+    }
 
-        function selectPerk(amount, title) {
-            baseAmount = amount;
-            perkTitle = title;
-            nextCard(2);
+    function submitForm() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+      const house = document.getElementById('house').value;
+      const street = document.getElementById('street').value;
+      const pincode = document.getElementById('pincode').value;
+      const state = document.getElementById('state').value;
+
+      const data = {
+        name,
+        phone,
+        email,
+        amount: totalAmount,
+        perk: perkTitle,
+        address: {
+          house,
+          street,
+          pincode,
+          state
         }
+      };
 
-        function proceedWithAmount() {
-            const extra = parseInt(document.getElementById('extra').value) || 0;
-            totalAmount = baseAmount + extra;
-
-            const upiLink = `upi://pay?pa=9449991672@ibl&pn=Vishnu&tn=Support%20ABC&am=${totalAmount}&cu=INR`;
-            QRCode.toCanvas(document.getElementById('qr'), upiLink);
-            window.upiLink = upiLink;
-
-            nextCard(3);
-        }
-
-        function launchUpi() {
-            window.location.href = window.upiLink;
-            setTimeout(() => {
-                if (baseAmount >= 800) {
-                    nextCard(4);
-                } else {
-                    document.getElementById('card4').classList.remove('active');
-                    document.getElementById('card6').classList.add('active');
-                }
-            }, 3000);
-        }
-
-        function submitForm() {
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const email = document.getElementById('email').value;
-            const house = document.getElementById('house').value;
-            const street = document.getElementById('street').value;
-            const pincode = document.getElementById('pincode').value;
-            const state = document.getElementById('state').value;
-
-            const data = {
-                name,
-                phone,
-                email,
-                amount: totalAmount,
-                perk: perkTitle,
-                address: {
-                    house,
-                    street,
-                    pincode,
-                    state
-                }
-            };
-
-            db.ref("donors").push(data).then(() => {
-                document.getElementById('card5').classList.remove('active');
-                document.getElementById('card6').classList.add('active');
-            });
-        }
-    </script>
+      db.ref("donors").push(data).then(() => {
+        document.getElementById('card5').classList.remove('active');
+        document.getElementById('card6').classList.add('active');
+      });
+    }
+  </script>
 </body>
 
 </html>

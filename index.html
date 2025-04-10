@@ -15,21 +15,25 @@
             padding: 0;
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             color: #2e7d32;
             text-align: center;
         }
 
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 5vh 2vw;
+        }
+
         .card {
-            background: #ffffff;
-            padding: 6vw;
+            background: #fff;
+            padding: 5vw;
             border-radius: 20px;
-            width: 90%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 420px;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
             display: none;
             flex-direction: column;
@@ -55,7 +59,7 @@
         }
 
         h1 {
-            font-size: clamp(20px, 5vw, 28px);
+            font-size: clamp(22px, 5vw, 30px);
             margin: 0;
         }
 
@@ -77,7 +81,6 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.2s ease;
-            margin: 5px 0;
         }
 
         .button:hover {
@@ -95,12 +98,15 @@
         .form {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 14px;
             width: 100%;
             align-items: center;
         }
 
-        input {
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"] {
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #ccc;
@@ -154,76 +160,109 @@
             border: none;
             border-top: 1px solid #ccc;
         }
+
+        .consent-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            max-width: 260px;
+            text-align: left;
+        }
+
+        .consent-wrapper label {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
-    <div id="card1" class="card active">
-        <h1>🐾 Mudball Federation</h1>
-        <p>Support Animal Birth Control & Sustainable Farming.<br>Click below to start the donation process.</p>
-        <button class="button" onclick="nextCard(1)">Start</button>
-    </div>
+    <div class="container">
+        <div id="card1" class="card active">
+            <h1>🐾 Mudball Federation</h1>
+            <p>Support Animal Birth Control & Sustainable Farming.<br>Click below to start the donation process.</p>
+            <button class="button" onclick="nextCard(1)">Start</button>
+        </div>
 
-    <div id="card2" class="card">
-        <h1>Select Your Donation Perk</h1>
-        <div class="perk-options">
-            <button class="button" onclick="selectPerk(20)">₹20 - 1 Pic</button>
-            <button class="button" onclick="selectPerk(50)">₹50 - 3 Pics</button>
-            <button class="button" onclick="selectPerk(100)">₹100 - 1 Week Pics</button>
-            <button class="button" onclick="selectPerk(200)">₹200 - 18 Pics</button>
-            <button class="button" onclick="selectPerk(500)">₹500 - 1 Month Pics</button>
-            <button class="button" onclick="selectPerk(800)">₹800 - Framed Pic</button>
-            <button class="button" onclick="selectPerk(1000)">₹1000 - Autographed Pic</button>
+        <div id="card2" class="card">
+            <h1>Select Your Donation Perk</h1>
+            <div class="perk-options">
+                <button class="button" onclick="selectPerk(20)">₹20 - 1 Pic</button>
+                <button class="button" onclick="selectPerk(50)">₹50 - 3 Pics</button>
+                <button class="button" onclick="selectPerk(100)">₹100 - 1 Week Pics</button>
+                <button class="button" onclick="selectPerk(200)">₹200 - 18 Pics</button>
+                <button class="button" onclick="selectPerk(500)">₹500 - 1 Month Pics</button>
+                <button class="button" onclick="selectPerk(800)">₹800 - Framed Pic</button>
+                <button class="button" onclick="selectPerk(1000)">₹1000 - Autographed Pic</button>
+            </div>
+        </div>
+
+        <div id="card3" class="card">
+            <h1>Optional Extra Donation</h1>
+            <input type="number" id="extra" placeholder="Extra (optional)" min="0" aria-label="Extra donation">
+            <button class="button" onclick="proceedWithAmount()">Continue</button>
+        </div>
+
+        <div id="card4" class="card">
+            <h1>Donate Now</h1>
+            <p>Click below to pay via UPI or scan the QR code.</p>
+            <button class="button" onclick="launchUpi()">Open UPI App</button>
+            <div class="qr-wrapper">
+                <canvas id="qr" width="160" height="160"></canvas>
+            </div>
+        </div>
+
+        <div id="card5a" class="card">
+            <h1>Enter Your Details</h1>
+            <div class="form">
+                <input type="text" id="txnid" placeholder="UPI Transaction ID" required />
+                <input type="text" id="name1" placeholder="Full Name" required />
+                <input type="tel" id="phone1" placeholder="Phone Number" required />
+                <input type="email" id="email1" placeholder="Email" required />
+                <input type="text" id="house" placeholder="House No." required />
+                <input type="text" id="street" placeholder="Street Address" required />
+                <input type="text" id="pincode" placeholder="Pincode" required />
+                <input type="text" id="state" placeholder="State" required />
+
+                <div class="consent-wrapper">
+                    <input type="checkbox" id="consent" required />
+                    <label for="consent">
+                        I agree to the <a href="privacy.html" target="_blank">Privacy Policy</a> and <a
+                            href="terms.html" target="_blank">Terms of Use</a>.
+                    </label>
+                </div>
+
+                <button class="button" onclick="submitForm()">Submit</button>
+            </div>
+        </div>
+
+        <div id="card6" class="card">
+            <h1>Thank You! ❤️</h1>
+            <p>Your support helps save lives and protect nature.<br />
+                A receipt email has been sent. Please check your <strong>Spam</strong> folder and mark it as <strong>Not
+                    Spam</strong> to receive the picture.
+            </p>
+        </div>
+
+        <footer>Built with 💚 by Mudball Federation</footer>
+
+        <div class="legal-footer">
+            <hr />
+            <p>
+                <a href="privacy.html">Privacy Policy</a> |
+                <a href="terms.html">Terms of Use</a>
+            </p>
+            <p>This site uses cookies for analytics and email delivery. By using this site, you agree to our <a
+                    href="privacy.html">Privacy Policy</a>.</p>
+            <p>&copy; 2025 Mudball Federation</p>
         </div>
     </div>
 
-    <div id="card3" class="card">
-        <h1>Optional Extra Donation</h1>
-        <input type="number" id="extra" placeholder="Extra (optional)" min="0">
-        <button class="button" onclick="proceedWithAmount()">Continue</button>
-    </div>
-
-    <div id="card4" class="card">
-        <h1>Donate Now</h1>
-        <p>Click below to pay via UPI or scan the QR code.</p>
-        <button class="button" onclick="launchUpi()">Open UPI App</button>
-        <div class="qr-wrapper">
-            <canvas id="qr" width="160" height="160"></canvas>
-        </div>
-    </div>
-
-    <div id="card5a" class="card">
-        <h1>Enter Your Details</h1>
-        <div class="form">
-            <input type="text" id="name1" placeholder="Full Name" required />
-            <input type="tel" id="phone1" placeholder="Phone Number" required />
-            <input type="email" id="email1" placeholder="Email" required />
-            <input type="text" id="house" placeholder="House No." required />
-            <input type="text" id="street" placeholder="Street Address" required />
-            <input type="text" id="pincode" placeholder="Pincode" required />
-            <input type="text" id="state" placeholder="State" required />
-            <button class="button" onclick="submitForm()">Submit</button>
-        </div>
-    </div>
-
-    <div id="card6" class="card">
-        <h1>Thank You! ❤️</h1>
-        <p>Your support helps save lives and protect nature.<br>
-            An important receipt email has been sent to you. Please check your <strong>Spam</strong>
-            folder and <strong>please report it as not a Spam</strong> to receive the picture.</p>
-    </div>
-
-    <footer>Built with 💚 by Mudball Federation</footer>
-
-    <div class="legal-footer">
-        <hr />
-        <p>
-            <a href="privacy.html">Privacy Policy</a> |
-            <a href="terms.html">Terms of Use</a>
-        </p>
-        <p>&copy; 2025 Mudball Federation</p>
-    </div>
-
+    <!-- Firebase and QR Code scripts -->
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -276,31 +315,32 @@
         }
 
         function submitForm() {
-            const name = document.getElementById('name1').value;
-            const phone = document.getElementById('phone1').value;
-            const email = document.getElementById('email1').value;
-            const house = document.getElementById('house').value;
-            const street = document.getElementById('street').value;
-            const pincode = document.getElementById('pincode').value;
-            const state = document.getElementById('state').value;
+            const txnid = document.getElementById('txnid').value.trim();
+            const name = document.getElementById('name1').value.trim();
+            const phone = document.getElementById('phone1').value.trim();
+            const email = document.getElementById('email1').value.trim();
+            const house = document.getElementById('house').value.trim();
+            const street = document.getElementById('street').value.trim();
+            const pincode = document.getElementById('pincode').value.trim();
+            const state = document.getElementById('state').value.trim();
+            const consent = document.getElementById('consent').checked;
 
-            if (!name || !phone || !email || !house || !street || !pincode || !state) {
-                alert("Please fill in all the fields.");
+            if (!txnid || !name || !phone || !email || !house || !street || !pincode || !state || !consent) {
+                alert("Please fill in all fields and accept the Privacy Policy.");
                 return;
             }
 
+            const timestamp = new Date().toISOString();
+
             const data = {
+                txnid,
                 name,
                 phone,
                 email,
                 amount: totalAmount,
                 perk: baseAmount,
-                address: {
-                    house,
-                    street,
-                    pincode,
-                    state
-                }
+                timestamp,
+                address: { house, street, pincode, state }
             };
 
             db.ref("donors").push(data).then(() => {

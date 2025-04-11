@@ -5,9 +5,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mudball Federation</title>
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
     <style>
         :root {
             --green: #28a745;
@@ -30,15 +32,18 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            padding: 1rem;
         }
 
         .container {
             width: 100%;
             max-width: 450px;
-            margin: 1rem;
+            margin: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
+            flex-grow: 1;
         }
 
         .progress {
@@ -47,6 +52,7 @@
             border-radius: 999px;
             overflow: hidden;
             margin-bottom: 1rem;
+            width: 100%;
         }
 
         .progress-inner {
@@ -63,6 +69,8 @@
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             padding: 2rem;
             animation: fadeSlide 0.5s ease;
+            align-self: center;
+            width: 100%;
         }
 
         .card.active {
@@ -156,6 +164,7 @@
         #qrcode {
             display: none;
             margin: 1rem auto;
+            text-align: center;
         }
 
         #countdown {
@@ -165,24 +174,30 @@
             margin-top: 1rem;
         }
 
+        #addressFields {
+            margin-top: 1rem;
+        }
+
         footer {
-            background: #f7fdf9;
+            background: #f1fdf5;
             padding: 2rem 1rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-            border-top: 1px solid #ccc;
-            width: 100%;
+            border-top: 1px solid #d4eadd;
             margin-top: 3rem;
+            text-align: center;
+            font-family: 'Segoe UI', sans-serif;
+            width: 100%;
         }
 
         footer a {
-            color: #007bff;
+            color: #28a745;
             text-decoration: none;
+            font-weight: 500;
+            margin: 0 1rem;
         }
 
-        .footer-links {
-            margin-bottom: 0.5rem;
+        footer p {
+            color: #666;
+            font-size: 0.85rem;
         }
 
         @media (max-height: 750px) {
@@ -194,6 +209,7 @@
 </head>
 
 <body>
+
     <div class="container">
         <div class="progress">
             <div class="progress-inner" id="progressBar"></div>
@@ -222,8 +238,7 @@
             <h2>Scan or Pay with UPI</h2>
             <div class="receipt" id="receiptBox"></div>
             <button onclick="openUPI()">Pay with UPI</button>
-            <p style="text-align:center; margin-top:1rem;">UPI not working?</p>
-            <button onclick="showQR()">Show QR Code</button>
+            <button onclick="showQR()">UPI not working?</button>
             <div id="qrcode"></div>
             <div id="countdown">Loading form in <span id="timer">30</span> seconds...</div>
         </div>
@@ -253,9 +268,8 @@
                     <input type="text" id="state" />
                 </div>
 
-                <input type="checkbox" required /> I agree to the
-                <a href="#">Privacy Policy</a> and <a href="#">Terms of Use</a>
-
+                <input type="checkbox" required /> I agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms
+                    of Use</a>
                 <button type="submit">Submit</button>
             </form>
         </div>
@@ -268,13 +282,19 @@
     </div>
 
     <footer>
-        <div class="footer-links">
-            <a href="privacy.html">Privacy Policy</a> |
-            <a href="terms.html">Terms of Use</a>
+        <div>
+            <h3 style="color: #28a745; font-size: 1.5rem; margin-bottom: 0.5rem;">🌱 Mudball Federation</h3>
+            <p>Empowering communities through Animal Birth Control and sustainable farming. Thank you for supporting a
+                greener planet.</p>
+            <div style="margin: 1.5rem 0;">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Use</a>
+                <a href="mailto:contact@mudballfederation.org">Contact</a>
+            </div>
+            <p>This site uses cookies for functionality, analytics, and email delivery. By using this site, you agree to
+                our policies.</p>
+            <p style="margin-top: 1rem; color: #aaa;">© 2025 Mudball Federation. All rights reserved.</p>
         </div>
-        <p>This site uses cookies for analytics and email delivery. By using this site, you agree to our <a
-                href="privacy.html">Privacy Policy</a>.</p>
-        <p>&copy; 2025 Mudball Federation</p>
     </footer>
 
     <script>
@@ -288,6 +308,7 @@
             appId: "1:83239152087:web:12546d8ff9638e20948392",
             measurementId: "G-RW0LDRJY5M"
         };
+
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
@@ -295,20 +316,19 @@
         let baseAmount = 0;
 
         const amounts = [20, 50, 100, 200, 500, 800, 1000];
-        const container = document.getElementById("amountButtons");
-        container.innerHTML = amounts.map(amount => `<button onclick="selectAmount(${amount})">₹${amount}</button>`).join("");
+        document.getElementById('amountButtons').innerHTML = amounts.map(amount =>
+            `<button onclick="selectAmount(${amount})">₹${amount}</button>`
+        ).join('');
 
         function nextCard(step) {
-            document.getElementById(`card${currentStep}`).classList.remove("active");
-            document.getElementById(`card${step}`).classList.add("active");
+            document.querySelector(`#card${currentStep}`).classList.remove('active');
+            document.querySelector(`#card${step}`).classList.add('active');
             currentStep = step;
             document.getElementById("progressBar").style.width = `${(step - 1) / 5 * 100}%`;
             if (step === 4) {
                 generateReceipt();
                 generateQR();
                 startTimer();
-            } else if (step === 5) {
-                showAddressIfNeeded();
             }
         }
 
@@ -320,23 +340,28 @@
 
         function updateTotal() {
             const extra = parseFloat(document.getElementById("extra").value) || 0;
-            const total = baseAmount + extra;
-            document.getElementById("total").textContent = total;
+            document.getElementById("total").textContent = baseAmount + extra;
         }
 
         function generateReceipt() {
             const extra = parseFloat(document.getElementById("extra").value) || 0;
             const total = baseAmount + extra;
-            document.getElementById("receiptBox").innerHTML = `<strong>Base Amount:</strong> ₹${baseAmount}<br>
-        <strong>Extra Contribution:</strong> ₹${extra}<br>
-        <hr style="margin: 0.5rem 0;">
-        <strong>Total:</strong> ₹${total}`;
+            document.getElementById("receiptBox").innerHTML =
+                `<strong>Base Amount:</strong> ₹${baseAmount}<br>
+                 <strong>Extra Contribution:</strong> ₹${extra}<br>
+                 <hr style="margin: 0.5rem 0;">
+                 <strong>Total:</strong> ₹${total}`;
         }
 
         function generateQR() {
             const total = baseAmount + (parseFloat(document.getElementById("extra").value) || 0);
             const link = `upi://pay?pa=9449991672@ibl&pn=Vishnu&tn=Support%20ABC&am=${total}&cu=INR`;
-            new QRCode("qrcode", { text: link, width: 200, height: 200 });
+            document.getElementById("qrcode").innerHTML = "";
+            new QRCode("qrcode", {
+                text: link,
+                width: 200,
+                height: 200
+            });
         }
 
         function openUPI() {
@@ -357,15 +382,12 @@
                 timerEl.textContent = seconds;
                 if (seconds <= 0) {
                     clearInterval(interval);
+                    if (baseAmount === 800 || baseAmount === 1000) {
+                        document.getElementById("addressFields").style.display = "block";
+                    }
                     nextCard(5);
                 }
             }, 1000);
-        }
-
-        function showAddressIfNeeded() {
-            if (baseAmount === 800 || baseAmount === 1000) {
-                document.getElementById("addressFields").style.display = "block";
-            }
         }
 
         function validateTxn() {
@@ -391,21 +413,25 @@
                 phone: document.getElementById("phone").value,
                 email: document.getElementById("email").value,
                 txn: txn,
-                baseAmount: baseAmount,
+                baseAmount,
                 extraAmount: parseFloat(document.getElementById("extra").value) || 0,
             };
 
             if (baseAmount === 800 || baseAmount === 1000) {
-                data.house = document.getElementById("house").value;
-                data.street = document.getElementById("street").value;
-                data.pincode = document.getElementById("pincode").value;
-                data.state = document.getElementById("state").value;
+                data.address = {
+                    house: document.getElementById("house").value,
+                    street: document.getElementById("street").value,
+                    pincode: document.getElementById("pincode").value,
+                    state: document.getElementById("state").value,
+                };
             }
 
-            db.ref("donations").push(data);
-            nextCard(6);
+            db.ref('donations').push(data).then(() => {
+                nextCard(6);
+            });
         }
     </script>
+
 </body>
 
 </html>

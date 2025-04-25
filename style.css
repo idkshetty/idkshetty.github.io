@@ -10,15 +10,19 @@ body {
     color: #c9d1d9;
     scroll-behavior: smooth;
     line-height: 1.6;
-    padding-bottom: 4rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
+/* Navigation */
 nav {
     background-color: #161b22;
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .logo {
@@ -31,6 +35,7 @@ nav {
     list-style: none;
     display: flex;
     gap: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
@@ -42,22 +47,24 @@ nav {
     color: #58a6ff;
 }
 
+/* Hero Section */
 .hero {
     text-align: center;
-    margin: 4rem 1rem;
+    margin: 4rem 1rem 2rem 1rem;
 }
 
 .hero h1 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: #58a6ff;
 }
 
 .hero p {
     margin-top: 1rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #8b949e;
 }
 
+/* Sections */
 section {
     max-width: 900px;
     margin: auto;
@@ -65,7 +72,7 @@ section {
 }
 
 h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
     color: #79c0ff;
 }
@@ -76,16 +83,17 @@ li {
     color: #c9d1d9;
 }
 
+/* Projects */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
     gap: 1.5rem;
     margin-top: 1rem;
 }
 
 .project-card {
     background-color: #161b22;
-    padding: 1rem;
+    padding: 1.2rem;
     border-radius: 10px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -100,9 +108,11 @@ li {
     margin-bottom: 0.5rem;
 }
 
+/* Contact */
 .contact-links {
     list-style: none;
     margin-top: 1rem;
+    padding-left: 1rem;
 }
 
 .contact-links li {
@@ -118,11 +128,74 @@ a:hover {
     text-decoration: underline;
 }
 
+/* Footer */
 footer {
     text-align: center;
     font-size: 0.9rem;
     color: #8b949e;
-    margin-top: 4rem;
+    margin-top: auto;
     border-top: 1px solid #21262d;
-    padding-top: 2rem;
+    padding: 2rem 1rem 1rem 1rem;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 900px) {
+    .hero h1 {
+        font-size: 2.3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    /* Keep nav horizontal, even on small screens */
+    nav {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        width: auto;
+        margin-top: 0;
+        gap: 1rem;
+    }
+
+    .nav-links a {
+        font-size: 0.95rem;
+    }
+}
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1.05rem;
+    }
+
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.7rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .project-card {
+        font-size: 0.95rem;
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+    
 }

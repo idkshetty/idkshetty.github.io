@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IDK Shetty – Developer Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">idkshetty</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <h1>Hey, I'm <span class="typing" id="typed"></span></h1>
+      <p>A 16 y/o developer who loves building web stuff</p>
+    </header>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <p>
+        I'm Vishnu Deviprasad Shetty – you might know me as idkshetty. I'm a
+        16-year-old full-stack developer, tech explorer, and builder of cool
+        internet things. I enjoy creating clean, functional, and fun digital
+        experiences.
+      </p>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <h3>Safemet - IOT project</h3>
+          <p>
+            Helmet addon for fall detection and SOS alerts with cancel timer.
+          </p>
+        </div>
+        <div class="project-card">
+          <h3>Mudball Federation</h3>
+          <p>Donation site with UPI, automatic emails, and hidden perks.</p>
+        </div>
+        <div class="project-card">
+          <h3>Marathon Enrollment Web App</h3>
+          <p>
+            Full-stack event registration system with QR check-ins, real-time
+            tracking, and a powerful admin dashboard. Built using Firebase &
+            Node.js.
+          </p>
+        </div>
+        <div class="project-card">
+          <h3>Know Your Plants</h3>
+          <p>
+            Smart agricultural web app with crop planning, plant guides, and
+            district-wise recommendations. Made with HTML, CSS, JS, Firebase &
+            dynamic data.
+          </p>
+        </div>
+        <div class="project-card">
+          <h3>More Coming Soon</h3>
+          <p>
+            I’m always building. New ideas are constantly turning into code.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Feel free to reach out:</p>
+      <ul class="contact-links">
+        <li>
+          Email:
+          <a href="mailto:vishnu.idkshetty@gmail.com"
+            >vishnu.idkshetty@gmail.com</a
+          >
+        </li>
+        <li>
+          GitHub:
+          <a href="https://github.com/idkshetty" target="_blank"
+            >github.com/idkshetty</a
+          >
+        </li>
+        <li>
+          Instagram:
+          <a href="https://instagram.com/idk_shetty" target="_blank"
+            >@idk_shetty</a
+          >
+        </li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>© 2025 idkshetty. Built with ☕ and a lot of debugging.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+      const typed = new Typed("#typed", {
+        strings: [
+          "idkshetty",
+          "a Web Developer",
+          //"Vishnu and it's my hobby",
+          "just 16.",
+        ],
+        typeSpeed: 80,
+        backSpeed: 40,
+        loop: true,
+      });
+    </script>
+  </body>
+</html>

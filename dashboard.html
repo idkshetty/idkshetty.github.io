@@ -1,248 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Client Tracker Dark</title>
-  <style>
-    :root {
-      --dark-bg: #0d1117;
-      --light-text: #c9d1d9;
-      --medium-bg: #161b22;
-      --blue: #58a6ff;
-      --gray: #8b949e;
-      --blue-light: #79c0ff;
-      --blue-soft: rgba(88, 166, 255, 0.2);
-      --card-bg: #161b22;
-      --border-dark: #21262d;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client Tracker</title>
+    <style>
+      :root {
+        --dark-bg: #0d1117;
+        --light-text: #c9d1d9;
+        --medium-bg: #161b22;
+        --blue: #58a6ff;
+        --gray: #8b949e;
+        --blue-light: #79c0ff;
+        --blue-soft: rgba(88, 166, 255, 0.2);
+        --card-bg: #161b22;
+        --border-dark: #21262d;
+      }
 
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: var(--dark-bg); color: var(--light-text); }
-    header { background: var(--medium-bg); text-align: center; padding: 20px; font-size: 24px; color: var(--light-text); }
-    .container { padding: 20px; max-width: 1200px; margin: auto; }
-    .search-box { margin-bottom: 20px; display: flex; justify-content: center; }
-    .search-box input {
-      width: 80%;
-      padding: 10px;
-      border-radius: 5px;
-      font-size: 16px;
-      background: var(--medium-bg);
-      color: var(--light-text);
-      border: 1px solid var(--border-dark);
-    }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: var(--dark-bg);
+        color: var(--light-text);
+      }
+      .container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: auto;
+      }
+      .search-box {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+      }
+      .search-box input {
+        width: 80%;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        background: var(--medium-bg);
+        color: var(--light-text);
+        border: 1px solid var(--border-dark);
+      }
 
-    .lead-card {
-      background: var(--card-bg);
-      padding: 20px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: 1px solid var(--border-dark);
-    }
-    .lead-card h3 { margin: 0 0 10px 0; color: var(--light-text); }
-    .tag-btn {
-      padding: 5px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      margin-right: 5px;
-    }
-    .card-actions button {
-      padding: 6px 12px;
-      margin-top: 10px;
-      background: var(--medium-bg);
-      color: var(--light-text);
-      border: 1px solid var(--border-dark);
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-      margin-right: 5px;
-    }
-    .card-actions button:hover { background: var(--dark-bg); }
+      nav {
+        background-color: #161b22;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
 
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(13,17,23,0.9);
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-    }
-    .modal-content {
-      background: var(--medium-bg);
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-      display: flex;
-      flex-direction: column;
-      height: 80vh;
-      position: relative;
-    }
-    .close-modal {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: var(--gray);
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .close-modal:hover { color: var(--light-text); }
+      .logo {
+        font-weight: 600;
+        font-size: 1.4rem;
+        color: #58a6ff;
+        white-space: nowrap;
+      }
 
-    #existingNotes {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px;
-      background: var(--dark-bg);
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    .chat-bubble {
-      max-width: 75%;
-      margin-bottom: 10px;
-      padding: 10px 15px;
-      border-radius: 15px;
-      position: relative;
-      font-size: 14px;
-      word-wrap: break-word;
-      background: var(--card-bg);
-      color: var(--light-text);
-      animation: fadeIn 0.3s ease-in;
-    }
-    .chat-bubble small {
-      display: block;
-      margin-top: 5px;
-      font-size: 10px;
-      color: var(--gray);
-      text-align: right;
-    }
-    .delete-note-btn {
-      background: none;
-      border: none;
-      color: var(--gray);
-      font-size: 14px;
-      cursor: pointer;
-      position: absolute;
-      top: 5px;
-      right: 8px;
-    }
-    .delete-note-btn:hover { color: var(--light-text); }
+      .lead-card {
+        background: var(--card-bg);
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border-dark);
+      }
+      .lead-card h3 {
+        margin: 0 0 10px 0;
+        color: var(--light-text);
+      }
+      .tag-btn {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-right: 5px;
+      }
+      .card-actions button {
+        padding: 6px 12px;
+        margin-top: 10px;
+        background: var(--medium-bg);
+        color: var(--light-text);
+        border: 1px solid var(--border-dark);
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-right: 5px;
+      }
+      .card-actions button:hover {
+        background: var(--dark-bg);
+      }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(13, 17, 23, 0.9);
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
+      .modal-content {
+        background: var(--medium-bg);
+        padding: 20px;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        height: 80vh;
+        position: relative;
+      }
+      .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        color: var(--gray);
+        font-size: 20px;
+        cursor: pointer;
+      }
+      .close-modal:hover {
+        color: var(--light-text);
+      }
 
-    .new-note {
-      width: 100%;
-      background: var(--dark-bg);
-      border: none;
-      border-radius: 20px;
-      padding: 10px 15px;
-      font-size: 14px;
-      color: var(--light-text);
-      resize: none;
-      height: 40px;
-    }
-    .save-btn {
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      background: var(--blue-soft);
-      color: var(--blue);
-      margin-top: 10px;
-    }
-    .save-btn:hover { background: var(--blue); color: var(--dark-bg); }
+      #existingNotes {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px;
+        background: var(--dark-bg);
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+      .chat-bubble {
+        max-width: 75%;
+        margin-bottom: 10px;
+        padding: 10px 15px;
+        border-radius: 15px;
+        position: relative;
+        font-size: 14px;
+        word-wrap: break-word;
+        background: var(--card-bg);
+        color: var(--light-text);
+        animation: fadeIn 0.3s ease-in;
+      }
+      .chat-bubble small {
+        display: block;
+        margin-top: 5px;
+        font-size: 10px;
+        color: var(--gray);
+        text-align: right;
+      }
+      .delete-note-btn {
+        background: none;
+        border: none;
+        color: var(--gray);
+        font-size: 14px;
+        cursor: pointer;
+        position: absolute;
+        top: 5px;
+        right: 8px;
+      }
+      .delete-note-btn:hover {
+        color: var(--light-text);
+      }
 
-    .project-name-input {
-      background: transparent;
-      color: var(--light-text);
-      border: none;
-      font-size: 16px;
-      width: 100%;
-      margin-top: 5px;
-      padding: 5px;
-      border-radius: 5px;
-    }
-    .project-name-input:focus {
-      outline: none;
-      background: var(--dark-bg);
-    }
-  </style>
-</head>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-<body>
+      .new-note {
+        width: 100%;
+        background: var(--dark-bg);
+        border: none;
+        border-radius: 20px;
+        padding: 10px 15px;
+        font-size: 14px;
+        color: var(--light-text);
+        resize: none;
+        height: 40px;
+      }
+      .save-btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        background: var(--blue-soft);
+        color: var(--blue);
+        margin-top: 10px;
+      }
+      .save-btn:hover {
+        background: var(--blue);
+        color: var(--dark-bg);
+      }
 
-  <header>Client Progress Tracker</header>
+      .project-name-input {
+        background: transparent;
+        color: var(--light-text);
+        border: none;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 5px;
+        padding: 5px;
+        border-radius: 5px;
+      }
+      .project-name-input:focus {
+        outline: none;
+        background: var(--dark-bg);
+      }
+    </style>
+  </head>
 
-  <div class="container">
-    <div class="search-box">
-      <input type="text" id="search" placeholder="Search clients...">
+  <body>
+    <nav>
+      <div class="logo">CLIENT TRACKER</div>
+    </nav>
+
+    <div class="container">
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Search clients..." />
+      </div>
+      <div id="leadList"></div>
     </div>
-    <div id="leadList"></div>
-  </div>
 
-  <div class="modal" id="notesModal">
-    <div class="modal-content">
-      <button class="close-modal" id="closeModal">×</button>
-      <div id="existingNotes"></div>
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <textarea id="newNote" class="new-note" placeholder="Type a message..."></textarea>
-        <button id="saveNote" class="save-btn">➤</button>
+    <div class="modal" id="notesModal">
+      <div class="modal-content">
+        <button class="close-modal" id="closeModal">×</button>
+        <div id="existingNotes"></div>
+        <div style="display: flex; gap: 10px; align-items: center">
+          <textarea
+            id="newNote"
+            class="new-note"
+            placeholder="Type a message..."
+          ></textarea>
+          <button id="saveNote" class="save-btn">➤</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getDatabase, ref, onValue, update, set, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        update,
+        set,
+        remove,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCxc67ZQiY4hHfAkvNq1emVC8qUoT_diBQ",
-      authDomain: "portfoilio-manager.firebaseapp.com",
-      databaseURL: "https://portfoilio-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "portfoilio-manager",
-      storageBucket: "portfoilio-manager.appspot.com",
-      messagingSenderId: "1065030502150",
-      appId: "1:1065030502150:web:27e2601523587f4ac64087"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const leadsRef = ref(db, 'portfolioLeads');
-
-    const searchInput = document.getElementById('search');
-    const leadList = document.getElementById('leadList');
-    const notesModal = document.getElementById('notesModal');
-    const closeModal = document.getElementById('closeModal');
-    let currentNotesId = null;
-
-    function renderLead(id, data) {
-      const card = document.createElement('div');
-      card.className = 'lead-card';
-
-      const tag = data.tag || 'New';
-      const projectName = data.projectName || '';
-      const tagDetails = {
-        'New': { color: '#58a6ff', label: 'New' },
-        'Error': { color: '#f44336', label: 'Error' },
-        'Under Development': { color: '#79c0ff', label: 'Under Development' },
-        'Pending Review': { color: '#8b949e', label: 'Pending Review' },
-        'Completed': { color: '#58a6ff', label: 'Completed' },
+      const firebaseConfig = {
+        apiKey: "AIzaSyCxc67ZQiY4hHfAkvNq1emVC8qUoT_diBQ",
+        authDomain: "portfoilio-manager.firebaseapp.com",
+        databaseURL:
+          "https://portfoilio-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "portfoilio-manager",
+        storageBucket: "portfoilio-manager.appspot.com",
+        messagingSenderId: "1065030502150",
+        appId: "1:1065030502150:web:27e2601523587f4ac64087",
       };
-      const { color } = tagDetails[tag] || { color: '#58a6ff' };
 
-      card.innerHTML = `
-        <h3>${data.name || 'Unnamed Client'}</h3>
-        <p><strong>Email:</strong> ${data.email || 'N/A'}</p>
-        <p><strong>Phone:</strong> ${data.phone || 'N/A'}</p>
-        <p><strong>Interest:</strong> ${data.interest || 'N/A'}</p>
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const leadsRef = ref(db, "portfolioLeads");
+
+      const searchInput = document.getElementById("search");
+      const leadList = document.getElementById("leadList");
+      const notesModal = document.getElementById("notesModal");
+      const closeModal = document.getElementById("closeModal");
+      let currentNotesId = null;
+
+      function renderLead(id, data) {
+        const card = document.createElement("div");
+        card.className = "lead-card";
+
+        const tag = data.tag || "New";
+        const projectName = data.projectName || "";
+        const tagDetails = {
+          New: { color: "#58a6ff", label: "New" },
+          Error: { color: "#f44336", label: "Error" },
+          "Under Development": { color: "#79c0ff", label: "Under Development" },
+          "Pending Review": { color: "#8b949e", label: "Pending Review" },
+          Completed: { color: "#58a6ff", label: "Completed" },
+        };
+        const { color } = tagDetails[tag] || { color: "#58a6ff" };
+
+        card.innerHTML = `
+        <h3>${data.name || "Unnamed Client"}</h3>
+        <p><strong>Email:</strong> ${data.email || "N/A"}</p>
+        <p><strong>Phone:</strong> ${data.phone || "N/A"}</p>
+        <p><strong>Interest:</strong> ${data.interest || "N/A"}</p>
         <p><strong>Project Name:</strong> 
           <input type="text" id="editProjectName-${id}" value="${projectName}" class="project-name-input">
         </p>
@@ -253,117 +315,145 @@
         </div>
       `;
 
-      const projectNameInput = card.querySelector(`#editProjectName-${id}`);
-      projectNameInput.addEventListener('blur', () => {
-        const newProjectName = projectNameInput.value;
-        update(ref(db, `portfolioLeads/${id}`), { projectName: newProjectName });
-      });
+        const projectNameInput = card.querySelector(`#editProjectName-${id}`);
+        projectNameInput.addEventListener("blur", () => {
+          const newProjectName = projectNameInput.value;
+          update(ref(db, `portfolioLeads/${id}`), {
+            projectName: newProjectName,
+          });
+        });
 
-      leadList.appendChild(card);
-    }
+        leadList.appendChild(card);
+      }
 
-    function refreshLeads(snapshot) {
-      leadList.innerHTML = '';
-      snapshot.forEach(child => {
-        const key = child.key;
-        const data = child.val();
-        const searchText = searchInput.value.toLowerCase();
-        if (!searchText || data.name?.toLowerCase().includes(searchText) || data.email?.toLowerCase().includes(searchText)) {
-          renderLead(key, data);
-        }
-      });
-
-      document.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-id');
-          if (confirm('Are you sure you want to delete this client?')) {
-            remove(ref(db, `portfolioLeads/${id}`));
+      function refreshLeads(snapshot) {
+        leadList.innerHTML = "";
+        snapshot.forEach((child) => {
+          const key = child.key;
+          const data = child.val();
+          const searchText = searchInput.value.toLowerCase();
+          if (
+            !searchText ||
+            data.name?.toLowerCase().includes(searchText) ||
+            data.email?.toLowerCase().includes(searchText)
+          ) {
+            renderLead(key, data);
           }
         });
-      });
 
-      document.querySelectorAll('.notes-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          currentNotesId = btn.getAttribute('data-id');
-          notesModal.style.display = 'flex';
-          loadNotes();
+        document.querySelectorAll(".delete-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            if (confirm("Are you sure you want to delete this client?")) {
+              remove(ref(db, `portfolioLeads/${id}`));
+            }
+          });
         });
-      });
 
-      document.querySelectorAll('.tag-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-id');
-          const tags = ['New', 'Error', 'Under Development', 'Pending Review', 'Completed'];
-          const tagDetails = {
-            'New': { color: '#58a6ff', label: 'New' },
-            'Error': { color: '#f44336', label: 'Error' },
-            'Under Development': { color: '#79c0ff', label: 'Under Development' },
-            'Pending Review': { color: '#8b949e', label: 'Pending Review' },
-            'Completed': { color: '#58a6ff', label: 'Completed' },
-          };
-          let currentTag = btn.innerText.trim();
-          let idx = tags.indexOf(currentTag);
-          let newIdx = (idx + 1) % tags.length;
-          const newTag = tags[newIdx];
-
-          const { color } = tagDetails[newTag] || { color: '#58a6ff' };
-          btn.innerText = newTag;
-          btn.style.background = color;
-
-          update(ref(db, `portfolioLeads/${id}`), { tag: newTag });
+        document.querySelectorAll(".notes-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            currentNotesId = btn.getAttribute("data-id");
+            notesModal.style.display = "flex";
+            loadNotes();
+          });
         });
+
+        document.querySelectorAll(".tag-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            const tags = [
+              "New",
+              "Error",
+              "Under Development",
+              "Pending Review",
+              "Completed",
+            ];
+            const tagDetails = {
+              New: { color: "#58a6ff", label: "New" },
+              Error: { color: "#f44336", label: "Error" },
+              "Under Development": {
+                color: "#79c0ff",
+                label: "Under Development",
+              },
+              "Pending Review": { color: "#8b949e", label: "Pending Review" },
+              Completed: { color: "#58a6ff", label: "Completed" },
+            };
+            let currentTag = btn.innerText.trim();
+            let idx = tags.indexOf(currentTag);
+            let newIdx = (idx + 1) % tags.length;
+            const newTag = tags[newIdx];
+
+            const { color } = tagDetails[newTag] || { color: "#58a6ff" };
+            btn.innerText = newTag;
+            btn.style.background = color;
+
+            update(ref(db, `portfolioLeads/${id}`), { tag: newTag });
+          });
+        });
+      }
+
+      onValue(leadsRef, refreshLeads);
+      searchInput.addEventListener("input", () =>
+        onValue(leadsRef, refreshLeads)
+      );
+      closeModal.addEventListener("click", () => {
+        notesModal.style.display = "none";
+        currentNotesId = null;
       });
-    }
 
-    onValue(leadsRef, refreshLeads);
-    searchInput.addEventListener('input', () => onValue(leadsRef, refreshLeads));
-    closeModal.addEventListener('click', () => { notesModal.style.display = 'none'; currentNotesId = null; });
+      function loadNotes() {
+        const notesRef = ref(db, `portfolioLeads/${currentNotesId}/messages`);
+        onValue(notesRef, (snapshot) => {
+          const container = document.getElementById("existingNotes");
+          container.innerHTML = "";
 
-    function loadNotes() {
-      const notesRef = ref(db, `portfolioLeads/${currentNotesId}/messages`);
-      onValue(notesRef, snapshot => {
-        const container = document.getElementById('existingNotes');
-        container.innerHTML = '';
+          const notes = snapshot.val();
+          if (!notes) {
+            container.innerHTML =
+              '<p style="text-align:center; color: var(--gray);">No messages yet</p>';
+            return;
+          }
 
-        const notes = snapshot.val();
-        if (!notes) {
-          container.innerHTML = '<p style="text-align:center; color: var(--gray);">No messages yet</p>';
-          return;
-        }
-
-        const sortedNotes = Object.entries(notes).sort((a, b) => a[0] - b[0]);
-        sortedNotes.forEach(([timestamp, text]) => {
-          const time = new Date(Number(timestamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          const bubble = document.createElement('div');
-          bubble.className = 'chat-bubble';
-          bubble.innerHTML = `
+          const sortedNotes = Object.entries(notes).sort((a, b) => a[0] - b[0]);
+          sortedNotes.forEach(([timestamp, text]) => {
+            const time = new Date(Number(timestamp)).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+            const bubble = document.createElement("div");
+            bubble.className = "chat-bubble";
+            bubble.innerHTML = `
             ${text}
             <button class="delete-note-btn" data-timestamp="${timestamp}">×</button>
             <small>${time}</small>
           `;
-          container.appendChild(bubble);
-        });
-
-        document.querySelectorAll('.delete-note-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const ts = btn.getAttribute('data-timestamp');
-            remove(ref(db, `portfolioLeads/${currentNotesId}/messages/${ts}`));
+            container.appendChild(bubble);
           });
+
+          document.querySelectorAll(".delete-note-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const ts = btn.getAttribute("data-timestamp");
+              remove(
+                ref(db, `portfolioLeads/${currentNotesId}/messages/${ts}`)
+              );
+            });
+          });
+
+          container.scrollTop = container.scrollHeight;
         });
-
-        container.scrollTop = container.scrollHeight;
-      });
-    }
-
-    document.getElementById('saveNote').addEventListener('click', () => {
-      const noteText = document.getElementById('newNote').value;
-      if (noteText && currentNotesId) {
-        const noteRef = ref(db, `portfolioLeads/${currentNotesId}/messages/${Date.now()}`);
-        set(noteRef, noteText);
-        document.getElementById('newNote').value = '';
       }
-    });
-  </script>
 
-</body>
+      document.getElementById("saveNote").addEventListener("click", () => {
+        const noteText = document.getElementById("newNote").value;
+        if (noteText && currentNotesId) {
+          const noteRef = ref(
+            db,
+            `portfolioLeads/${currentNotesId}/messages/${Date.now()}`
+          );
+          set(noteRef, noteText);
+          document.getElementById("newNote").value = "";
+        }
+      });
+    </script>
+  </body>
 </html>

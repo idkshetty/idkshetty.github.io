@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | Marathon 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #0a0a0a;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #eee;
+      animation: fadeInBody 1s ease forwards;
+    }
+
+    @keyframes fadeInBody {
+      0% {
+        opacity: 0;
+        transform: scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .login-container {
+      background: #111;
+      padding: 50px 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.05);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInForm 1.2s ease forwards;
+    }
+
+    @keyframes fadeInForm {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 18px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #1da851;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(37, 211, 102, 0.4);
+    }
+
+    .login-container h2 {
+      font-weight: 600;
+      font-size: 26px;
+      margin-bottom: 30px;
+      color: #25d366;
+    }
+
+    .login-container label {
+      display: block;
+      text-align: left;
+      font-size: 14px;
+      margin-bottom: 6px;
+      margin-top: 18px;
+      color: #ccc;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #333;
+      border-radius: 10px;
+      background: #222;
+      color: #eee;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .login-container input:focus {
+      border-color: #25d366;
+      background: #111;
+      box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.25);
+      outline: none;
+    }
+
+    .login-container button {
+      width: 100%;
+      margin-top: 30px;
+      padding: 14px 0;
+      border: none;
+      border-radius: 10px;
+      background-color: #25d366;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background-color: #1da851;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(37, 211, 102, 0.45);
+    }
+
+    #loginMessage {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #e74c3c;
+      min-height: 18px;
+      transition: all 0.3s ease;
+    }
+
+    @media(max-width: 420px) {
+      .login-container {
+        padding: 40px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-container">
+    <a href="../index.html" class="back-button"><i class="fas fa-arrow-left"></i> Back</a>
+    <h2>Admin Login</h2>
+    <form id="adminLoginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter your username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required>
+
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage"></p>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

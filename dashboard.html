@@ -3,51 +3,184 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Client Tracker</title>
+  <title>Client Tracker Dark</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #121212; color: white; }
-    header { background: #1F1F1F; text-align: center; padding: 20px; font-size: 24px; }
+    :root {
+      --dark-bg: #0d1117;
+      --light-text: #c9d1d9;
+      --medium-bg: #161b22;
+      --blue: #58a6ff;
+      --gray: #8b949e;
+      --blue-light: #79c0ff;
+      --blue-soft: rgba(88, 166, 255, 0.2);
+      --card-bg: #161b22;
+      --border-dark: #21262d;
+    }
+
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: var(--dark-bg); color: var(--light-text); }
+    header { background: var(--medium-bg); text-align: center; padding: 20px; font-size: 24px; color: var(--light-text); }
     .container { padding: 20px; max-width: 1200px; margin: auto; }
     .search-box { margin-bottom: 20px; display: flex; justify-content: center; }
-    .search-box input { width: 80%; padding: 10px; border-radius: 5px; font-size: 16px; background: #333; color: white; }
-    .lead-card { background: #1E1E1E; padding: 20px; margin-bottom: 15px; border-radius: 8px; }
-    .lead-card h3 { margin: 0 0 10px 0; }
-    .tag-btn { padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; color: white; font-size: 14px; margin-right: 5px; }
-    .new { background-color: #ff9800; } /* New tag color */
-    .in-progress { background-color: #2196F3; }
-    .completed { background-color: #4CAF50; }
-    .stuck { background-color: #f44336; }
-    .card-actions button { padding: 6px 12px; margin-top: 10px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; margin-right: 5px; }
-    .card-actions button:hover { background: #555; }
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); align-items: center; justify-content: center; z-index: 999; }
-    .modal-content { background: #222; padding: 30px; border-radius: 10px; width: 50%; max-height: 80%; overflow-y: auto; }
-    .modal-buttons { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-    .cancel-btn, .save-btn { padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; }
-    .cancel-btn { background: #f44336; }
-    .save-btn { background: #4CAF50; }
-    textarea.new-note { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #444; font-size: 14px; background: #333; color: white; margin-top: 10px; }
-    
-    /* Style for the editable Project Name input field */
+    .search-box input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 16px;
+      background: var(--medium-bg);
+      color: var(--light-text);
+      border: 1px solid var(--border-dark);
+    }
+
+    .lead-card {
+      background: var(--card-bg);
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border-dark);
+    }
+    .lead-card h3 { margin: 0 0 10px 0; color: var(--light-text); }
+    .tag-btn {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 5px;
+    }
+    .card-actions button {
+      padding: 6px 12px;
+      margin-top: 10px;
+      background: var(--medium-bg);
+      color: var(--light-text);
+      border: 1px solid var(--border-dark);
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 5px;
+    }
+    .card-actions button:hover { background: var(--dark-bg); }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(13,17,23,0.9);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .modal-content {
+      background: var(--medium-bg);
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+      position: relative;
+    }
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .close-modal:hover { color: var(--light-text); }
+
+    #existingNotes {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      background: var(--dark-bg);
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .chat-bubble {
+      max-width: 75%;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 15px;
+      position: relative;
+      font-size: 14px;
+      word-wrap: break-word;
+      background: var(--card-bg);
+      color: var(--light-text);
+      animation: fadeIn 0.3s ease-in;
+    }
+    .chat-bubble small {
+      display: block;
+      margin-top: 5px;
+      font-size: 10px;
+      color: var(--gray);
+      text-align: right;
+    }
+    .delete-note-btn {
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 14px;
+      cursor: pointer;
+      position: absolute;
+      top: 5px;
+      right: 8px;
+    }
+    .delete-note-btn:hover { color: var(--light-text); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .new-note {
+      width: 100%;
+      background: var(--dark-bg);
+      border: none;
+      border-radius: 20px;
+      padding: 10px 15px;
+      font-size: 14px;
+      color: var(--light-text);
+      resize: none;
+      height: 40px;
+    }
+    .save-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      background: var(--blue-soft);
+      color: var(--blue);
+      margin-top: 10px;
+    }
+    .save-btn:hover { background: var(--blue); color: var(--dark-bg); }
+
     .project-name-input {
       background: transparent;
-      color: white;
+      color: var(--light-text);
       border: none;
       font-size: 16px;
       width: 100%;
       margin-top: 5px;
       padding: 5px;
       border-radius: 5px;
-      transition: background-color 0.3s ease;
     }
-
     .project-name-input:focus {
       outline: none;
-      background-color: #333;
+      background: var(--dark-bg);
     }
   </style>
 </head>
+
 <body>
+
   <header>Client Progress Tracker</header>
+
   <div class="container">
     <div class="search-box">
       <input type="text" id="search" placeholder="Search clients...">
@@ -57,19 +190,18 @@
 
   <div class="modal" id="notesModal">
     <div class="modal-content">
-      <h3>Notes</h3>
-      <div id="existingNotes" style="margin-bottom:10px;"></div>
-      <textarea id="newNote" class="new-note" rows="4" placeholder="Write a new note..."></textarea>
-      <div class="modal-buttons">
-        <button class="cancel-btn" id="cancelNote">Cancel</button>
-        <button class="save-btn" id="saveNote">Save</button>
+      <button class="close-modal" id="closeModal">×</button>
+      <div id="existingNotes"></div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <textarea id="newNote" class="new-note" placeholder="Type a message..."></textarea>
+        <button id="saveNote" class="save-btn">➤</button>
       </div>
     </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getDatabase, ref, onValue, set, update, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+    import { getDatabase, ref, onValue, update, set, remove } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCxc67ZQiY4hHfAkvNq1emVC8qUoT_diBQ",
@@ -87,40 +219,40 @@
 
     const searchInput = document.getElementById('search');
     const leadList = document.getElementById('leadList');
+    const notesModal = document.getElementById('notesModal');
+    const closeModal = document.getElementById('closeModal');
     let currentNotesId = null;
-
-    function getTagClass(tag) {
-      return tag === 'New' ? 'new' :
-             tag === 'In Progress' ? 'in-progress' :
-             tag === 'Completed' ? 'completed' :
-             tag === 'Stuck' ? 'stuck' : '';
-    }
 
     function renderLead(id, data) {
       const card = document.createElement('div');
       card.className = 'lead-card';
 
-      const tag = data.tag || 'New'; // Default to 'New' if no tag is provided
-      const progress = data.progress || 0;
-      const interest = data.interest || 'N/A';  // Display the interest field
-      const projectName = data.projectName || 'N/A';  // Display the project name
+      const tag = data.tag || 'New';
+      const projectName = data.projectName || '';
+      const tagDetails = {
+        'New': { color: '#58a6ff', label: 'New' },
+        'Error': { color: '#f44336', label: 'Error' },
+        'Under Development': { color: '#79c0ff', label: 'Under Development' },
+        'Pending Review': { color: '#8b949e', label: 'Pending Review' },
+        'Completed': { color: '#58a6ff', label: 'Completed' },
+      };
+      const { color } = tagDetails[tag] || { color: '#58a6ff' };
 
       card.innerHTML = `
         <h3>${data.name || 'Unnamed Client'}</h3>
         <p><strong>Email:</strong> ${data.email || 'N/A'}</p>
         <p><strong>Phone:</strong> ${data.phone || 'N/A'}</p>
-        <p><strong>Interest:</strong> ${interest}</p>
+        <p><strong>Interest:</strong> ${data.interest || 'N/A'}</p>
         <p><strong>Project Name:</strong> 
-          <input type="text" id="editProjectName-${id}" value="${projectName}" class="project-name-input"> <!-- Editable Project Name -->
+          <input type="text" id="editProjectName-${id}" value="${projectName}" class="project-name-input">
         </p>
-        <p><strong>Status:</strong> <button class="tag-btn ${getTagClass(tag)}" data-id="${id}">${tag}</button></p>
+        <p><strong>Status:</strong> <button class="tag-btn" style="background:${color}" data-id="${id}">${tag}</button></p>
         <div class="card-actions">
           <button class="notes-btn" data-id="${id}">Notes</button>
           <button class="delete-btn" data-id="${id}">Delete</button>
         </div>
       `;
 
-      // Add event listener for saving updated project name
       const projectNameInput = card.querySelector(`#editProjectName-${id}`);
       projectNameInput.addEventListener('blur', () => {
         const newProjectName = projectNameInput.value;
@@ -141,17 +273,6 @@
         }
       });
 
-      document.querySelectorAll('.tag-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-id');
-          const current = btn.textContent;
-          const next = current === 'New' ? 'In Progress' :
-                       current === 'In Progress' ? 'Completed' :
-                       current === 'Completed' ? 'Stuck' : 'New';
-          update(ref(db, `portfolioLeads/${id}`), { tag: next });
-        });
-      });
-
       document.querySelectorAll('.delete-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const id = btn.getAttribute('data-id');
@@ -164,31 +285,75 @@
       document.querySelectorAll('.notes-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           currentNotesId = btn.getAttribute('data-id');
-          document.getElementById('notesModal').style.display = 'flex';
-          const notesRef = ref(db, `portfolioLeads/${currentNotesId}/messages`);
-          onValue(notesRef, snapshot => {
-            const container = document.getElementById('existingNotes');
-            container.innerHTML = '';
-            const notes = snapshot.val();
-            if (notes) {
-              Object.entries(notes).sort((a, b) => b[0] - a[0]).forEach(([ts, note]) => {
-                const time = new Date(Number(ts)).toLocaleString();
-                const noteEl = document.createElement('p');
-                noteEl.textContent = `${time}: ${note}`;
-                container.appendChild(noteEl);
-              });
-            }
-          });
+          notesModal.style.display = 'flex';
+          loadNotes();
+        });
+      });
+
+      document.querySelectorAll('.tag-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const tags = ['New', 'Error', 'Under Development', 'Pending Review', 'Completed'];
+          const tagDetails = {
+            'New': { color: '#58a6ff', label: 'New' },
+            'Error': { color: '#f44336', label: 'Error' },
+            'Under Development': { color: '#79c0ff', label: 'Under Development' },
+            'Pending Review': { color: '#8b949e', label: 'Pending Review' },
+            'Completed': { color: '#58a6ff', label: 'Completed' },
+          };
+          let currentTag = btn.innerText.trim();
+          let idx = tags.indexOf(currentTag);
+          let newIdx = (idx + 1) % tags.length;
+          const newTag = tags[newIdx];
+
+          const { color } = tagDetails[newTag] || { color: '#58a6ff' };
+          btn.innerText = newTag;
+          btn.style.background = color;
+
+          update(ref(db, `portfolioLeads/${id}`), { tag: newTag });
         });
       });
     }
 
     onValue(leadsRef, refreshLeads);
     searchInput.addEventListener('input', () => onValue(leadsRef, refreshLeads));
+    closeModal.addEventListener('click', () => { notesModal.style.display = 'none'; currentNotesId = null; });
 
-    document.getElementById('cancelNote').addEventListener('click', () => {
-      document.getElementById('notesModal').style.display = 'none';
-    });
+    function loadNotes() {
+      const notesRef = ref(db, `portfolioLeads/${currentNotesId}/messages`);
+      onValue(notesRef, snapshot => {
+        const container = document.getElementById('existingNotes');
+        container.innerHTML = '';
+
+        const notes = snapshot.val();
+        if (!notes) {
+          container.innerHTML = '<p style="text-align:center; color: var(--gray);">No messages yet</p>';
+          return;
+        }
+
+        const sortedNotes = Object.entries(notes).sort((a, b) => a[0] - b[0]);
+        sortedNotes.forEach(([timestamp, text]) => {
+          const time = new Date(Number(timestamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const bubble = document.createElement('div');
+          bubble.className = 'chat-bubble';
+          bubble.innerHTML = `
+            ${text}
+            <button class="delete-note-btn" data-timestamp="${timestamp}">×</button>
+            <small>${time}</small>
+          `;
+          container.appendChild(bubble);
+        });
+
+        document.querySelectorAll('.delete-note-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const ts = btn.getAttribute('data-timestamp');
+            remove(ref(db, `portfolioLeads/${currentNotesId}/messages/${ts}`));
+          });
+        });
+
+        container.scrollTop = container.scrollHeight;
+      });
+    }
 
     document.getElementById('saveNote').addEventListener('click', () => {
       const noteText = document.getElementById('newNote').value;
@@ -196,9 +361,9 @@
         const noteRef = ref(db, `portfolioLeads/${currentNotesId}/messages/${Date.now()}`);
         set(noteRef, noteText);
         document.getElementById('newNote').value = '';
-        document.getElementById('notesModal').style.display = 'none';
       }
     });
   </script>
+
 </body>
 </html>

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>idkshetty – Developer Portfolio</title>
     <link rel="stylesheet" href="style.css" />
+    <link />
+    favicon" href="favicon.png" type="image/png" rel="icon" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
       rel="stylesheet"
@@ -122,6 +124,44 @@
             dynamic data.
           </p>
         </div>
+        <div class="project-card" ondblclick="redirectToProject()">
+          <h3>GeoCheckout</h3>
+          <p>
+            This project is a web-based address finder using Leaflet.js for maps
+            and Nominatim API for address search and geolocation. Users can
+            search for addresses, use their current location, and confirm the
+            location with latitude and longitude. The interface includes a
+            draggable marker, address suggestions, and clear/reset options,
+            making it ideal for e-commerce or delivery apps.
+          </p>
+        </div>
+
+        <script>
+          function redirectToProject() {
+            window.location.href = "geolocator.html"; // Change 'line.html' to your actual HTML file's name
+          }
+        </script>
+
+        <style>
+          .project-card {
+            cursor: pointer;
+            transition: transform 0.3s ease; /* Smooth scaling effect */
+          }
+
+          .project-card:active {
+            transform: scale(0.98); /* Slightly shrink when clicked */
+          }
+
+          .project-card h3 {
+            margin: 0;
+            font-size: 20px;
+          }
+
+          .project-card p {
+            font-size: 14px;
+          }
+        </style>
+
         <div class="project-card">
           <h3>More Coming Soon</h3>
           <p>

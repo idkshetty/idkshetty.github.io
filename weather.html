@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>Advanced Weather App</title>
   <style>
     * {
@@ -50,6 +50,7 @@
       display: flex;
       gap: 15px;
       margin-bottom: 25px;
+      justify-content: center;
     }
 
     input[type="text"] {
@@ -136,6 +137,76 @@
       margin-bottom: 5px;
     }
 
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 25px;
+        width: 90%;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+
+      .search-box {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .hourly-forecast {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .hour {
+        padding: 12px;
+      }
+
+      .hour img {
+        width: 30px;
+        height: 30px;
+      }
+
+      .hour strong {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .search-box {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .hourly-forecast {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hour {
+        padding: 10px;
+      }
+
+      .hour img {
+        width: 25px;
+        height: 25px;
+      }
+
+      .hour strong {
+        font-size: 14px;
+      }
+
+      .weather-box p {
+        font-size: 16px;
+      }
+    }
   </style>
 </head>
 

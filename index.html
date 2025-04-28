@@ -162,6 +162,47 @@
           }
         </style>
 
+        <div class="project-card" ondblclick="redirectToProject()">
+          <h3>Advanced Weather Forecast App</h3>
+          <p>
+            The Advanced Weather Forecast App is a sleek and user-friendly web
+            application that provides real-time weather information and a
+            12-hour hourly forecast. Users can enter a city name to view current
+            weather details like temperature, humidity, wind speed, and weather
+            conditions, along with a forecast for the next 12 hours. Featuring a
+            modern dark mode interface, the app offers an intuitive design with
+            easy navigation, powered by WeatherAPI for accurate data. Perfect
+            for anyone needing reliable weather updates in a visually appealing
+            format.
+          </p>
+        </div>
+
+        <script>
+          function redirectToProject() {
+            window.location.href = "weather.html"; // Change 'line.html' to your actual HTML file's name
+          }
+        </script>
+
+        <style>
+          .project-card {
+            cursor: pointer;
+            transition: transform 0.3s ease; /* Smooth scaling effect */
+          }
+
+          .project-card:active {
+            transform: scale(0.98); /* Slightly shrink when clicked */
+          }
+
+          .project-card h3 {
+            margin: 0;
+            font-size: 20px;
+          }
+
+          .project-card p {
+            font-size: 14px;
+          }
+        </style>
+
         <div class="project-card">
           <h3>More Coming Soon</h3>
           <p>

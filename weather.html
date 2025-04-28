@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advanced Weather App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(30, 30, 47, 0.8);
+      backdrop-filter: blur(15px);
+      padding: 35px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+      text-align: center;
+      width: 450px;
+      max-width: 100%;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 32px;
+      color: #00e5ff;
+      font-weight: 600;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      font-size: 18px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: #bbb;
+    }
+
+    button {
+      background-color: #00e5ff;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 10px;
+      color: #0a0a23;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00bcd4;
+      transform: scale(1.05);
+    }
+
+    .weather-box {
+      margin-top: 25px;
+      text-align: left;
+    }
+
+    .weather-box h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #00e5ff;
+    }
+
+    .weather-box p {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .hourly-forecast {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .hour {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .hour:hover {
+      transform: scale(1.05);
+    }
+
+    .hour img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+    }
+
+    .hour p {
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    .hour strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>🌦️ Advanced Weather App</h1>
+    <div class="search-box">
+      <input type="text" id="cityInput" placeholder="Enter City Name...">
+      <button onclick="getWeather()">Search</button>
+    </div>
+    <div id="weatherResult" class="weather-box"></div>
+  </div>
+
+  <script>
+    const API_KEY = "b7e0cb2b385a4689bbb191638252804";  // Your API key from WeatherAPI
+
+    function getWeather() {
+      const city = document.getElementById("cityInput").value.trim();
+      if (city === "") {
+        alert("Please enter a city name!");
+        return;
+      }
+
+      const url = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&hourly=1&days=1`;
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("City not found");
+          }
+          return response.json();
+        })
+        .then(data => {
+          const cityName = data.location.name;
+          const country = data.location.country;
+          const currentTemp = data.current.temp_c;
+          const weatherIcon = `http://${data.current.condition.icon}`;
+          const weatherDesc = data.current.condition.text;
+          const windSpeed = data.current.wind_kph;
+          const humidity = data.current.humidity;
+          const uvIndex = data.current.uv;
+          const pressure = data.current.pressure_mb;
+          const visibility = data.current.vis_km;
+
+          let weatherHTML = `
+            <h2>${cityName}, ${country}</h2>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+              <img src="${weatherIcon}" alt="${weatherDesc}" style="width: 80px; height: 80px;">
+              <p><strong>${currentTemp}°C</strong></p>
+            </div>
+            <p><span class="label">Condition:</span> ${weatherDesc}</p>
+            <p><span class="label">Wind Speed:</span> ${windSpeed} km/h</p>
+            <p><span class="label">Humidity:</span> ${humidity}%</p>
+            <p><span class="label">Pressure:</span> ${pressure} mb</p>
+            <p><span class="label">Visibility:</span> ${visibility} km</p>
+            <p><span class="label">UV Index:</span> ${uvIndex}</p>
+            <div class="hourly-forecast">
+              <h2>📅 Hourly Forecast</h2>
+          `;
+
+          // Loop through the hourly forecast data
+          data.forecast.forecastday[0].hour.slice(0, 12).forEach(hour => {
+            const time = new Date(hour.time_epoch * 1000).getHours() + ":00";
+            const temp = hour.temp_c;
+            const condition = hour.condition.text;
+            const icon = `http://${hour.condition.icon}`;
+            weatherHTML += `
+              <div class="hour">
+                <strong>${time}</strong>
+                <img src="${icon}" alt="${condition}">
+                <p>${temp}°C</p>
+                <p>${condition}</p>
+              </div>
+            `;
+          });
+
+          weatherHTML += `</div>`;
+          document.getElementById("weatherResult").innerHTML = weatherHTML;
+        })
+        .catch(error => {
+          document.getElementById("weatherResult").innerHTML = `<p>❌ ${error.message}</p>`;
+        });
+    }
+  </script>
+</body>
+</html>

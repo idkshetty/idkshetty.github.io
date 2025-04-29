@@ -1,400 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout Address Finder</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #0f0f0f;
-      color: #e0e0e0;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 600px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 18px;
-      padding: 30px 25px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
-      transition: 0.3s ease;
-    }
-
-    h2 {
-      text-align: center;
-      font-size: 22px;
-      margin-bottom: 25px;
-      color: #ffffff;
-    }
-
-    .input-wrapper {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px 18px;
-      font-size: 16px;
-      border: none;
-      border-radius: 10px;
-      background: #1e1e1e;
-      color: #fff;
-      outline: none;
-    }
-
-    input:focus {
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
-    }
-
-    #suggestions {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #222;
-      border-radius: 0 0 10px 10px;
-      border-top: 1px solid #444;
-      overflow-y: auto;
-      max-height: 220px;
-      z-index: 999;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s ease;
-    }
-
-    #suggestions.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    #suggestions div {
-      padding: 12px 16px;
-      cursor: pointer;
-      border-bottom: 1px solid #333;
-    }
-
-    #suggestions div:hover {
-      background-color: #333;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background: #007bff;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    button:hover {
-      background: #0056b3;
-    }
-
-    button.secondary {
-      background: #6c757d;
-    }
-
-    button.secondary:hover {
-      background: #495057;
-    }
-
-    button:disabled {
-      background: #444;
-      cursor: not-allowed;
-    }
-
-    #map {
-      height: 300px;
-      border-radius: 14px;
-      margin-bottom: 10px;
-      border: 1px solid #444;
-    }
-
-    #coords {
-      font-size: 14px;
-      color: #999;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .loader {
-      font-size: 13px;
-      color: #888;
-      text-align: center;
-      margin-top: 5px;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout Address Finder</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <div class="container">
-    <h2>Confirm Delivery Address</h2>
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #0f0f0f;
+        color: #e0e0e0;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
 
-    <div class="input-wrapper">
-      <input id="basicAddress" type="text" placeholder="Search area, landmark..." autocomplete="off" />
-      <div id="suggestions"></div>
-      <div id="loader" class="loader" style="display: none">Loading addresses...</div>
-    </div>
+      .container {
+        width: 100%;
+        max-width: 600px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 30px 25px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(10px);
+        transition: 0.3s ease;
+      }
 
-    <div class="btn-group">
-      <button id="currentLocationBtn" class="secondary">📍 Use Current Location</button>
-      <button id="clearBtn" class="secondary">🧹 Clear</button>
-    </div>
+      h2 {
+        text-align: center;
+        font-size: 22px;
+        margin-bottom: 25px;
+        color: #ffffff;
+      }
 
-    <div id="map"></div>
-    <div id="coords"></div>
+      .input-wrapper {
+        position: relative;
+        margin-bottom: 20px;
+      }
 
-    <button id="confirmButton" disabled>✅ Confirm Address</button>
-  </div>
+      input {
+        width: 100%;
+        padding: 14px 18px;
+        font-size: 16px;
+        border: none;
+        border-radius: 10px;
+        background: #1e1e1e;
+        color: #fff;
+        outline: none;
+      }
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const apiKey = '3f84d6d0070c4d85a88e059c121b5c2d';
-  let map, marker;
-  let suggestionsLocked = false;
-  let currentFetchID = 0;
-  let debounceTimer;
+      input:focus {
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+      }
 
-  const addressInput = document.getElementById('basicAddress');
-  const suggestionsBox = document.getElementById('suggestions');
-  const loader = document.getElementById('loader');
-  const confirmButton = document.getElementById('confirmButton');
-  const currentLocationBtn = document.getElementById('currentLocationBtn');
-  const clearBtn = document.getElementById('clearBtn');
-  const coordsDisplay = document.getElementById('coords');
+      #suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #222;
+        border-radius: 0 0 10px 10px;
+        border-top: 1px solid #444;
+        overflow-y: auto;
+        max-height: 220px;
+        z-index: 999;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+      }
 
-  addressInput.addEventListener('input', () => {
-    const query = addressInput.value.trim();
-    if (suggestionsLocked || query.length < 2) {
-      hideSuggestions();
-      return;
-    }
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      fetchSuggestions(query);
-    }, 300);
-  });
+      #suggestions.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
 
-  addressInput.addEventListener('focus', () => {
-    if (addressInput.value.trim().length >= 2) {
-      suggestionsLocked = false;
-      fetchSuggestions(addressInput.value.trim());
-    }
-  });
+      #suggestions div {
+        padding: 12px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid #333;
+      }
 
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.input-wrapper')) hideSuggestions();
-  });
+      #suggestions div:hover {
+        background-color: #333;
+      }
 
-  currentLocationBtn.addEventListener('click', () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const { latitude, longitude } = pos.coords;
-          showMap(latitude, longitude);
-          reverseGeocode(latitude, longitude);
-          confirmButton.disabled = false;
-        },
-        () => alert('Unable to fetch location.')
-      );
-    } else {
-      alert('Geolocation not supported.');
-    }
-  });
+      .btn-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
 
-  clearBtn.addEventListener('click', resetAll);
+      button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: #007bff;
+        color: white;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
 
-  confirmButton.addEventListener('click', () => {
-    if (!marker) return;
-    const { lat, lng } = marker.getLatLng();
-    const confirmedData = {
-      address: addressInput.value.trim(),
-      latitude: lat,
-      longitude: lng
-    };
-    console.log('Confirmed:', confirmedData);
-    alert(`✅ Address Confirmed:\n${confirmedData.address}`);
-  });
+      button:hover {
+        background: #0056b3;
+      }
 
-  function fetchSuggestions(query) {
-    const fetchID = ++currentFetchID;
-    showLoader();
-    fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&limit=5&apiKey=${apiKey}`)
-      .then(res => res.json())
-      .then(data => {
-        if (fetchID !== currentFetchID) return;
-        hideLoader();
-        suggestionsBox.innerHTML = '';
-        const features = data.features || [];
-        if (features.length === 0) {
-          suggestionsBox.innerHTML = '<div>No matches found. Try using the map or GPS.</div>';
-        } else {
-          features.forEach(feature => {
-            const props = feature.properties;
-            const displayName = props.formatted || `${props.name || ''}, ${props.city || ''}, ${props.country || ''}`;
-            const div = document.createElement('div');
-            div.innerHTML = `<strong>${escapeHTML(props.name || displayName)}</strong><br><small>${escapeHTML(displayName)}</small>`;
-            div.addEventListener('click', () => selectSuggestion(feature));
-            suggestionsBox.appendChild(div);
-          });
+      button.secondary {
+        background: #6c757d;
+      }
+
+      button.secondary:hover {
+        background: #495057;
+      }
+
+      button:disabled {
+        background: #444;
+        cursor: not-allowed;
+      }
+
+      #map {
+        height: 300px;
+        border-radius: 14px;
+        margin-bottom: 10px;
+        border: 1px solid #444;
+      }
+
+      #coords {
+        font-size: 14px;
+        color: #999;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+
+      .loader {
+        font-size: 13px;
+        color: #888;
+        text-align: center;
+        margin-top: 5px;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 20px;
         }
-        showSuggestions();
-      })
-      .catch(() => {
-        if (fetchID !== currentFetchID) return;
-        hideLoader();
-        suggestionsBox.innerHTML = '<div>Error fetching suggestions.</div>';
-        showSuggestions();
-      });
-  }
+      }
+    </style>
+  </head>
 
-  function selectSuggestion(feature) {
-    suggestionsLocked = true;
-    const props = feature.properties;
-    const displayName = props.formatted || `${props.name || ''}, ${props.city || ''}, ${props.country || ''}`;
-    addressInput.value = displayName;
-    hideSuggestions();
-    const [lon, lat] = feature.geometry.coordinates;
-    showMap(lat, lon);
-    confirmButton.disabled = false;
-  }
+  <body>
+    <div class="container">
+      <h2>Confirm Delivery Address</h2>
 
-  function showMap(lat, lon) {
-    lat = parseFloat(lat);
-    lon = parseFloat(lon);
-    if (!map) {
-      map = L.map('map').setView([lat, lon], 17);
+      <div class="input-wrapper">
+        <input
+          id="basicAddress"
+          type="text"
+          placeholder="Search area, landmark..."
+          autocomplete="off"
+        />
+        <div id="suggestions"></div>
+        <div id="loader" class="loader" style="display: none">
+          Loading addresses...
+        </div>
+      </div>
 
-      // Use satellite tiles (Esri)
-      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles © Esri'
-      }).addTo(map);
+      <div class="btn-group">
+        <button id="currentLocationBtn" class="secondary">
+          📍 Use Current Location
+        </button>
+        <button id="clearBtn" class="secondary">🧹 Clear</button>
+      </div>
 
-      // Click to place marker
-      map.on('click', (e) => {
-        const { lat, lng } = e.latlng;
-        placeMarker(lat, lng);
-        reverseGeocode(lat, lng);
-        confirmButton.disabled = false;
-      });
+      <div id="map"></div>
+      <div id="coords"></div>
 
-      marker = L.marker([lat, lon], { draggable: true }).addTo(map);
-      marker.on('dragend', () => {
-        const { lat, lng } = marker.getLatLng();
-        updateCoords(lat, lng);
-        reverseGeocode(lat, lng);
-      });
-    } else {
-      map.setView([lat, lon], 17);
-      marker.setLatLng([lat, lon]);
-    }
-    updateCoords(lat, lon);
-    reverseGeocode(lat, lon);
-  }
+      <button id="confirmButton" disabled>✅ Confirm Address</button>
+    </div>
 
-  function placeMarker(lat, lon) {
-    if (!marker) {
-      marker = L.marker([lat, lon], { draggable: true }).addTo(map);
-      marker.on('dragend', () => {
-        const { lat, lng } = marker.getLatLng();
-        updateCoords(lat, lng);
-        reverseGeocode(lat, lng);
-      });
-    } else {
-      marker.setLatLng([lat, lon]);
-    }
-    map.setView([lat, lon], 17);
-    updateCoords(lat, lon);
-  }
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const apiKey = "3f84d6d0070c4d85a88e059c121b5c2d";
+        let map, marker;
+        let suggestionsLocked = false;
+        let currentFetchID = 0;
+        let debounceTimer;
 
-  function updateCoords(lat, lon) {
-    coordsDisplay.innerHTML = `📍 <b>Lat:</b> ${lat.toFixed(6)} | <b>Lon:</b> ${lon.toFixed(6)}`;
-  }
+        const addressInput = document.getElementById("basicAddress");
+        const suggestionsBox = document.getElementById("suggestions");
+        const loader = document.getElementById("loader");
+        const confirmButton = document.getElementById("confirmButton");
+        const currentLocationBtn =
+          document.getElementById("currentLocationBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const coordsDisplay = document.getElementById("coords");
 
-  function reverseGeocode(lat, lon) {
-    fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&apiKey=${apiKey}`)
-      .then(res => res.json())
-      .then(data => {
-        const features = data.features || [];
-        if (features.length > 0) {
-          const props = features[0].properties;
-          const displayName = props.formatted || `${props.name || ''}, ${props.city || ''}, ${props.country || ''}`;
-          addressInput.value = displayName;
+        addressInput.addEventListener("input", () => {
+          const query = addressInput.value.trim();
+          if (suggestionsLocked || query.length < 2) {
+            hideSuggestions();
+            return;
+          }
+          clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            fetchSuggestions(query);
+          }, 300);
+        });
+
+        addressInput.addEventListener("focus", () => {
+          if (addressInput.value.trim().length >= 2) {
+            suggestionsLocked = false;
+            fetchSuggestions(addressInput.value.trim());
+          }
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest(".input-wrapper")) hideSuggestions();
+        });
+
+        currentLocationBtn.addEventListener("click", () => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                const { latitude, longitude } = pos.coords;
+                showMap(latitude, longitude);
+                reverseGeocode(latitude, longitude);
+                confirmButton.disabled = false;
+              },
+              () => alert("Unable to fetch location.")
+            );
+          } else {
+            alert("Geolocation not supported.");
+          }
+        });
+
+        clearBtn.addEventListener("click", resetAll);
+
+        confirmButton.addEventListener("click", () => {
+          if (!marker) return;
+          const { lat, lng } = marker.getLatLng();
+          const confirmedData = {
+            address: addressInput.value.trim(),
+            latitude: lat,
+            longitude: lng,
+          };
+          console.log("Confirmed:", confirmedData);
+          alert(`✅ Address Confirmed:\n${confirmedData.address}`);
+        });
+
+        function fetchSuggestions(query) {
+          const fetchID = ++currentFetchID;
+          showLoader();
+          fetch(
+            `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(
+              query
+            )}&limit=5&apiKey=${apiKey}`
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              if (fetchID !== currentFetchID) return;
+              hideLoader();
+              suggestionsBox.innerHTML = "";
+              const features = data.features || [];
+              if (features.length === 0) {
+                suggestionsBox.innerHTML =
+                  "<div>No matches found. Try using the map or GPS.</div>";
+              } else {
+                features.forEach((feature) => {
+                  const props = feature.properties;
+                  const displayName =
+                    props.formatted ||
+                    `${props.name || ""}, ${props.city || ""}, ${
+                      props.country || ""
+                    }`;
+                  const div = document.createElement("div");
+                  div.innerHTML = `<strong>${escapeHTML(
+                    props.name || displayName
+                  )}</strong><br><small>${escapeHTML(displayName)}</small>`;
+                  div.addEventListener("click", () =>
+                    selectSuggestion(feature)
+                  );
+                  suggestionsBox.appendChild(div);
+                });
+              }
+              showSuggestions();
+            })
+            .catch(() => {
+              if (fetchID !== currentFetchID) return;
+              hideLoader();
+              suggestionsBox.innerHTML =
+                "<div>Error fetching suggestions.</div>";
+              showSuggestions();
+            });
+        }
+
+        function selectSuggestion(feature) {
           suggestionsLocked = true;
+          const props = feature.properties;
+          const displayName =
+            props.formatted ||
+            `${props.name || ""}, ${props.city || ""}, ${props.country || ""}`;
+          addressInput.value = displayName;
+          hideSuggestions();
+          const [lon, lat] = feature.geometry.coordinates;
+          showMap(lat, lon);
+          confirmButton.disabled = false;
         }
-      })
-      .catch(console.error);
-  }
 
-  function resetAll() {
-    addressInput.value = '';
-    coordsDisplay.innerHTML = '';
-    suggestionsBox.innerHTML = '';
-    hideSuggestions();
-    suggestionsLocked = false;
-    confirmButton.disabled = true;
-    if (map) {
-      map.remove();
-      map = null;
-      marker = null;
-    }
-  }
+        function showMap(lat, lon) {
+          lat = parseFloat(lat);
+          lon = parseFloat(lon);
+          if (!map) {
+            map = L.map("map").setView([lat, lon], 17);
 
-  function showLoader() {
-    loader.style.display = 'block';
-  }
+            // Use satellite tiles (Esri)
+            L.tileLayer(
+              "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+              {
+                attribution: "Tiles © Esri",
+              }
+            ).addTo(map);
 
-  function hideLoader() {
-    loader.style.display = 'none';
-  }
+            // Click to place marker
+            map.on("click", (e) => {
+              const { lat, lng } = e.latlng;
+              placeMarker(lat, lng);
+              reverseGeocode(lat, lng);
+              confirmButton.disabled = false;
+            });
 
-  function showSuggestions() {
-    suggestionsBox.classList.add('show');
-  }
+            marker = L.marker([lat, lon], { draggable: true }).addTo(map);
+            marker.on("dragend", () => {
+              const { lat, lng } = marker.getLatLng();
+              updateCoords(lat, lng);
+              reverseGeocode(lat, lng);
+            });
+          } else {
+            map.setView([lat, lon], 17);
+            marker.setLatLng([lat, lon]);
+          }
+          updateCoords(lat, lon);
+          reverseGeocode(lat, lon);
+        }
 
-  function hideSuggestions() {
-    suggestionsBox.classList.remove('show');
-  }
+        function placeMarker(lat, lon) {
+          if (!marker) {
+            marker = L.marker([lat, lon], { draggable: true }).addTo(map);
+            marker.on("dragend", () => {
+              const { lat, lng } = marker.getLatLng();
+              updateCoords(lat, lng);
+              reverseGeocode(lat, lng);
+            });
+          } else {
+            marker.setLatLng([lat, lon]);
+          }
+          map.setView([lat, lon], 17);
+          updateCoords(lat, lon);
+        }
 
-  function escapeHTML(str) {
-    return str.replace(/[&<>"']/g, m => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[m]));
-  }
-});
-</script>
+        function updateCoords(lat, lon) {
+          coordsDisplay.innerHTML = `📍 <b>Lat:</b> ${lat.toFixed(
+            6
+          )} | <b>Lon:</b> ${lon.toFixed(6)}`;
+        }
 
-</body>
+        function reverseGeocode(lat, lon) {
+          fetch(
+            `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lon}&apiKey=${apiKey}`
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              const features = data.features || [];
+              if (features.length > 0) {
+                const props = features[0].properties;
+                const displayName =
+                  props.formatted ||
+                  `${props.name || ""}, ${props.city || ""}, ${
+                    props.country || ""
+                  }`;
+                addressInput.value = displayName;
+                suggestionsLocked = true;
+              }
+            })
+            .catch(console.error);
+        }
+
+        function resetAll() {
+          addressInput.value = "";
+          coordsDisplay.innerHTML = "";
+          suggestionsBox.innerHTML = "";
+          hideSuggestions();
+          suggestionsLocked = false;
+          confirmButton.disabled = true;
+          if (map) {
+            map.remove();
+            map = null;
+            marker = null;
+          }
+        }
+
+        function showLoader() {
+          loader.style.display = "block";
+        }
+
+        function hideLoader() {
+          loader.style.display = "none";
+        }
+
+        function showSuggestions() {
+          suggestionsBox.classList.add("show");
+        }
+
+        function hideSuggestions() {
+          suggestionsBox.classList.remove("show");
+        }
+
+        function escapeHTML(str) {
+          return str.replace(
+            /[&<>"']/g,
+            (m) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              }[m])
+          );
+        }
+      });
+    </script>
+  </body>
 </html>

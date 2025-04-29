@@ -181,7 +181,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const apiKey = '3f84d6d0070c4d85a88e059c121b5c2d'; // Your Geoapify API Key
+  const apiKey = '3f84d6d0070c4d85a88e059c121b5c2d';
   let map, marker;
   let suggestionsLocked = false;
   let currentFetchID = 0;
@@ -215,9 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.input-wrapper')) {
-      hideSuggestions();
-    }
+    if (!e.target.closest('.input-wrapper')) hideSuggestions();
   });
 
   currentLocationBtn.addEventListener('click', () => {
@@ -236,9 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  clearBtn.addEventListener('click', () => {
-    resetAll();
-  });
+  clearBtn.addEventListener('click', resetAll);
 
   confirmButton.addEventListener('click', () => {
     if (!marker) return;
@@ -249,29 +245,27 @@ document.addEventListener('DOMContentLoaded', () => {
       longitude: lng
     };
     console.log('Confirmed:', confirmedData);
-    alert(`✅ Address Confirmed:\n${confirmedData.address}\nLat: ${lat}\nLon: ${lng}`);
+    alert(`✅ Address Confirmed:\n${confirmedData.address}`);
   });
 
   function fetchSuggestions(query) {
     const fetchID = ++currentFetchID;
     showLoader();
     fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&limit=5&apiKey=${apiKey}`)
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         if (fetchID !== currentFetchID) return;
         hideLoader();
         suggestionsBox.innerHTML = '';
-
         const features = data.features || [];
-
         if (features.length === 0) {
-          suggestionsBox.innerHTML = '<div>No matches found.</div>';
+          suggestionsBox.innerHTML = '<div>No matches found. Try using the map or GPS.</div>';
         } else {
           features.forEach(feature => {
             const props = feature.properties;
-            const displayName = props.formatted || '';
+            const displayName = props.formatted || `${props.name || ''}, ${props.city || ''}, ${props.country || ''}`;
             const div = document.createElement('div');
-            div.innerHTML = `<strong>${escapeHTML(displayName)}</strong>`;
+            div.innerHTML = `<strong>${escapeHTML(props.name || displayName)}</strong><br><small>${escapeHTML(displayName)}</small>`;
             div.addEventListener('click', () => selectSuggestion(feature));
             suggestionsBox.appendChild(div);
           });
@@ -281,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(() => {
         if (fetchID !== currentFetchID) return;
         hideLoader();
-        suggestionsBox.innerHTML = '<div>Error fetching data.</div>';
+        suggestionsBox.innerHTML = '<div>Error fetching suggestions.</div>';
         showSuggestions();
       });
   }
@@ -289,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function selectSuggestion(feature) {
     suggestionsLocked = true;
     const props = feature.properties;
-    const displayName = props.formatted || '';
+    const displayName = props.formatted || `${props.name || ''}, ${props.city || ''}, ${props.country || ''}`;
     addressInput.value = displayName;
     hideSuggestions();
     const [lon, lat] = feature.geometry.coordinates;
@@ -301,30 +295,52 @@ document.addEventListener('DOMContentLoaded', () => {
     lat = parseFloat(lat);
     lon = parseFloat(lon);
     if (!map) {
-      map = L.map('map').setView([lat, lon], 18);
+      map = L.map('map').setView([lat, lon], 17);
+
+      // Use satellite tiles (Esri)
       L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles © Esri'
       }).addTo(map);
+
+      // Click to place marker
+      map.on('click', (e) => {
+        const { lat, lng } = e.latlng;
+        placeMarker(lat, lng);
+        reverseGeocode(lat, lng);
+        confirmButton.disabled = false;
+      });
+
       marker = L.marker([lat, lon], { draggable: true }).addTo(map);
-      marker.on('dragend', updateCoordsFromMarker);
+      marker.on('dragend', () => {
+        const { lat, lng } = marker.getLatLng();
+        updateCoords(lat, lng);
+        reverseGeocode(lat, lng);
+      });
     } else {
-      map.setView([lat, lon], 18);
+      map.setView([lat, lon], 17);
       marker.setLatLng([lat, lon]);
     }
     updateCoords(lat, lon);
+    reverseGeocode(lat, lon);
   }
 
-  function updateCoordsFromMarker() {
-    const { lat, lng } = marker.getLatLng();
-    updateCoords(lat, lng);
-    reverseGeocode(lat, lng);
+  function placeMarker(lat, lon) {
+    if (!marker) {
+      marker = L.marker([lat, lon], { draggable: true }).addTo(map);
+      marker.on('dragend', () => {
+        const { lat, lng } = marker.getLatLng();
+        updateCoords(lat, lng);
+        reverseGeocode(lat, lng);
+      });
+    } else {
+      marker.setLatLng([lat, lon]);
+    }
+    map.setView([lat, lon], 17);
+    updateCoords(lat, lon);
   }
 
   function updateCoords(lat, lon) {
-    coordsDisplay.innerHTML = `
-      📍 <b>Latitude:</b> ${lat.toFixed(6)}<br>
-      📍 <b>Longitude:</b> ${lon.toFixed(6)}
-    `;
+    coordsDisplay.innerHTML = `📍 <b>Lat:</b> ${lat.toFixed(6)} | <b>Lon:</b> ${lon.toFixed(6)}`;
   }
 
   function reverseGeocode(lat, lon) {
@@ -334,7 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const features = data.features || [];
         if (features.length > 0) {
           const props = features[0].properties;
-          const displayName = props.formatted || '';
+          const displayName = props.formatted || `${props.name || ''}, ${props.city || ''}, ${props.country || ''}`;
           addressInput.value = displayName;
           suggestionsLocked = true;
         }
@@ -352,6 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (map) {
       map.remove();
       map = null;
+      marker = null;
     }
   }
 
@@ -378,5 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
+
 </body>
 </html>

@@ -14,6 +14,48 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <style>
+      .contact-buttons {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .contact-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+
+      .linkedin-btn {
+        background-color: #0a66c2;
+        color: white;
+      }
+
+      .gmail-btn {
+        background-color: #db4437;
+        color: white;
+      }
+
+      @media (max-width: 600px) {
+        .contact-buttons {
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+    </style>
   </head>
   <body>
     <nav>
@@ -44,69 +86,34 @@
         ✔ UI/UX Focused Designs with Mobile-First Layouts<br />
         ✔ Real-time Data Handling and Dynamic Dashboards<br />
         ✔ Performance Tuning and Basic SEO Setup<br />
-        <!--✔ Automation Tools and Integrations (APIs, Payment Gateways, Messaging)-->
       </p>
 
-      <div style="margin-top: 20px">
+      <div class="contact-buttons">
         <a
           href="https://www.linkedin.com/in/vishnu-deviprasad-shetty-515429319"
           target="_blank"
           rel="noopener noreferrer"
-          style="text-decoration: none"
+          class="contact-btn linkedin-btn"
         >
-          <button
-            style="
-              padding: 8px 16px;
-              background-color: #0a66c2;
-              color: white;
-              border: none;
-              border-radius: 6px;
-              font-size: 1rem;
-              font-weight: 600;
-              display: inline-flex;
-              align-items: center;
-              gap: 8px;
-              cursor: pointer;
-              box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-            "
-          >
-            <i class="fab fa-linkedin" style="font-size: 1.2rem"></i>
-            Message me on LinkedIn
-          </button>
+          <i class="fab fa-linkedin" style="font-size: 1.2rem"></i>
+          Message me on LinkedIn
         </a>
 
         <a
           href="mailto:vishnu.idkshetty@gmail.com"
           target="_blank"
           rel="noopener noreferrer"
-          style="text-decoration: none; margin-left: 10px"
+          class="contact-btn gmail-btn"
         >
-          <button
-            style="
-              padding: 8px 16px;
-              background-color: #db4437;
-              color: white;
-              border: none;
-              border-radius: 6px;
-              font-size: 1rem;
-              font-weight: 600;
-              display: inline-flex;
-              align-items: center;
-              gap: 8px;
-              cursor: pointer;
-              box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-            "
-          >
-            <i class="fab fa-google" style="font-size: 1.2rem"></i>
-            Message me on Gmail
-          </button>
+          <i class="fab fa-google" style="font-size: 1.2rem"></i>
+          Message me on Gmail
         </a>
-
-        <p style="font-size: 0.85rem; color: #555; margin-top: 10px">
-          By clicking these buttons, you agree to be contacted by me via LinkedIn
-          or Gmail.
-        </p>
       </div>
+
+      <p style="font-size: 0.85rem; color: #555; margin-top: 10px">
+        By clicking these buttons, you agree to be contacted by me via LinkedIn
+        or Gmail.
+      </p>
     </section>
 
     <section id="projects">
@@ -134,8 +141,8 @@
           <h3>Marathon Enrollment Web App</h3>
           <p>
             Full-stack event registration system with QR check-ins, real-time
-            tracking, and a powerful admin dashboard. Built using Firebase &
-            Node.js.<br />(Built for
+            tracking, and a powerful admin dashboard. Built using Firebase & Node.js.<br />
+            (Built for
             <a
               href="https://www.instagram.com/silly.sensei/?hl=en"
               class="hidden-admin-link"
@@ -154,29 +161,25 @@
         <div class="project-card" ondblclick="redirectTogeolocator()">
           <h3>GeoCheckout</h3>
           <p>
-            This project is a web-based address finder using Leaflet.js for maps
-            and Nominatim API for address search and geolocation. Users can
-            search for addresses, use their current location, and confirm the
-            location with latitude and longitude. The interface includes a
-            draggable marker, address suggestions, and clear/reset options,
-            making it ideal for e-commerce or delivery apps.
+            Web-based address finder using Leaflet.js and Nominatim API.
+            Includes current location detection and draggable marker.
           </p>
         </div>
 
         <script>
           function redirectTogeolocator() {
-            window.location.href = "./projects/geolocator.html"; // Change 'line.html' to your actual HTML file's name
+            window.location.href = "./projects/geolocator.html";
           }
         </script>
 
         <style>
           .project-card {
             cursor: pointer;
-            transition: transform 0.3s ease; /* Smooth scaling effect */
+            transition: transform 0.3s ease;
           }
 
           .project-card:active {
-            transform: scale(0.98); /* Slightly shrink when clicked */
+            transform: scale(0.98);
           }
 
           .project-card h3 {
@@ -192,43 +195,15 @@
         <div class="project-card" ondblclick="redirectToweather()">
           <h3>Advanced Weather Forecast App</h3>
           <p>
-            The Advanced Weather Forecast App is a sleek and user-friendly web
-            application that provides real-time weather information and a
-            12-hour hourly forecast. Users can enter a city name to view current
-            weather details like temperature, humidity, wind speed, and weather
-            conditions, along with a forecast for the next 12 hours. Featuring a
-            modern dark mode interface, the app offers an intuitive design with
-            easy navigation, powered by WeatherAPI for accurate data. Perfect
-            for anyone needing reliable weather updates in a visually appealing
-            format.
+            Real-time weather with 12-hour forecast and dark UI. Powered by WeatherAPI.
           </p>
         </div>
 
         <script>
           function redirectToweather() {
-            window.location.href = "./projects/weather.html"; // Change 'line.html' to your actual HTML file's name
+            window.location.href = "./projects/weather.html";
           }
         </script>
-
-        <style>
-          .project-card {
-            cursor: pointer;
-            transition: transform 0.3s ease; /* Smooth scaling effect */
-          }
-
-          .project-card:active {
-            transform: scale(0.98); /* Slightly shrink when clicked */
-          }
-
-          .project-card h3 {
-            margin: 0;
-            font-size: 20px;
-          }
-
-          .project-card p {
-            font-size: 14px;
-          }
-        </style>
 
         <div class="project-card">
           <h3>More Coming Soon</h3>
@@ -284,12 +259,7 @@
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script>
       const typed = new Typed("#typed", {
-        strings: [
-          "idkshetty",
-          "a Web Developer",
-          //"Vishnu and it's my hobby",
-          "just 16.",
-        ],
+        strings: ["idkshetty", "a Web Developer", "just 16."],
         typeSpeed: 80,
         backSpeed: 40,
         loop: true,

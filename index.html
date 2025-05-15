@@ -1,90 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="assests/image.png" type="image/png" />
-    <title>idkshetty – Developer Portfolio</title>
-    <link rel="stylesheet" href="style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <style>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="assests/image.png" type="image/png" />
+  <title>idkshetty – Developer Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    .offer-container {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 800px;
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .contact-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .linkedin-btn {
+      background-color: #0a66c2;
+      color: white;
+    }
+
+    .gmail-btn {
+      background-color: #db4437;
+      color: white;
+    }
+
+    @media (max-width: 600px) {
       .contact-buttons {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 20px;
+        flex-direction: column;
+        align-items: stretch;
       }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">idkshetty</div>
+    <ul class="nav-links">
+      <li><a href="#offer">What can I offer</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-      .contact-btn {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 6px;
-        font-size: 1rem;
-        font-weight: 600;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-        text-align: center;
-        white-space: nowrap;
-        text-decoration: none;
-      }
+  <header class="hero">
+    <h1>Hey, I'm <span class="typing" id="typed"></span></h1>
+    <p>A 16 y/o developer who loves building web stuff</p>
+  </header>
 
-      .linkedin-btn {
-        background-color: #0a66c2;
-        color: white;
-      }
-
-      .gmail-btn {
-        background-color: #db4437;
-        color: white;
-      }
-
-      @media (max-width: 600px) {
-        .contact-buttons {
-          flex-direction: column;
-          align-items: stretch;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <nav>
-      <div class="logo">idkshetty</div>
-      <ul class="nav-links">
-        <li><a href="#offer">What can I offer</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-
-    <header class="hero">
-      <h1>Hey, I'm <span class="typing" id="typed"></span></h1>
-      <p>A 16 y/o developer who loves building web stuff</p>
-    </header>
-
+  <div class="offer-container">
     <section id="offer">
       <h2>What I Can Offer</h2>
 
       <p>
-        I design and build clean, simple, and responsive websites that focus on
-        functionality and user experience. While I don't directly provide domain
-        registration or hosting services, I can recommend trusted platforms to
-        help you easily get your site online.
+        I build clean, easy-to-use websites that work smoothly on phones,
+        tablets, and computers. While I don’t sell website names or hosting, I
+        can recommend trusted places to get them.
         <br /><br />
-        ✔ Full-Stack Website Development (Frontend + Backend)<br />
-        ✔ Custom Web App Solutions (Node.js, Firebase, Vanilla JS)<br />
-        ✔ UI/UX Focused Designs with Mobile-First Layouts<br />
-        ✔ Real-time Data Handling and Dynamic Dashboards<br />
+        ✔ I create complete websites – both the design and the behind-the-scenes parts<br />
+        ✔ I build custom web apps using simple and reliable tools<br />
+        ✔ I design mobile-friendly layouts that are clear and user-friendly<br />
+        ✔ I can add live updates and interactive dashboards<br />
         ✔ Performance Tuning and Basic SEO Setup<br />
       </p>
 
@@ -154,8 +160,7 @@
           <h3>Know Your Plants</h3>
           <p>
             Smart agricultural web app with crop planning, plant guides, and
-            district-wise recommendations. Made with HTML, CSS, JS, Firebase &
-            dynamic data.
+            district-wise recommendations. Made with HTML, CSS, JS, Firebase & dynamic data.
           </p>
         </div>
         <div class="project-card" ondblclick="redirectTogeolocator()">
@@ -247,15 +252,15 @@
         </li>
       </ul>
     </section>
+  </div>
 
-    <footer>
-      <p>
-        © 2025 idkshetty. Built with
-        <a href="./login-admin/login.html" class="hidden-admin-link">☕</a> and a lot of
-        debugging.
-      </p>
-    </footer>
-
+  <footer>
+    <p>
+      © 2025 idkshetty. Built with
+      <a href="./login-admin/login.html" class="hidden-admin-link">☕</a> and
+      a lot of debugging.
+    </p>
+  </footer>
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script>
       const typed = new Typed("#typed", {

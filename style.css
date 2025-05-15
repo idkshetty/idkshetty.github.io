@@ -72,10 +72,16 @@ nav {
 /* Sections */
 section {
     max-width: 900px;
-    margin: auto;
+    margin: 0 auto;
     padding: 3rem 1rem;
 }
 
+@media (min-width: 900px) {
+    section {
+        margin: 0 2rem;
+        /* bigger left/right margin on wide screens */
+    }
+}
 h2 {
     font-size: 2rem;
     margin-bottom: 1rem;
@@ -209,4 +215,28 @@ footer {
     h2 {
         font-size: 1.6rem;
     }
+
+        /* Styles for the contact section */
+.contact {
+    max-width: 600px;
+    margin-left: 0;
+    margin-right: auto;
+    /* pushes it fully left */
+    padding: 2rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: start;
+    background-color: #161b22;
+    /* match your dark section background */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(88, 166, 255, 0.2);
+    /* subtle blue glow */
+    font-family: 'Poppins', sans-serif;
+    color: #c9d1d9;
 }
+
+.offer-container {
+    margin-left: auto;
+    margin-right: auto;
+}
+    }

@@ -1,317 +1,417 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vishnu — Interactive Experience</title>
   <link rel="icon" href="assests/image.png" type="image/png" />
-  <title>idkshetty – Developer Portfolio</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    body {
-      animation: fadeInUp 0.8s ease-out forwards;
-      opacity: 0;
+    :root{
+      --bg:#0b1020;
+      --panel: rgba(255,255,255,0.03);
+      --glass: rgba(255,255,255,0.04);
+      --muted:#a8b3c7;
+      --accent1:#60a5fa;
+      --accent2:#7c3aed;
+      --accent-grad: linear-gradient(135deg,var(--accent1),var(--accent2));
+      --glass-border: rgba(255,255,255,0.06);
+      --radius:18px;
+      --shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --glass-blur: blur(6px);
+      --max-width:1200px;
     }
 
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.98);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;
+      background: radial-gradient(1200px 600px at 10% 15%, rgba(124,58,237,0.06), transparent 8%),
+                  radial-gradient(1000px 600px at 85% 85%, rgba(96,165,250,0.04), transparent 8%),
+                  var(--bg);
+      color:#e6eef8; -webkit-font-smoothing:antialiased;overflow-x:hidden;
     }
 
-    section {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 1s ease, transform 1s ease;
+    /* Light theme fix */
+    html.light body{
+      color:#111827;
+    }
+    html.light .lead,
+    html.light .pill,
+    html.light .tag,
+    html.light .nav-links a,
+    html.light footer,
+    html.light .contact-card div div:last-child{
+      color:#334155 !important;
     }
 
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .particles{position:fixed;inset:0;pointer-events:none;z-index:0}
+    .particles .dot{position:absolute;border-radius:50%;opacity:0.12;background:#fff}
+
+    .wrap{position:relative;z-index:5;max-width:var(--max-width);margin:0 auto;padding:120px 28px 80px}
+
+    .progress{position:fixed;left:0;top:0;height:4px;background:linear-gradient(90deg,var(--accent1),var(--accent2));width:0%;z-index:1200;transition:width 160ms linear}
+
+    nav{
+      position:fixed;top:18px;left:50%;transform:translateX(-50%);width:calc(100% - 48px);max-width:var(--max-width);
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid var(--glass-border);backdrop-filter:var(--glass-blur);padding:10px 16px;border-radius:14px;display:flex;align-items:center;justify-content:space-between;z-index:1000;box-shadow:var(--shadow)
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand .logo{width:46px;height:46px;border-radius:10px;background:var(--accent-grad);display:grid;place-items:center;font-weight:700;color:white;font-family:'Space Grotesk',sans-serif}
+    .brand .title{font-weight:700;letter-spacing:-0.02em;font-size:1rem}
+
+    .nav-links{display:flex;gap:18px;align-items:center}
+    .nav-links a{color:var(--muted);text-decoration:none;font-weight:600;padding:8px 12px;border-radius:10px;transition:all .25s}
+    .nav-links a:hover{color:white;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)}
+
+    .menu-btn{display:none;background:none;border:none;color:var(--muted);font-size:20px;padding:8px}
+
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center;padding-top:20px}
+    .hero-left{padding:24px}
+    h1{font-size:clamp(28px,5.6vw,58px);line-height:1.02;margin:0}
+    .eyebrow{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);color:var(--muted);font-weight:700;margin-bottom:14px}
+    .lead{color:var(--muted);font-size:1.05rem;margin-top:12px;max-width:58ch}
+
+    .grad-text{background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+
+    .cta-row{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+    .btn{padding:12px 18px;border-radius:12px;font-weight:700;border:none;cursor:pointer}
+    .btn.primary{background:var(--accent-grad);color:white;box-shadow:0 10px 30px rgba(124,58,237,0.18)}
+    .btn.ghost{background:transparent;border:1px solid var(--glass-border);color:var(--muted)}
+
+    .panel{background:var(--panel);border-radius:16px;padding:18px;border:1px solid var(--glass-border);backdrop-filter:var(--glass-blur);box-shadow:0 8px 28px rgba(2,6,23,0.6)}
+    .profile-head{display:flex;gap:14px;align-items:center}
+    .avatar{width:84px;height:84px;border-radius:14px;background:linear-gradient(135deg,#fff1, #fff2);display:grid;place-items:center;font-weight:800;color:white}
+    .skills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .pill{padding:6px 10px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);color:var(--muted);font-weight:700;font-size:13px}
+
+    .projects{margin-top:48px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:14px;border:1px solid var(--glass-border);cursor:pointer;transition:transform .35s cubic-bezier(.2,.9,.2,1),box-shadow .35s}
+    .card:hover{transform:translateY(-12px) rotateX(6deg);box-shadow:0 30px 60px rgba(2,6,23,0.6)}
+    .card h4{margin:0 0 8px}
+    .card p{color:var(--muted);font-size:0.95rem}
+    .tags{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.02);color:var(--muted)}
+
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:36px}
+    .contact-card{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid var(--glass-border);text-decoration:none;color:inherit}
+    .contact-card i{font-size:20px;width:48px;height:48px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white}
+
+    footer{margin-top:64px;padding:36px 0;color:var(--muted);text-align:center}
+
+    .to-top{position:fixed;right:18px;bottom:28px;background:var(--accent-grad);color:white;padding:12px;border-radius:12px;border:none;box-shadow:0 12px 40px rgba(2,6,23,0.6);display:none;z-index:1200}
+
+    .cursor{position:fixed;left:0;top:0;width:14px;height:14px;border-radius:50%;pointer-events:none;z-index:2000;transform:translate(-50%,-50%);mix-blend-mode:screen;background:radial-gradient(circle,#fff,#fff2)}
+
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr;gap:18px}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .wrap{padding:90px 18px 40px}
+      nav{flex-direction:row;justify-content:space-between;padding:10px 12px}
+      .menu-btn{display:block}
+      .nav-links{position:fixed;top:76px;right:18px;background:linear-gradient(180deg, rgba(11,16,32,0.95), rgba(11,16,32,0.98));flex-direction:column;align-items:flex-start;padding:14px;border-radius:12px;display:none;width:220px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 12px 40px rgba(2,6,23,0.6)}
+      .nav-links a{width:100%;padding:12px 10px;border-radius:8px}
     }
 
-    .offer-container {
-      margin-left: auto;
-      margin-right: auto;
-      max-width: auto;
+    @media (max-width:640px){
+      .grid{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr}
+      .avatar{width:64px;height:64px}
+      .wrap{padding:68px 14px 36px}
+      .brand .title{font-size:0.85rem}
+      .nav-links{width:calc(100% - 36px);right:18px}
     }
 
-    .contact-buttons {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
+    [data-anim]{opacity:0;transform:translateY(18px);transition:all .7s cubic-bezier(.2,.9,.2,1)}
+    [data-anim].in{opacity:1;transform:none}
 
-    .contact-btn {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-      text-align: center;
-      white-space: nowrap;
-      text-decoration: none;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .contact-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    .linkedin-btn {
-      background-color: #0a66c2;
-      color: white;
-    }
-
-    .gmail-btn {
-      background-color: #db4437;
-      color: white;
-    }
-
-    @media (max-width: 600px) {
-      .contact-buttons {
-        flex-direction: column;
-        align-items: stretch;
-      }
-    }
-
-    .project-card {
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      will-change: transform, box-shadow;
-      border-radius: 12px;
-    }
-
-    .project-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .project-card:active {
-      transform: scale(0.98);
-    }
-
-    .project-card h3 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .project-card p {
-      font-size: 14px;
-    }
+    .card:focus{outline:2px solid rgba(96,165,250,0.18);transform:translateY(-8px)}
   </style>
 </head>
 <body>
-  <nav>
-    <div class="logo">idkshetty</div>
-    <ul class="nav-links">
-      <li><a href="#offer">What can I offer</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <header class="hero">
-    <h1>Hey, I'm <span class="typing" id="typed"></span></h1>
-    <p>A 16 y/o developer who loves building web stuff</p>
-  </header>
-
-  <div class="offer-container">
-    <section id="offer">
-      <h2>What I Can Offer</h2>
-      <p>
-        I build clean, easy-to-use websites that work smoothly on phones,
-        tablets, and computers. While I don’t sell website names or hosting, I
-        can recommend trusted places to get them.
-        <br /><br />
-        ✔ I create complete websites – both the design and the behind-the-scenes parts<br />
-        ✔ I build custom web apps using simple and reliable tools<br />
-        ✔ I design mobile-friendly layouts that are clear and user-friendly<br />
-        ✔ I can add live updates and interactive dashboards<br />
-        ✔ Performance Tuning and Basic SEO Setup<br />
-      </p>
-
-      <div class="contact-buttons">
-        <a
-          href="https://www.linkedin.com/in/vishnu-deviprasad-shetty-515429319"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="contact-btn linkedin-btn"
-        >
-          <i class="fab fa-linkedin" style="font-size: 1.2rem"></i>
-          Message me on LinkedIn
-        </a>
-
-        <a
-          href="mailto:vishnu.idkshetty@gmail.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="contact-btn gmail-btn"
-        >
-          <i class="fab fa-google" style="font-size: 1.2rem"></i>
-          Message me on Gmail
-        </a>
-      </div>
-
-      <p style="font-size: 0.85rem; color: #555; margin-top: 10px">
-        By clicking these buttons, you agree to be contacted by me via LinkedIn
-        or Gmail.
-      </p>
-    </section>
-
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3>Safemet - IOT project</h3>
-          <p>
-            Helmet addon for fall detection and SOS alerts with cancel timer.
-          </p>
-        </div>
-        <div class="project-card">
-          <h3>Mudball Federation</h3>
-          <p>
-            Donation site with UPI, automatic emails, and hidden perks.<br />(Built
-            for
-            <a
-              href="https://www.instagram.com/silly.sensei/?hl=en"
-              class="hidden-admin-link"
-              >Silly.sensei</a
-            >)
-          </p>
-        </div>
-        <div class="project-card">
-          <h3>Marathon Enrollment Web App</h3>
-          <p>
-            Full-stack event registration system with QR check-ins, real-time
-            tracking, and a powerful admin dashboard. Built using Firebase & Node.js.<br />
-            (Built for
-            <a
-              href="https://www.instagram.com/silly.sensei/?hl=en"
-              class="hidden-admin-link"
-              >Silly.sensei</a
-            >)
-          </p>
-        </div>
-        <div class="project-card">
-          <h3>Know Your Plants</h3>
-          <p>
-            Smart agricultural web app with crop planning, plant guides, and
-            district-wise recommendations. Made with HTML, CSS, JS, Firebase & dynamic data.
-          </p>
-        </div>
-        <div class="project-card" ondblclick="redirectTogeolocator()">
-          <h3>GeoCheckout</h3>
-          <p>
-            Web-based address finder using Leaflet.js and Nominatim API.
-            Includes current location detection and draggable marker.
-          </p>
-        </div>
-        <script>
-          function redirectTogeolocator() {
-            window.location.href = "./projects/geolocator.html";
-          }
-        </script>
-
-        <div class="project-card" ondblclick="redirectToweather()">
-          <h3>Advanced Weather Forecast App</h3>
-          <p>
-            Real-time weather with 12-hour forecast and dark UI. Powered by WeatherAPI.
-          </p>
-        </div>
-        <script>
-          function redirectToweather() {
-            window.location.href = "./projects/weather.html";
-          }
-        </script>
-
-        <div class="project-card">
-          <h3>More Coming Soon</h3>
-          <p>
-            I’m always building. New ideas are constantly turning into code.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <!--<p>Feel free to reach out:</p>-->
-      <ul class="contact-links">
-        <li>
-          Email:
-          <a href="mailto:vishnu.idkshetty@gmail.com">
-            vishnu.idkshetty@gmail.com
-          </a>
-        </li>
-        <li>
-          GitHub:
-          <a href="https://github.com/idkshetty" target="_blank">
-            github.com/idkshetty
-          </a>
-        </li>
-        <li>
-          Instagram:
-          <a href="https://instagram.com/idk_shetty" target="_blank">
-            @idk_shetty
-          </a>
-        </li>
-        <li>
-          LinkedIn:
-          <a href="https://linkedin.com/in/vishnu-deviprasad-shetty-515429319" target="_blank">
-            linkedin.com/Vishnu
-          </a>
-        </li>
-      </ul>
-    </section>
+  <div class="particles" aria-hidden="true">
+    <div class="dot" style="width:8px;height:8px;left:6%;top:12%;opacity:0.08"></div>
+    <div class="dot" style="width:6px;height:6px;left:18%;top:48%;opacity:0.06"></div>
+    <div class="dot" style="width:10px;height:10px;left:82%;top:22%;opacity:0.06"></div>
+    <div class="dot" style="width:5px;height:5px;left:74%;top:72%;opacity:0.05"></div>
+    <div class="dot" style="width:6px;height:6px;left:46%;top:86%;opacity:0.04"></div>
   </div>
 
-  <footer>
-    <p>
-      © 2025 idkshetty. Built with
-      <a href="./login-admin/login.html" class="hidden-admin-link">☕</a> and
-      a lot of debugging.
-    </p>
-  </footer>
+  <div class="progress" id="progress"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <script>
-    const typed = new Typed("#typed", {
-      strings: ["idkshetty", "a Web Developer", "just 16."],
-      typeSpeed: 80,
-      backSpeed: 40,
-      loop: true,
-    });
-  </script>
+  <nav>
+    <div class="brand">
+      <div class="logo">VS</div>
+      <div class="title">Vishnu • Designer & Developer</div>
+    </div>
+
+    <button class="menu-btn" id="menuBtn"><i class="fa fa-bars"></i></button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#offer">What I Offer</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <a href="#" id="themeToggle"><i class="fa fa-moon"></i></a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <main>
+      <section class="hero" aria-labelledby="intro">
+        <div class="hero-left">
+          <span class="eyebrow" data-anim>CRAFTED EXPERIENCES</span>
+          <h1 id="intro" data-anim>Hey — I'm <span class="grad-text" id="typed">Vishnu</span></h1>
+          <p class="lead" data-anim>I design and develop full-stack web applications, creative digital experiences, and interactive products that balance functionality with beauty. This site is more than a portfolio — it’s a living example of how I build with precision, clarity, and motion.</p>
+
+          <div class="cta-row" data-anim>
+            <button class="btn primary" id="viewProjects">View Projects</button>
+            <a class="btn ghost" href="mailto:vishnu.idkshetty@gmail.com">Say Hello</a>
+          </div>
+
+          <div style="margin-top:22px" data-anim>
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--accent1)"></div>
+              <div style="color:var(--muted);font-weight:700">🟢 Currently Available for Collaborations</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="panel" aria-label="Quick profile">
+          <div class="profile-head">
+            <div class="avatar" aria-hidden="true">VS</div>
+            <div>
+              <div style="font-weight:800">Vishnu Shetty</div>
+              <div style="color:var(--muted);font-size:13px;margin-top:6px">Full-Stack Developer • 16 yrs</div>
+            </div>
+          </div>
+
+          <div class="skills" style="margin-top:12px">
+            <div class="pill">Front-end: HTML • CSS • JS</div>
+            <div class="pill">Back-end: Firebase • Node.js</div>
+            <div class="pill">UI/UX: Modern, Mobile-First</div>
+            <div class="pill">IoT & Embedded Systems</div>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+            <div style="color:var(--muted);font-size:13px">Completed Projects</div>
+            <div style="font-weight:800">12+</div>
+          </div>
+
+          <div style="margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:space-between">
+            <div style="color:var(--muted);font-size:13px">Experience</div>
+            <div style="font-weight:800">2 Years</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="offer" data-anim>
+        <h2>What I Offer</h2>
+        <p>I help individuals, startups, and organizations transform ideas into interactive digital products. From front-end design to back-end architecture, I deliver complete solutions that work seamlessly across devices.</p>
+        <ul style="line-height:1.8;color:var(--muted)">
+          <li>✅ Modern, mobile-first website designs with responsive layouts</li>
+          <li>✅ Full-stack development with clean and scalable code</li>
+          <li>✅ Integration with APIs, payment systems, and real-time data</li>
+          <li>✅ Performance tuning, accessibility improvements, and SEO setup</li>
+          <li>✅ Interactive dashboards, live updates, and user-focused UX</li>
+        </ul>
+      </section>
+
+      <section id="projects" data-anim>
+        <h2>Projects</h2>
+        <div class="grid">
+          <article class="card" tabindex="0" data-project="knowyourplants">
+            <h4>Know Your Plants • Agritech</h4>
+            <p>An agricultural guide for Indian farmers featuring district-wise crop recommendations, an offline-friendly plant library, and smart crop planning tools.</p>
+            <div class="tags"><span class="tag">PWA</span><span class="tag">Agritech</span><span class="tag">Data-driven</span></div>
+          </article>
+
+          <article class="card" tabindex="0" data-project="mudball">
+            <h4>Mudball Federation • Donation Platform</h4>
+            <p>A custom donation site featuring secure UPI payments, automated receipts, hidden perks for donors, and basic SEO optimization for visibility.</p>
+            <div class="tags"><span class="tag">Payments</span><span class="tag">Automation</span></div>
+          </article>
+
+          <article class="card" tabindex="0" data-project="geocheckout">
+            <h4>GeoCheckout • Address Finder</h4>
+            <p>A lightweight address finder using Leaflet.js and Nominatim API. Supports geolocation detection, draggable markers, and responsive design for checkout flows.</p>
+            <div class="tags"><span class="tag">Maps</span><span class="tag">UX</span></div>
+          </article>
+
+          <article class="card" tabindex="0" data-project="safemet">
+            <h4>Safemet • IoT Helmet</h4>
+            <p>An IoT-based helmet add-on for fall detection and SOS alerts with cancel-timer. Designed for low-power operation, robust detection, and a simple alert UX to improve rider safety.</p>
+            <div class="tags"><span class="tag">IoT</span><span class="tag">Safety</span></div>
+          </article>
+
+          <article class="card" tabindex="0" data-project="marathon">
+            <h4>Marathon Enrollment • Event Platform</h4>
+            <p>Event registration and QR check-ins with a realtime admin dashboard for race-day monitoring, participant management, and analytics.</p>
+            <div class="tags"><span class="tag">Realtime</span><span class="tag">Admin</span></div>
+          </article>
+
+          <article class="card" tabindex="0" data-project="more">
+            <h4>More — Experiments & Tools</h4>
+            <p>Small utility projects, design experiments, and open-source tools that explore performance, accessibility, and delightful UX.</p>
+            <div class="tags"><span class="tag">Experiment</span></div>
+          </article>
+        </div>
+      </section>
+
+<section id="contact" data-anim>
+  <h2>Contact</h2>
+  <p>Pick a way to reach me — or double-click a project card to open a demo (if linked).</p>
+
+  <div class="contact-grid">
+    <a class="contact-card" href="mailto:vishnu.idkshetty@gmail.com">
+      <i class="fa-solid fa-envelope"></i>
+      <div>
+        <div style="font-weight:800">Email</div>
+        <div style="color:var(--muted);font-size:13px">vishnu.idkshetty@gmail.com</div>
+      </div>
+    </a>
+
+    <a class="contact-card" href="https://www.linkedin.com/in/vishnu-deviprasad-shetty-515429319" target="_blank" rel="noopener">
+      <i class="fab fa-linkedin"></i>
+      <div>
+        <div style="font-weight:800">LinkedIn</div>
+        <div style="color:var(--muted);font-size:13px">Message me</div>
+      </div>
+    </a>
+
+    <a class="contact-card" href="https://github.com/idkshetty" target="_blank" rel="noopener">
+      <i class="fab fa-github"></i>
+      <div>
+        <div style="font-weight:800">GitHub</div>
+        <div style="color:var(--muted);font-size:13px">Open source & experiments</div>
+      </div>
+    </a>
+
+    <a class="contact-card" href="https://instagram.com/idk_shetty" target="_blank" rel="noopener">
+      <i class="fab fa-instagram"></i>
+      <div>
+        <div style="font-weight:800">Instagram</div>
+        <div style="color:var(--muted);font-size:13px">Design snippets</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+
+      <footer>
+        <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;flex-wrap:wrap">
+          <div>© 2025 Vishnu Shetty</div>
+          <div>Built with ☕ and intentional motion</div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <button class="to-top" id="toTop"><i class="fa fa-arrow-up"></i></button>
+  <div class="cursor" id="cursor"></div>
 
   <script>
-    const revealSections = document.querySelectorAll("section");
-    const revealOnScroll = () => {
-      const triggerBottom = window.innerHeight * 0.9;
-      revealSections.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
-        if (sectionTop < triggerBottom) {
-          section.classList.add("visible");
-        }
+    const q = s => document.querySelector(s);
+    const qAll = s => document.querySelectorAll(s);
+
+    const progress = q('#progress');
+    const toTop = q('#toTop');
+    function onScroll(){
+      const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight))*100;
+      progress.style.width = Math.min(100,Math.max(0,pct)) + '%';
+      toTop.style.display = window.scrollY > 400 ? 'block' : 'none';
+    }
+    window.addEventListener('scroll', onScroll);
+    window.addEventListener('load', onScroll);
+
+    const animItems = qAll('[data-anim]');
+    function reveal(){
+      animItems.forEach((el,i)=>{
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight*0.82) setTimeout(()=>el.classList.add('in'), i*80);
       });
-    };
-    window.addEventListener("scroll", revealOnScroll);
-    window.addEventListener("load", revealOnScroll);
+    }
+    window.addEventListener('load', reveal);
+    window.addEventListener('scroll', reveal);
+
+    const cursor = q('#cursor');
+    window.addEventListener('mousemove', (e)=>{
+      cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+    });
+
+    function tiltCard(e){
+      const el = e.currentTarget; const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width; const y = (e.clientY - rect.top) / rect.height;
+      const rx = (y - 0.5) * -8; const ry = (x - 0.5) * 12;
+      el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(6px)`;
+    }
+    function resetTilt(e){ e.currentTarget.style.transform = ''; }
+    qAll('.card').forEach(c=>{ c.addEventListener('mousemove', tiltCard); c.addEventListener('mouseleave', resetTilt); });
+
+    qAll('.card').forEach((c)=>{
+      c.addEventListener('dblclick', ()=>{
+        const id = c.getAttribute('data-project');
+        alert('Open demo or link for: ' + id + ' (replace with real link)');
+      });
+      c.addEventListener('keydown', e=>{ if(e.key === 'Enter') c.click(); });
+    });
+
+    q('#viewProjects').addEventListener('click', ()=>{ document.querySelector('#projects').scrollIntoView({behavior:'smooth'}); });
+
+    toTop.addEventListener('click', ()=>{ window.scrollTo({top:0,behavior:'smooth'}); });
+
+    const menuBtn = q('#menuBtn');
+    const navLinks = q('#navLinks');
+    menuBtn.addEventListener('click', (e)=>{
+      const open = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', String(!open));
+      if(!open){ navLinks.style.display = 'flex'; navLinks.setAttribute('aria-hidden','false'); }
+      else { navLinks.style.display = 'none'; navLinks.setAttribute('aria-hidden','true'); }
+    });
+    document.addEventListener('click', (e)=>{
+      if(window.innerWidth <= 1000){
+        if(!navLinks.contains(e.target) && !menuBtn.contains(e.target)){
+          navLinks.style.display = 'none'; navLinks.setAttribute('aria-hidden','true'); menuBtn.setAttribute('aria-expanded','false');
+        }
+      }
+    });
+
+    (function(){
+      const el = q('#typed'); const names = ['Vishnu','a Web Developer','16 year old!']; let idx=0; let pos=0; let forward=true;
+      function step(){
+        const cur = names[idx];
+        if(forward){ pos++; el.textContent = cur.slice(0,pos); if(pos === cur.length) { forward=false; setTimeout(step,900); return; } }
+        else{ pos--; el.textContent = cur.slice(0,pos); if(pos===0){ forward=true; idx=(idx+1)%names.length; } }
+        setTimeout(step, 80);
+      }
+      step();
+    })();
+
+    const themeToggle = q('#themeToggle');
+    themeToggle.addEventListener('click', (e)=>{
+      e.preventDefault(); document.documentElement.classList.toggle('light');
+      themeToggle.querySelector('i').classList.toggle('fa-sun');
+      themeToggle.querySelector('i').classList.toggle('fa-moon');
+      if(document.documentElement.classList.contains('light')){
+        document.documentElement.style.setProperty('--bg','#f7f9fc');
+        document.documentElement.style.setProperty('--muted','#334155');
+        document.documentElement.style.setProperty('--panel','rgba(2,6,23,0.04)');
+      } else {
+        document.documentElement.style.setProperty('--bg','#0b1020');
+        document.documentElement.style.setProperty('--muted','#a8b3c7');
+        document.documentElement.style.setProperty('--panel','rgba(255,255,255,0.03)');
+      }
+    });
+
+    menuBtn.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') menuBtn.click(); });
+
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq && mq.matches){
+      qAll('[data-anim]').forEach(el=>el.classList.add('in'));
+    }
   </script>
 </body>
 </html>

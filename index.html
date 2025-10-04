@@ -85,7 +85,7 @@
     .panel{background:var(--panel);border-radius:16px;padding:18px;border:1px solid var(--glass-border);backdrop-filter:var(--glass-blur);box-shadow:0 8px 28px rgba(2,6,23,0.6)}
     .profile-head{display:flex;gap:14px;align-items:center}
     .avatar{width:84px;height:84px;border-radius:14px;background:linear-gradient(135deg,#fff1, #fff2);display:grid;place-items:center;font-weight:800;color:white}
-    .skills{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .skills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     .pill{padding:6px 10px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);color:var(--muted);font-weight:700;font-size:13px}
 
     .projects{margin-top:48px}
@@ -169,7 +169,7 @@
 
           <div class="cta-row" data-anim>
             <button class="btn primary" id="viewProjects">View Projects</button>
-            <a class="btn ghost" href="mailto:vishnu.idkshetty@gmail.com">Say Hello</a>
+            <a class="btn ghost" href="mailto:work.vishnushetty@gmail.com">Say Hello</a>
           </div>
 
           <div style="margin-top:22px" data-anim>
@@ -189,11 +189,11 @@
             </div>
           </div>
 
-          <div class="skills" style="margin-top:12px">
+          <div class="skills" style="margin-top:10px">
             <div class="pill">Front-end: HTML • CSS • JS</div>
             <div class="pill">Back-end: Firebase • Node.js</div>
             <div class="pill">UI/UX: Modern, Mobile-First</div>
-            <div class="pill">IoT & Embedded Systems</div>
+            <div class="pill">IoT & Embedded Systems & Help with automation</div>
           </div>
 
           <div style="margin-top:12px;display:flex;gap:8px;align-items:center;justify-content:space-between">
@@ -217,6 +217,7 @@
           <li>✅ Integration with APIs, payment systems, and real-time data</li>
           <li>✅ Performance tuning, accessibility improvements, and SEO setup</li>
           <li>✅ Interactive dashboards, live updates, and user-focused UX</li>
+          <li>✅ Help with automation</li>
         </ul>
       </section>
 
@@ -263,14 +264,14 @@
 
 <section id="contact" data-anim>
   <h2>Contact</h2>
-  <p>Pick a way to reach me — or double-click a project card to open a demo (if linked).</p>
+  <p>Pick a way to reach me.</p>
 
   <div class="contact-grid">
-    <a class="contact-card" href="mailto:vishnu.idkshetty@gmail.com">
+    <a class="contact-card" href="mailto:work.vishnushetty@gmail.com">
       <i class="fa-solid fa-envelope"></i>
       <div>
         <div style="font-weight:800">Email</div>
-        <div style="color:var(--muted);font-size:13px">vishnu.idkshetty@gmail.com</div>
+        <div style="color:var(--muted);font-size:13px">work.vishnushetty@gmail.com</div>
       </div>
     </a>
 
@@ -290,11 +291,11 @@
       </div>
     </a>
 
-    <a class="contact-card" href="https://instagram.com/idk_shetty" target="_blank" rel="noopener">
+    <a class="contact-card" href="https://instagram.com/idkshetty" target="_blank" rel="noopener">
       <i class="fab fa-instagram"></i>
       <div>
         <div style="font-weight:800">Instagram</div>
-        <div style="color:var(--muted);font-size:13px">Design snippets</div>
+        <div style="color:var(--muted);font-size:13px">You can follow me here</div>
       </div>
     </a>
   </div>
@@ -303,8 +304,7 @@
 
       <footer>
         <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;flex-wrap:wrap">
-          <div>© 2025 Vishnu Shetty</div>
-          <div>Built with ☕ and intentional motion</div>
+          <div>© 2025 Vishnu Shetty Built with ☕ and intentional motion</div>
         </div>
       </footer>
     </main>
@@ -354,7 +354,7 @@
     qAll('.card').forEach((c)=>{
       c.addEventListener('dblclick', ()=>{
         const id = c.getAttribute('data-project');
-        alert('Open demo or link for: ' + id + ' (replace with real link)');
+        alert('Sorry I have not linked it yet!');
       });
       c.addEventListener('keydown', e=>{ if(e.key === 'Enter') c.click(); });
     });

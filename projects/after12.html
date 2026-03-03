@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>After12 – The Career Archetype Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* --- CORE AESTHETICS --- */
+:root {
+  --bg: #09090b;
+  --surface: #18181b;
+  --surface-highlight: #27272a;
+  --primary: #8b5cf6;
+  --secondary: #06b6d4;
+  --text: #ffffff;
+  --text-dim: #a1a1aa;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.12) 0px, transparent 50%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  padding: 24px;
+  position: relative;
+}
+
+/* --- SCREENS & ANIMATIONS --- */
+.screen { display: none; width: 100%; }
+.screen.active { display: block; animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+@keyframes slideUp { 
+    from { opacity: 0; transform: translateY(30px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* --- START SCREEN --- */
+.hero-title {
+  font-size: clamp(2.5rem, 8vw, 3.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  background: linear-gradient(to bottom right, #fff 50%, #a5b4fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.start-btn {
+  background: var(--primary);
+  color: white;
+  width: 100%;
+  padding: 20px;
+  border-radius: 18px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.5);
+  transition: all 0.2s;
+}
+.start-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.start-btn:active { transform: scale(0.98); }
+
+/* --- QUIZ UI --- */
+.progress-container {
+  height: 6px;
+  background: var(--surface-highlight);
+  border-radius: 10px;
+  margin-bottom: 30px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.question-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.option-card {
+  background: var(--surface);
+  border: 1px solid var(--surface-highlight);
+  padding: 24px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+}
+
+.option-card:hover {
+  background: #1e1e21;
+  border-color: var(--secondary);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5);
+}
+
+.emoji { font-size: 2.8rem; margin-bottom: 12px; }
+.label { font-size: 0.95rem; font-weight: 600; color: var(--text-dim); line-height: 1.3; }
+.option-card:hover .label { color: white; }
+
+/* --- LOADING --- */
+.spinner {
+  width: 50px; height: 50px;
+  border: 4px solid var(--surface-highlight);
+  border-top-color: var(--secondary);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- RESULTS --- */
+.archetype-name {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+.stats-box {
+  background: rgba(255,255,255,0.03);
+  padding: 20px;
+  border-radius: 20px;
+  margin: 24px 0;
+}
+.stat-row { display: flex; align-items: center; margin-bottom: 14px; }
+.stat-label { width: 90px; font-weight: 600; font-size: 0.85rem; color: var(--text-dim); }
+.stat-track { flex-grow: 1; height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+.stat-bar { height: 100%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); width: 0; }
+
+.pill { 
+    display: inline-block; 
+    background: rgba(255,255,255,0.08); 
+    padding: 6px 14px; 
+    border-radius: 50px; 
+    font-size: 0.85rem; 
+    margin: 4px; 
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.roadmap-card {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 24px;
+}
+
+@media (max-width: 480px) {
+  .options-grid { grid-template-columns: 1fr; }
+  .option-card { height: 90px; flex-direction: row; padding: 20px; text-align: left; justify-content: flex-start; }
+  .emoji { margin-bottom: 0; margin-right: 20px; font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div id="screen-intro" class="screen active">
+    <div style="text-align: center; margin-bottom: 30px;"><span style="font-size: 4rem;">🗺️</span></div>
+    <h1 class="hero-title">Discover Your<br>Career DNA</h1>
+    <p style="text-align: center; color: var(--text-dim); margin-bottom: 40px; font-size: 1.1rem; line-height: 1.6;">
+        Stop picking jobs. Start picking the environment where your brain actually thrives.
+    </p>
+    <button class="start-btn" onclick="startQuiz()">Begin Analysis</button>
+  </div>
+
+  <div id="screen-quiz" class="screen">
+    <div class="progress-container"><div id="progress" class="progress-fill"></div></div>
+    <div id="quiz-content"></div>
+  </div>
+
+  <div id="screen-loading" class="screen">
+    <div style="text-align: center; padding: 60px 0;">
+      <div class="spinner"></div>
+      <h2 style="margin-bottom: 10px;">Analyzing Patterns</h2>
+      <p style="color: var(--text-dim);">Mapping your cognitive profile...</p>
+    </div>
+  </div>
+
+  <div id="screen-result" class="screen">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <div id="result-emoji" style="font-size: 5rem; margin-bottom: 10px;"></div>
+      <div style="font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px;">Your Primary Archetype</div>
+      <div id="result-title" class="archetype-name"></div>
+      <p id="result-desc" style="color: var(--text-dim); font-size: 1.05rem; max-width: 90%; margin: 0 auto;"></p>
+    </div>
+
+    <div class="stats-box" id="stats-bars"></div>
+
+    <div style="margin-top: 32px;">
+        <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--secondary);">🎓 Degrees to Explore</h3>
+        <div id="degree-pills"></div>
+        
+        <h3 style="font-size: 1.1rem; margin: 24px 0 12px; color: var(--primary);">💼 Career Titles</h3>
+        <div id="job-pills"></div>
+    </div>
+
+    <div class="roadmap-card">
+        <h3 style="font-size: 1rem; margin-bottom: 8px;">🚀 Next Step Roadmap</h3>
+        <p id="roadmap-text" style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.5;"></p>
+    </div>
+
+    <button class="start-btn" onclick="location.reload()" style="margin-top: 40px; background: var(--surface-highlight); color: var(--text-dim);">Retake Analysis</button>
+  </div>
+
+</div>
+
+<script>
+/* --- PSYCHOMETRIC QUESTION ENGINE --- */
+const questions = [
+  {
+    q: "A complex machine breaks down. What is your first instinct?",
+    o: [
+      { t: "Analyze the logic & fix the bug", e: "🔍", c: "tech" },
+      { t: "Call a team & lead the fix", e: "📱", c: "business" },
+      { t: "Hack a creative workaround", e: "💡", c: "creative" },
+      { t: "Ensure everyone is safe", e: "🤝", c: "people" }
+    ]
+  },
+  {
+    q: "Which 'Superpower' sounds most useful to you?",
+    o: [
+      { t: "Instant Data Analysis", e: "📊", c: "tech" },
+      { t: "Total Persuasion", e: "🗣️", c: "business" },
+      { t: "Unlimited Imagination", e: "🌈", c: "creative" },
+      { t: "Perfect Empathy", e: "💗", c: "people" }
+    ]
+  },
+  {
+    q: "Choose your favorite type of 'Mental Stress':",
+    o: [
+      { t: "Solving a technical puzzle", e: "👾", c: "tech" },
+      { t: "Closing a high-stakes deal", e: "💸", c: "business" },
+      { t: "Designing from a blank page", e: "📝", c: "creative" },
+      { t: "Navigating deep human emotions", e: "🫂", c: "people" }
+    ]
+  },
+  {
+    q: "If you were writing a book, it would be a:",
+    o: [
+      { t: "Science & Technology Guide", e: "☄️", c: "tech" },
+      { t: "Biography of a Great Leader", e: "👑", c: "business" },
+      { t: "Visual Graphic Novel", e: "🎨", c: "creative" },
+      { t: "Study on Human Behavior", e: "🧿", c: "people" }
+    ]
+  },
+  {
+    q: "What does 'Impact' mean to you?",
+    o: [
+      { t: "Building tools millions use", e: "⚙️", c: "tech" },
+      { t: "Running a profitable empire", e: "🏙️", c: "business" },
+      { t: "Inspiring through your art", e: "🎭", c: "creative" },
+      { t: "Saving one life at a time", e: "🩺", c: "people" }
+    ]
+  },
+  {
+    q: "Pick your ideal daily work tool:",
+    o: [
+      { t: "A powerful Code Terminal", e: "⌨️", c: "tech" },
+      { t: "A Phone & Polished Deck", e: "📞", c: "business" },
+      { t: "A high-end Camera / Canvas", e: "📸", c: "creative" },
+      { t: "A quiet space for talk", e: "🛋️", c: "people" }
+    ]
+  }
+];
+
+const resultsData = {
+  tech: {
+    title: "The Systems Architect",
+    emoji: "⚙️",
+    desc: "Your brain is wired for 'How' and 'Why'. You find beauty in efficiency, code, and structured logic.",
+    degrees: ["B.Tech (CSE, AI, Data Science)", "BSc Maths", "BCA", "Robotics Engineering"],
+    jobs: ["Software Engineer", "Cybersecurity", "Data Scientist", "Research Scientist", "AI Developer"],
+    roadmap: "Build a project immediately. Join a hackathon. Your GitHub portfolio will be more valuable than your college degree."
+  },
+  business: {
+    title: "The Strategic Leader",
+    emoji: "🎯",
+    desc: "You are driven by results, growth, and influence. You understand the value of strategy and networking.",
+    degrees: ["BBA / BMS", "B.Com + CA", "Integrated MBA (IPM)", "Economics (Hons)"],
+    jobs: ["Investment Banker", "Product Manager", "Startup Founder", "Consultant", "CFO"],
+    roadmap: "Start networking now. Read about finance and markets. Focus on communication skills and Excel mastery."
+  },
+  creative: {
+    title: "The Visionary",
+    emoji: "🎨",
+    desc: "You thrive in ambiguity and love translating invisible ideas into visible, beautiful reality.",
+    degrees: ["B.Des (NID/NIFT)", "B.Arch", "Media & Mass Comm", "Animation & VFX"],
+    jobs: ["Product Designer", "Content Creator", "Architect", "Art Director", "UI/UX Designer"],
+    roadmap: "Start a 'Daily Creative' habit. Build a portfolio on Behance or Instagram. In your world, proof of work is everything."
+  },
+  people: {
+    title: "The Human Guardian",
+    emoji: "🛡️",
+    desc: "You are the glue of society. You find purpose in protecting, healing, and understanding the human mind.",
+    degrees: ["MBBS / BDS", "BA LLB (Law)", "B.Sc Psychology", "Diplomacy / UPSC"],
+    jobs: ["Doctor/Surgeon", "Corporate Lawyer", "Clinical Psychologist", "Diplomat", "HR Lead"],
+    roadmap: "Prepare for high-stakes entrance exams (NEET, CLAT). Discipline and long-term academic focus are your main requirements."
+  }
+};
+
+/* --- APP ENGINE --- */
+let currIndex = 0;
+let scores = { tech: 0, business: 0, creative: 0, people: 0 };
+
+function switchScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz() {
+  switchScreen('screen-quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const data = questions[currIndex];
+  const pct = (currIndex / questions.length) * 100;
+  document.getElementById('progress').style.width = `${pct}%`;
+
+  const html = `
+    <div class="question-text">${data.q}</div>
+    <div class="options-grid">
+      ${data.o.map(opt => `
+        <div class="option-card" onclick="handleAnswer('${opt.c}')">
+          <span class="emoji">${opt.e}</span>
+          <span class="label">${opt.t}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  document.getElementById('quiz-content').innerHTML = html;
+}
+
+function handleAnswer(cat) {
+  scores[cat]++;
+  currIndex++;
+  if (currIndex < questions.length) {
+    setTimeout(renderQuestion, 200);
+  } else {
+    document.getElementById('progress').style.width = '100%';
+    finish();
+  }
+}
+
+function finish() {
+  switchScreen('screen-loading');
+  setTimeout(() => {
+    showResult();
+    switchScreen('screen-result');
+  }, 1800);
+}
+
+function showResult() {
+  const sorted = Object.entries(scores).sort((a,b) => b[1] - a[1]);
+  const winner = sorted[0][0];
+  const data = resultsData[winner];
+  
+  const colors = { tech: '#06b6d4', business: '#f59e0b', creative: '#8b5cf6', people: '#10b981' };
+  const labels = { tech: 'Technology', business: 'Strategic', creative: 'Creative', people: 'Social' };
+
+  // Update Header
+  document.getElementById('result-emoji').innerText = data.emoji;
+  document.getElementById('result-title').innerText = data.title;
+  document.getElementById('result-title').style.color = colors[winner];
+  document.getElementById('result-desc').innerText = data.desc;
+
+  // Update Stats
+  let statsHtml = '';
+  sorted.forEach(([key, val]) => {
+    const pct = (val / questions.length) * 100;
+    statsHtml += `
+      <div class="stat-row">
+        <div class="stat-label">${labels[key]}</div>
+        <div class="stat-track"><div class="stat-bar" style="width:${pct}%; background:${colors[key]}"></div></div>
+      </div>`;
+  });
+  document.getElementById('stats-bars').innerHTML = statsHtml;
+
+  // Update Pills & Roadmap
+  document.getElementById('degree-pills').innerHTML = data.degrees.map(d => `<span class="pill">${d}</span>`).join('');
+  document.getElementById('job-pills').innerHTML = data.jobs.map(j => `<span class="pill">${j}</span>`).join('');
+  document.getElementById('roadmap-text').innerText = data.roadmap;
+}
+</script>
+
+</body>
+</html>

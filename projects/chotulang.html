@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Chotulang Case Study | Vishnu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Fonts Preconnect -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <!-- Typography Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#464747",
+              secondary: "#5e5e5e",
+              error: "#ba1a1a",
+              "outline-variant": "#cfc4c5",
+              "secondary-fixed": "#e4e2e2",
+              "on-primary-fixed": "#1b1b1b",
+              "inverse-primary": "#c6c6c6",
+              "surface-dim": "#dadada",
+              "on-secondary": "#ffffff",
+              outline: "#7e7576",
+              "on-primary": "#ffffff",
+              "primary-fixed": "#e2e2e2",
+              "on-error": "#ffffff",
+              "surface-tint": "#5e5e5e",
+              "on-secondary-container": "#626262",
+              "surface-container-lowest": "#ffffff",
+              primary: "#000000",
+              "on-primary-container": "#848484",
+              "on-tertiary-fixed-variant": "#474747",
+              "on-tertiary-container": "#848484",
+              "inverse-surface": "#2f3131",
+              "primary-container": "#1b1b1b",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#e2e2e2",
+              "surface-bright": "#f9f9f9",
+              "surface-container-low": "#f3f3f3",
+              surface: "#f9f9f9",
+              "on-secondary-fixed": "#1b1c1c",
+              "surface-container-high": "#e8e8e8",
+              "tertiary-fixed": "#e2e2e2",
+              "on-background": "#1a1c1c",
+              "on-primary-fixed-variant": "#474747",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "secondary-container": "#e1dfdf",
+              "secondary-fixed-dim": "#c7c6c6",
+              "on-surface-variant": "#4c4546",
+              "inverse-on-surface": "#f1f1f1",
+              "on-tertiary-fixed": "#1b1b1b",
+              "tertiary": "#000000",
+              "surface-container": "#eeeeee",
+              "primary-fixed-dim": "#c6c6c6",
+              "tertiary-container": "#1b1b1b",
+              "surface-variant": "#e2e2e2",
+              background: "#f9f9f9",
+              "error-container": "#ffdad6",
+              "on-surface": "#1a1c1c",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "grid-margin": "64px",
+              gutter: "24px",
+              base: "8px",
+              "section-gap": "120px",
+              "content-gap": "48px",
+            },
+            fontFamily: {
+              sans: ["Geist", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+              "display-lg-mobile": ["Inter"],
+              "display-lg": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "body-md": ["Inter"],
+              "headline-xl": ["Inter"],
+              "label-caps": ["JetBrains Mono"],
+            },
+            fontSize: {
+              "display-lg-mobile": [
+                "48px",
+                { lineHeight: "1.1", letterSpacing: "-0.04em", fontWeight: "700" },
+              ],
+              "display-lg": [
+                "72px",
+                { lineHeight: "1.1", letterSpacing: "-0.04em", fontWeight: "700" },
+              ],
+              "body-lg": [
+                "20px",
+                { lineHeight: "1.6", letterSpacing: "-0.01em", fontWeight: "400" },
+              ],
+              "headline-lg": ["32px", { lineHeight: "1.3", fontWeight: "600" }],
+              "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+              "headline-xl": [
+                "40px",
+                { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" },
+              ],
+              "label-caps": [
+                "12px",
+                { lineHeight: "1.0", letterSpacing: "0.1em", fontWeight: "500" },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: theme("colors.background");
+        color: theme("colors.on-background");
+      }
+      .grid-container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 theme("spacing.grid-margin");
+      }
+      @media (max-width: 1024px) {
+        .grid-container {
+          padding: 0 32px;
+        }
+      }
+      @media (max-width: 767px) {
+        .grid-container {
+          padding: 0 24px;
+        }
+      }
+
+      /* Typography Classes based on config */
+      .font-display-lg {
+        font-family: theme("fontFamily.display-lg");
+        font-size: 72px;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        font-weight: 700;
+      }
+      .text-display-lg {
+        font-size: 72px;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        font-weight: 700;
+      }
+
+      .font-display-lg-mobile {
+        font-family: theme("fontFamily.display-lg-mobile");
+        font-size: 48px;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        font-weight: 700;
+      }
+      .text-display-lg-mobile {
+        font-size: 48px;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        font-weight: 700;
+      }
+
+      .font-body-lg {
+        font-family: theme("fontFamily.body-lg");
+        font-size: 20px;
+        line-height: 1.6;
+        letter-spacing: -0.01em;
+        font-weight: 400;
+      }
+      .text-body-lg {
+        font-size: 20px;
+        line-height: 1.6;
+        letter-spacing: -0.01em;
+        font-weight: 400;
+      }
+
+      .font-headline-lg {
+        font-family: theme("fontFamily.headline-lg");
+        font-size: 32px;
+        line-height: 1.3;
+        font-weight: 600;
+      }
+      .text-headline-lg {
+        font-size: 32px;
+        line-height: 1.3;
+        font-weight: 600;
+      }
+
+      .font-body-md {
+        font-family: theme("fontFamily.body-md");
+        font-size: 16px;
+        line-height: 1.6;
+        font-weight: 400;
+      }
+      .text-body-md {
+        font-size: 16px;
+        line-height: 1.6;
+        font-weight: 400;
+      }
+
+      .font-headline-xl {
+        font-family: theme("fontFamily.headline-xl");
+        font-size: 40px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        font-weight: 600;
+      }
+      .text-headline-xl {
+        font-size: 40px;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        font-weight: 600;
+      }
+
+      .font-label-caps {
+        font-family: theme("fontFamily.label-caps");
+        font-size: 12px;
+        line-height: 1.0;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+      }
+      .text-label-caps {
+        font-size: 12px;
+        line-height: 1.0;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+      }
+
+      /* Custom UI Elements */
+      .hairline-border {
+        border: 1px solid theme("colors.outline-variant");
+      }
+      .hairline-border-b {
+        border-bottom: 1px solid theme("colors.outline-variant");
+      }
+      .hairline-border-t {
+        border-top: 1px solid theme("colors.outline-variant");
+      }
+
+      .code-block {
+        background-color: theme("colors.surface-container-low");
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        padding: 24px;
+        border-radius: theme("borderRadius.DEFAULT");
+      }
+
+      /* Reveal Animations */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Staggered Delays */
+      .delay-100 {
+        transition-delay: 100ms;
+      }
+      .delay-200 {
+        transition-delay: 200ms;
+      }
+      .delay-300 {
+        transition-delay: 300ms;
+      }
+      .delay-400 {
+        transition-delay: 400ms;
+      }
+
+      /* Page transition styling */
+      body {
+        opacity: 0;
+        transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
+        transform: translateY(8px);
+      }
+      body.page-loaded {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Dark mode color overrides (Darker Slate-Black Theme) */
+      .dark body {
+        background-color: #030712 !important;
+        color: #f8fafc !important;
+      }
+      .dark header {
+        background-color: rgba(8, 13, 26, 0.9) !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .text-primary {
+        color: #f8fafc !important;
+      }
+      .dark .text-secondary {
+        color: #94a3b8 !important;
+      }
+      .dark .bg-surface-container-lowest {
+        background-color: #080d1a !important;
+      }
+      .dark .border-outline-variant,
+      .dark .hairline-border,
+      .dark .hairline-border-b,
+      .dark .hairline-border-t {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .code-block {
+        background-color: #080d1a !important;
+        color: #f8fafc !important;
+      }
+      .dark .bg-background {
+        background-color: #030712 !important;
+      }
+      .dark .bg-surface-container-low {
+        background-color: #050a14 !important;
+      }
+
+      /* Navigation Overrides from index.html */
+      .dark .bg-white {
+        background-color: #080d1a !important;
+      }
+      .dark .border-black {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .text-black {
+        color: #f8fafc !important;
+      }
+      .dark .bg-white\/90 {
+        background-color: #080d1a !important;
+      }
+      .dark .btn-dark-mode-white {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #ffffff !important;
+      }
+      .dark .btn-dark-mode-white:hover {
+        background-color: transparent !important;
+        color: #ffffff !important;
+      }
+
+      /* Reset Tap Highlights & Outlines */
+      button, a {
+        -webkit-tap-highlight-color: transparent !important;
+        outline: none !important;
+      }
+      button:focus, a:focus, button:active, a:active {
+        outline: none !important;
+      }
+    </style>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (savedTheme === "light") {
+          document.documentElement.classList.remove("dark");
+        } else if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (error) {
+        console.warn("Theme initialization failed", error);
+      }
+    </script>
+  </head>
+  <body
+    class="bg-background text-on-background antialiased min-h-screen flex flex-col transition-colors duration-300"
+  >
+    <!-- TopNavBar Shared Component -->
+    <header
+      class="bg-white/90 dark:bg-[#0f1323]/90 backdrop-blur-md fixed top-0 w-full border-b border-black dark:border-white/10 z-50 transition-all duration-300"
+    >
+      <div
+        class="grid-container py-4 flex justify-between items-center w-full"
+      >
+        <!-- Brand -->
+        <a
+          class="font-sans text-2xl font-bold tracking-tighter text-black hover:opacity-70 transition-opacity"
+          href="../index.html"
+        >
+          Vishnu
+        </a>
+        <!-- Navigation -->
+        <nav
+          class="hidden md:flex items-center gap-8 font-sans text-base font-medium"
+        >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="../index.html#offerings"
+            >Work</a
+          >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="../index.html#projects"
+            >Projects</a
+          >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="../index.html#contact"
+            >About</a
+          >
+        </nav>
+        <div class="flex items-center gap-4">
+          <a
+            class="hidden md:inline-block px-6 py-2 bg-black text-white border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 focus:outline-none btn-dark-mode-white"
+            href="../index.html#contact"
+          >
+            Let's Talk
+          </a>
+          <button
+            id="themeToggle"
+            class="px-4 py-2 border border-black dark:border-white/10 text-black dark:text-white bg-white dark:bg-[#0f172a] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 flex items-center justify-center focus:outline-none"
+            aria-label="Toggle dark mode"
+          >
+            <span id="themeIcon" class="material-symbols-outlined text-sm">dark_mode</span>
+          </button>
+          <!-- Mobile Menu Toggle -->
+          <button
+            id="mobileMenuToggle"
+            class="md:hidden text-black dark:text-white hover:opacity-70 transition-opacity flex items-center focus:outline-none"
+            aria-label="Toggle mobile menu"
+          >
+            <span id="mobileMenuIcon" class="material-symbols-outlined">menu</span>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile Menu Dropdown -->
+      <div
+        id="mobileMenu"
+        class="hidden md:hidden border-t border-black dark:border-white/10 bg-white dark:bg-[#0f1323] px-8 py-6 flex flex-col gap-6 font-sans text-lg font-medium shadow-lg"
+      >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="../index.html#offerings"
+          >Work</a
+        >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="../index.html#projects"
+          >Projects</a
+        >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="../index.html#contact"
+          >About</a
+        >
+        <div class="flex items-center justify-between border-t border-black/10 dark:border-white/10 pt-6">
+          <a
+            class="px-6 py-2 bg-black text-white border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 focus:outline-none btn-dark-mode-white"
+            href="../index.html#contact"
+          >
+            Let's Talk
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-grow pt-[120px]">
+      <!-- Back to projects link -->
+      <section class="grid-container pt-8 pb-4">
+        <a href="../index.html#projects" class="group inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors duration-300">
+          <span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+          Back to Projects
+        </a>
+      </section>
+
+      <!-- Hero Section -->
+      <section
+        class="grid-container py-12 flex flex-col items-center text-center reveal"
+      >
+        <div
+          class="inline-block px-3 py-1 mb-6 hairline-border bg-surface-container-lowest font-label-caps text-label-caps rounded-DEFAULT"
+        >
+          / LANGUAGE DESIGN /
+        </div>
+        <h1
+          class="hidden md:block font-display-lg text-display-lg text-primary max-w-4xl mb-6 reveal delay-100"
+        >
+          Designing and Implementing a Programming Language
+        </h1>
+        <h1
+          class="md:hidden font-display-lg-mobile text-display-lg-mobile text-primary max-w-4xl mb-6 reveal delay-100"
+        >
+          Designing and Implementing a Programming Language
+        </h1>
+        <p class="font-body-lg text-body-lg text-secondary max-w-2xl reveal delay-200">
+          A dynamic, Python-compatible language built from scratch with clean
+          syntax and functional paradigms.
+        </p>
+      </section>
+      <!-- Project Info Grid -->
+      <section class="grid-container mb-section-gap reveal">
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 hairline-border bg-surface-container-lowest rounded-DEFAULT"
+        >
+          <div
+            class="p-8 hairline-border-b md:hairline-border-b-0 md:border-r border-outline-variant"
+          >
+            <p class="font-label-caps text-label-caps text-secondary mb-2">
+              PROJECT
+            </p>
+            <p class="font-body-md text-body-md text-primary font-semibold">
+              Chotulang (Version 0.0.7)
+            </p>
+          </div>
+          <div
+            class="p-8 hairline-border-b md:hairline-border-b-0 md:border-r border-outline-variant"
+          >
+            <p class="font-label-caps text-label-caps text-secondary mb-2">
+              DEVELOPER
+            </p>
+            <p class="font-body-md text-body-md text-primary font-semibold">
+              Vishnu Deviprasad Shetty
+            </p>
+          </div>
+          <div class="p-8">
+            <p class="font-label-caps text-label-caps text-secondary mb-2">
+              TYPE
+            </p>
+            <p class="font-body-md text-body-md text-primary font-semibold">
+              Language Design &amp; Interpreter Development
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- Dynamic Visualization Section -->
+      <section class="grid-container mb-section-gap reveal">
+        <div class="mb-12">
+          <h2
+            class="font-label-caps text-label-caps tracking-widest text-secondary uppercase"
+          >
+            Tooling &amp; Interface
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <div class="md:col-span-8 flex flex-col gap-4 reveal">
+            <div
+              class="hairline-border rounded-DEFAULT overflow-hidden bg-surface-container-lowest aspect-video flex items-center justify-center bg-gray-100 text-gray-400 font-mono text-sm relative"
+            >
+              <!-- Placeholder image fallback if source is offline -->
+              <img
+                alt="Custom IDE &amp; REPL Environment"
+                class="w-full h-auto block"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPV1CPyy1F0ZWXeMe-xnU4_b4OwkJml5Tn9TP8JFSquZOsLlJyLsMG4cpLQt-aLsRsvyzGd8NDMi5kByyMAbyTCzDMkmSgSzLbW9klJ-YTJBQkXKaObU1UjRzulX-M72DUkIcUHrXX8zBrXTuLh9di1DCjH9lzExKfYDI47gcoXRx1r_b9DFTI7woTju9m7lFjQNtnxEGDPSgalm2MV8xAv4F68Gu4iAPLVmVGatxPVYcuZKSXGjTcaYpYGghZueEp28ad_laApvR4"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+              />
+              <div class="hidden absolute inset-0 flex items-center justify-center bg-zinc-100 text-zinc-400">
+                [ IDE &amp; REPL Environment Image Placeholder ]
+              </div>
+            </div>
+            <p class="font-label-caps text-label-caps text-secondary">
+              Custom IDE &amp; REPL Environment
+            </p>
+          </div>
+          <div class="md:col-span-4 flex flex-col gap-8">
+            <div class="flex flex-col gap-4 reveal delay-100">
+              <div
+                class="hairline-border rounded-DEFAULT overflow-hidden bg-surface-container-lowest aspect-[4/3] flex items-center justify-center bg-gray-100 text-gray-400 font-mono text-sm relative"
+              >
+                <img
+                  alt="System Architecture Diagram"
+                  class="w-full h-auto block"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvoHD8VmkZK9oZFUxNgaQ3UbEvdGcp5-6GqUxI-CIR-eyycyhHqALS9M_ggVGzw-1USZ60bjvGQ2jnu_Ir5JU8LyFo5-Av0a1Q_Mw8-hv-m8QetEJXdPtBSPsBQhHKqISdy_zNp6IkqhfbgqUjjrZEIPJ5EKioUTEva2ZN_FTR8VoO2DZy2yqFO_deO-s7ln0hG3XhgSiWcvVzU4c8BEdDS-f-wNdv9_UCmA8qCnp3avR-GLxKIIe_BZcdzjZA4pByQ6aOOrrIKAID"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                />
+                <div class="hidden absolute inset-0 flex items-center justify-center bg-zinc-100 text-zinc-400">
+                  [ System Architecture Image Placeholder ]
+                </div>
+              </div>
+              <p class="font-label-caps text-label-caps text-secondary">
+                System Architecture Diagram
+              </p>
+            </div>
+            <div class="flex flex-col gap-4 reveal delay-200">
+              <div
+                class="hairline-border rounded-DEFAULT overflow-hidden bg-surface-container-lowest aspect-[4/3] flex items-center justify-center bg-gray-100 text-gray-400 font-mono text-sm relative"
+              >
+                <img
+                  alt="Functional Syntax &amp; Pipelines"
+                  class="w-full h-auto block"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2oMB1oLay_GiX4Oc7nqZvqHHgbpWj4k_VKG8NfwasOcMMz-NT_raM1rk1qVl65n2kctxWoXyCgMeZEcFq4bnXNZ-QkaJzonFgONTauenodZ9dxwo7uvvKdeB05EufRlmZZOceyjvVX8BVu3QRm-Pt1fLhRuZk4xf10hzaWe6oLDlHdXipWYRJsbiSNmtlcdEu2C2MUIRZ0CKWG6J-eKkj3_-4vJUmP2kmF06AO5hYoVPnmKlM8pWApp1Qz9mSEJSabGAKZa7IyDzK"
+                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                />
+                <div class="hidden absolute inset-0 flex items-center justify-center bg-zinc-100 text-zinc-400">
+                  [ Functional Syntax Image Placeholder ]
+                </div>
+              </div>
+              <p class="font-label-caps text-label-caps text-secondary">
+                Functional Syntax &amp; Pipelines
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Executive Summary & Problem -->
+      <section
+        class="grid-container grid grid-cols-1 md:grid-cols-12 gap-gutter mb-section-gap reveal"
+      >
+        <div class="md:col-span-4">
+          <h2
+            class="font-headline-lg text-headline-lg text-primary mb-content-gap md:sticky md:top-32"
+          >
+            The Premise
+          </h2>
+        </div>
+        <div class="md:col-span-8 flex flex-col gap-content-gap">
+          <div class="reveal">
+            <h3 class="font-label-caps text-label-caps text-secondary mb-4">
+              EXECUTIVE SUMMARY
+            </h3>
+            <p class="font-body-lg text-body-lg text-primary">
+              Chotulang is an ambitious endeavor to create a programming
+              language from the ground up. It focuses on delivering a dynamic,
+              Python-compatible environment that emphasizes clean syntax,
+              functional programming paradigms, and an improved developer
+              experience.
+            </p>
+          </div>
+          <div class="hairline-border-t pt-8 reveal delay-100">
+            <h3 class="font-label-caps text-label-caps text-secondary mb-4">
+              PROBLEM &amp; MOTIVATION
+            </h3>
+            <p class="font-body-md text-body-md text-secondary mb-4">
+              Modern development often involves wrestling with syntactic baggage
+              and opaque error reporting. The primary motivation behind
+              Chotulang was to strip away unnecessary complexity and provide
+              developers with pinpoint accuracy when things go wrong.
+            </p>
+            <p class="font-body-md text-body-md text-secondary">
+              By implementing highly specific error reporting and resolving
+              common developer pain points, Chotulang aims to significantly
+              improve the overall Developer Experience (DX).
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- Architecture (3-Column Grid) -->
+      <section
+        class="bg-surface-container-lowest py-section-gap hairline-border-t hairline-border-b mb-section-gap reveal"
+      >
+        <div class="grid-container">
+          <h2
+            class="font-headline-xl text-headline-xl text-primary mb-12 text-center reveal"
+          >
+            System Architecture
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+              class="p-8 hairline-border bg-background rounded-lg hover:shadow-sm transition-shadow duration-300 reveal delay-100"
+            >
+              <div
+                class="w-12 h-12 bg-primary text-on-primary flex items-center justify-center rounded-DEFAULT mb-6"
+              >
+                <span class="material-symbols-outlined">data_object</span>
+              </div>
+              <h3 class="font-headline-lg text-headline-lg text-primary mb-4 text-2xl">
+                Lexical Analyzer
+              </h3>
+              <p class="font-body-md text-body-md text-secondary mb-4">
+                Responsible for precise token conversion and handling complex
+                multi-character operators.
+              </p>
+              <ul
+                class="font-label-caps text-label-caps text-primary space-y-2"
+              >
+                <li class="flex justify-between hairline-border-b pb-2">
+                  <span class="text-secondary">Feature:</span> Token Conversion
+                </li>
+                <li class="flex justify-between hairline-border-b pb-2">
+                  <span class="text-secondary">Operators:</span> |&gt; , ??,
+                  ..
+                </li>
+              </ul>
+            </div>
+            <div
+              class="p-8 hairline-border bg-background rounded-lg hover:shadow-sm transition-shadow duration-300 reveal delay-200"
+            >
+              <div
+                class="w-12 h-12 bg-primary text-on-primary flex items-center justify-center rounded-DEFAULT mb-6"
+              >
+                <span class="material-symbols-outlined">account_tree</span>
+              </div>
+              <h3 class="font-headline-lg text-headline-lg text-primary mb-4 text-2xl">
+                Syntax Parser
+              </h3>
+              <p class="font-body-md text-body-md text-secondary mb-4">
+                Generates the Abstract Syntax Tree (AST) and manages intricate
+                sub-expression handling for method chaining.
+              </p>
+              <ul
+                class="font-label-caps text-label-caps text-primary space-y-2"
+              >
+                <li class="flex justify-between hairline-border-b pb-2">
+                  <span class="text-secondary">Core:</span> AST Generation
+                </li>
+                <li class="flex justify-between hairline-border-b pb-2">
+                  <span class="text-secondary">Logic:</span> Sub-expression
+                  Handler
+                </li>
+              </ul>
+            </div>
+            <div
+              class="p-8 hairline-border bg-background rounded-lg hover:shadow-sm transition-shadow duration-300 reveal delay-300"
+            >
+              <div
+                class="w-12 h-12 bg-primary text-on-primary flex items-center justify-center rounded-DEFAULT mb-6"
+              >
+                <span class="material-symbols-outlined">memory</span>
+              </div>
+              <h3 class="font-headline-lg text-headline-lg text-primary mb-4 text-2xl">
+                Evaluation Engine
+              </h3>
+              <p class="font-body-md text-body-md text-secondary mb-4">
+                Executes the AST, managing lexical scoping and the sophisticated
+                implementation of closures.
+              </p>
+              <ul
+                class="font-label-caps text-label-caps text-primary space-y-2"
+              >
+                <li class="flex justify-between hairline-border-b pb-2">
+                  <span class="text-secondary">Execution:</span> AST Traversal
+                </li>
+                <li class="flex justify-between hairline-border-b pb-2">
+                  <span class="text-secondary">Memory:</span> Lexical Scoping &amp;
+                  Closures
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Conclusion -->
+      <section class="grid-container mb-section-gap text-center max-w-3xl mx-auto reveal">
+        <h2 class="font-headline-xl text-headline-xl text-primary mb-6">
+          Conclusion
+        </h2>
+        <p class="font-body-lg text-body-lg text-secondary">
+          Chotulang successfully demonstrates a complete, Turing-complete
+          system-level programming logic built from the ground up. It serves as
+          a testament to rigorous architectural planning and a commitment to
+          elegant, functional design principles.
+        </p>
+      </section>
+    </main>
+    <!-- Footer Component -->
+    <footer
+      class="w-full py-section-gap px-grid-margin flex flex-col md:flex-row justify-between items-center gap-base bg-surface-container-low border-t border-outline-variant"
+    >
+      <div class="font-label-caps text-label-caps font-bold text-primary">
+        © 2024 CHOTULANG. BUILT WITH PRECISION.
+      </div>
+      <div class="flex gap-6">
+        <a
+          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200"
+          href="https://github.com/idkshetty"
+          >Github</a
+        >
+        <a
+          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200"
+          href="#"
+          >Documentation</a
+        >
+        <a
+          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200"
+          href="#"
+          >License</a
+        >
+        <a
+          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200"
+          href="../index.html#contact"
+          >Contact</a
+        >
+      </div>
+    </footer>
+
+    <!-- Scripts Section -->
+    <script>
+      // Theme toggling for Case Study
+      const themeToggle = document.getElementById("themeToggle");
+
+      function updateThemeButton() {
+        const isDark = document.documentElement.classList.contains("dark");
+        if (themeToggle) {
+          const icon = themeToggle.querySelector("#themeIcon");
+          if (icon) {
+            icon.textContent = isDark ? "light_mode" : "dark_mode";
+          }
+        }
+      }
+
+      function loadTheme() {
+        const saved = localStorage.getItem("theme");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", prefersDark);
+        }
+        updateThemeButton();
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+          const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
+          localStorage.setItem("theme", current);
+          updateThemeButton();
+        });
+      }
+
+      loadTheme();
+
+      // Mobile Menu Toggle Logic
+      const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileMenuIcon = document.getElementById("mobileMenuIcon");
+
+      if (mobileMenuToggle && mobileMenu && mobileMenuIcon) {
+        mobileMenuToggle.addEventListener("click", () => {
+          const isHidden = mobileMenu.classList.contains("hidden");
+          if (isHidden) {
+            mobileMenu.classList.remove("hidden");
+            mobileMenuIcon.textContent = "close";
+          } else {
+            mobileMenu.classList.add("hidden");
+            mobileMenuIcon.textContent = "menu";
+          }
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            mobileMenu.classList.add("hidden");
+            mobileMenuIcon.textContent = "menu";
+          });
+        });
+      }
+
+      // Intersection Observer for scroll animations
+      document.addEventListener("DOMContentLoaded", () => {
+        // Trigger page fade-in
+        requestAnimationFrame(() => {
+          document.body.classList.add("page-loaded");
+        });
+
+        // Handle browser back button restores (bfcache)
+        window.addEventListener("pageshow", (event) => {
+          if (event.persisted) {
+            document.body.classList.add("page-loaded");
+          }
+        });
+
+        // Intercept local page links for smooth page fade-out
+        document.querySelectorAll("a").forEach(link => {
+          const href = link.getAttribute("href");
+          if (
+            href &&
+            !href.startsWith("#") &&
+            !href.startsWith("mailto:") &&
+            !href.startsWith("tel:") &&
+            link.target !== "_blank" &&
+            !link.hasAttribute("download") &&
+            (link.hostname === window.location.hostname || !href.includes("://"))
+          ) {
+            link.addEventListener("click", (e) => {
+              e.preventDefault();
+              document.body.classList.remove("page-loaded");
+              setTimeout(() => {
+                window.location.href = href;
+              }, 350); // match transition duration (0.35s)
+            });
+          }
+        });
+
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.1,
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        const revealElements = document.querySelectorAll(".reveal");
+        revealElements.forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>

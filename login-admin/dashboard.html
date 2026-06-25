@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Dashboard | Portfolio Manager</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Config -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Geist", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            spacing: {
+              "margin-mobile": "20px",
+              "section-gap": "160px",
+              "stack-lg": "48px",
+              "stack-md": "24px",
+              "stack-sm": "8px",
+              gutter: "24px",
+              "container-max": "1200px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Dark mode color overrides (Darker Charcoal Theme) */
+      .dark .bg-white {
+        background-color: #1a1a1a !important;
+      }
+      .dark .border-black {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .text-black,
+      .dark .text-black\/60,
+      .dark .text-black\/70,
+      .dark .text-black\/50 {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .dark .bg-white,
+      .dark .bg-gray-50 {
+        background-color: #1a1a1a !important;
+      }
+      .dark .bg-white\/90 {
+        background-color: rgba(26, 26, 26, 0.9) !important;
+      }
+      .dark .bg-white\/80 {
+        background-color: rgba(26, 26, 26, 0.8) !important;
+      }
+      .dark .bg-white\/70 {
+        background-color: rgba(26, 26, 26, 0.7) !important;
+      }
+      .dark .bg-white\/60 {
+        background-color: rgba(26, 26, 26, 0.6) !important;
+      }
+      .dark .hover\:text-black:hover {
+        color: #ffffff !important;
+      }
+      .dark .hover\:text-white:hover {
+        color: #ffffff !important;
+      }
+      .dark .hover\:bg-black:hover,
+      .dark .hover\:bg-black\/80:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .hover\:bg-white:hover,
+      .dark .hover\:bg-white\/90:hover,
+      .dark .hover\:bg-white\/80:hover,
+      .dark .hover\:bg-white\/70:hover,
+      .dark .hover\:bg-white\/60:hover,
+      .dark .hover\:bg-gray-50:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark body,
+      .dark html {
+        background: #121212;
+      }
+      .dark .bg-black {
+        background-color: #1a1a1a !important;
+      }
+
+      /* Active outline and tap-highlight reset */
+      button, a {
+        -webkit-tap-highlight-color: transparent !important;
+        outline: none !important;
+      }
+      button:focus, a:focus, button:active, a:active {
+        outline: none !important;
+      }
+      .dark .btn-dark-mode-white {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #ffffff !important;
+      }
+      .dark .btn-dark-mode-white:hover {
+        background-color: transparent !important;
+        color: #ffffff !important;
+      }
+
+      /* Modal configuration */
+      .modal {
+        display: none;
+      }
+      .modal.open {
+        display: flex;
+      }
+    </style>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (savedTheme === "light") {
+          document.documentElement.classList.remove("dark");
+        } else if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (error) {
+        console.warn("Theme initialization failed", error);
+      }
+    </script>
+  </head>
+  <body
+    class="bg-[#f7f6f3] text-black dark:bg-[#030712] dark:text-slate-100 font-sans antialiased selection:bg-black selection:text-white min-h-screen transition-colors duration-300"
+  >
+    <!-- Navigation / Header Component -->
+    <header
+      class="bg-white/90 dark:bg-[#0f1323]/90 backdrop-blur-md sticky top-0 w-full border-b border-black dark:border-white/10 z-50 transition-all duration-300"
+    >
+      <div
+        class="flex justify-between items-center px-8 py-4 max-w-container-max mx-auto"
+      >
+        <!-- Brand / Identity -->
+        <div>
+          <div class="font-mono text-[10px] uppercase tracking-widest font-bold text-black/50 dark:text-slate-400">
+            System Panel
+          </div>
+          <a
+            class="font-sans text-2xl font-bold tracking-tighter text-black dark:text-white hover:opacity-70 transition-opacity"
+            href="#"
+          >
+            Project Dashboard
+          </a>
+        </div>
+        <!-- Actions & Theme Toggle -->
+        <div class="flex items-center gap-4">
+          <button
+            id="themeToggle"
+            class="px-4 py-2 border border-black dark:border-white/10 text-black dark:text-white bg-white dark:bg-[#0f172a] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 flex items-center"
+            aria-label="Toggle dark mode"
+          >
+            <span id="themeIcon" class="material-symbols-outlined text-sm">dark_mode</span>
+          </button>
+          <button
+            id="logoutBtn"
+            class="px-6 py-2 border border-black dark:border-white/10 bg-white hover:bg-black hover:text-white dark:bg-[#0f172a] dark:text-white dark:hover:bg-white dark:hover:text-black font-sans text-sm font-bold uppercase tracking-wider transition-all duration-300"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-container-max mx-auto px-8 w-full py-12 flex flex-col gap-12">
+      <!-- Toolbar & Actions -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-black dark:border-white/10">
+        <div>
+          <h1 class="font-sans text-4xl md:text-5xl font-bold tracking-tighter text-black dark:text-white">
+            Project Manager
+          </h1>
+          <p class="font-sans text-lg text-black/70 dark:text-slate-300 max-w-2xl mt-2 leading-relaxed font-medium">
+            Use this panel to manage your portfolio project cards. Changes will update on the live site automatically.
+          </p>
+        </div>
+        <div>
+          <button
+            id="newProjectBtn"
+            class="px-8 py-4 bg-black text-white border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] dark:hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,0)] focus:outline-none btn-dark-mode-white"
+          >
+            + New Project
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Section -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <!-- Stat Card 1 -->
+        <div class="border border-black dark:border-white/10 bg-white dark:bg-[#0f172a] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)]">
+          <span class="font-mono text-xs uppercase tracking-widest text-black/60 dark:text-slate-400 font-bold">Total Projects</span>
+          <p class="font-sans text-4xl font-bold text-black dark:text-white mt-2" id="totalProjects">0</p>
+        </div>
+        <!-- Stat Card 2 -->
+        <div class="border border-black dark:border-white/10 bg-white dark:bg-[#0f172a] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)]">
+          <span class="font-mono text-xs uppercase tracking-widest text-black/60 dark:text-slate-400 font-bold">Live</span>
+          <p class="font-sans text-4xl font-bold text-emerald-600 dark:text-emerald-400 mt-2" id="activeProjects">0</p>
+        </div>
+        <!-- Stat Card 3 -->
+        <div class="border border-black dark:border-white/10 bg-white dark:bg-[#0f172a] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)]">
+          <span class="font-mono text-xs uppercase tracking-widest text-black/60 dark:text-slate-400 font-bold">Drafts</span>
+          <p class="font-sans text-4xl font-bold text-amber-600 dark:text-amber-400 mt-2" id="draftProjects">0</p>
+        </div>
+        <!-- Stat Card 4 -->
+        <div class="border border-black dark:border-white/10 bg-white dark:bg-[#0f172a] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)]">
+          <span class="font-mono text-xs uppercase tracking-widest text-black/60 dark:text-slate-400 font-bold">Needs Review</span>
+          <p class="font-sans text-4xl font-bold text-rose-600 dark:text-rose-400 mt-2" id="reviewProjects">0</p>
+        </div>
+      </div>
+
+      <!-- Filters & Search Section -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-[#0f172a] border border-black dark:border-white/10 p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)]">
+        <div>
+          <label for="searchInput" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Search Projects</label>
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="Search by title, tag, or description"
+            class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+          />
+        </div>
+        <div>
+          <label for="statusFilter" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Filter by Status</label>
+          <select
+            id="statusFilter"
+            class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+          >
+            <option value="">All statuses</option>
+            <option value="Draft">Draft</option>
+            <option value="Live">Live</option>
+            <option value="Review">Review</option>
+            <option value="Archived">Archived</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Projects Grid -->
+      <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projectGrid"></section>
+
+      <!-- Tips / Helper Banner -->
+      <div class="border border-black dark:border-white/10 bg-amber-50 dark:bg-[#0f172a] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)]">
+        <div class="flex gap-3 items-start">
+          <span class="material-symbols-outlined text-amber-700 dark:text-amber-500">lightbulb</span>
+          <p class="font-sans text-sm text-black/70 dark:text-slate-300 leading-relaxed font-medium">
+            <strong class="font-bold text-black dark:text-white">Tip:</strong> Use this project editor to manage card title, description, tags, status, and external links. If your home index.html is loaded, it pulls this dynamic dataset instantly!
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Project Form Modal Overlay -->
+    <div
+      class="modal fixed inset-0 hidden items-center justify-center p-6 bg-black/60 dark:bg-black/80 backdrop-blur-sm z-50 transition-opacity duration-300"
+      id="projectModal"
+    >
+      <div
+        class="modal-panel bg-white dark:bg-[#09101f] border border-black dark:border-white/10 p-8 max-w-3xl w-full shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_rgba(255,255,255,0.1)] relative max-h-[90vh] overflow-y-auto"
+      >
+        <div class="modal-header flex justify-between items-start gap-4 border-b border-black/10 dark:border-white/10 pb-4">
+          <div>
+            <h2 class="font-sans text-2xl font-bold text-black dark:text-white tracking-tight" id="modalTitle">New Project</h2>
+            <p class="font-sans text-sm text-black/50 dark:text-slate-400 mt-1">Edit card and case study content and publish instantly.</p>
+          </div>
+          <button
+            class="text-3xl text-black/60 dark:text-slate-400 hover:text-black dark:hover:text-white cursor-pointer"
+            id="closeModal"
+          >
+            &times;
+          </button>
+        </div>
+
+        <!-- Collapsible Accordion Container -->
+        <div class="flex flex-col gap-4 mt-6">
+          
+          <!-- Accordion 1: Card Basics -->
+          <div class="border border-black dark:border-white/10 rounded-lg overflow-hidden">
+            <button type="button" onclick="toggleAccordion('sectionCardBasics')" class="w-full bg-gray-50 dark:bg-[#0f172a] px-6 py-4 flex justify-between items-center border-b border-black dark:border-white/10 focus:outline-none select-none">
+              <span class="font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white">1. Card Basics</span>
+              <span id="icon-sectionCardBasics" class="material-symbols-outlined transition-transform duration-300 transform rotate-180">expand_more</span>
+            </button>
+            <div id="sectionCardBasics" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-[#09101f]">
+              <div class="md:col-span-2">
+                <label for="projectTitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Project Title</label>
+                <input
+                  id="projectTitle"
+                  type="text"
+                  placeholder="e.g. Know Your Plants"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label for="projectSubtitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Short Subtitle</label>
+                <input
+                  id="projectSubtitle"
+                  type="text"
+                  placeholder="e.g. Agritech · PWA · Data"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label for="projectStatus" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Status</label>
+                <select
+                  id="projectStatus"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                >
+                  <option value="Draft">Draft</option>
+                  <option value="Live">Live</option>
+                  <option value="Review">Review</option>
+                  <option value="Archived">Archived</option>
+                </select>
+              </div>
+              <div class="md:col-span-2">
+                <label for="projectTags" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Tags (comma separated)</label>
+                <input
+                  id="projectTags"
+                  type="text"
+                  placeholder="e.g. PWA, Agritech, Data"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="projectLink" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">External Link (optional)</label>
+                <input
+                  id="projectLink"
+                  type="url"
+                  placeholder="https://example.com/case-study"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="projectDescription" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Description</label>
+                <textarea
+                  id="projectDescription"
+                  placeholder="Write the project summary here"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[100px] resize-y"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion 2: Case Study Hero & Metadata -->
+          <div class="border border-black dark:border-white/10 rounded-lg overflow-hidden">
+            <button type="button" onclick="toggleAccordion('sectionHeroMeta')" class="w-full bg-gray-50 dark:bg-[#0f172a] px-6 py-4 flex justify-between items-center border-b border-black dark:border-white/10 focus:outline-none select-none">
+              <span class="font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white">2. Case Study Hero &amp; Metadata</span>
+              <span id="icon-sectionHeroMeta" class="material-symbols-outlined transition-transform duration-300 transform">expand_more</span>
+            </button>
+            <div id="sectionHeroMeta" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-[#09101f] hidden">
+              <div>
+                <label for="caseStudyPageLabel" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Category Label</label>
+                <input
+                  id="caseStudyPageLabel"
+                  type="text"
+                  placeholder="e.g. / LANGUAGE DESIGN /"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label for="caseStudyMetaProject" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Project Version Label</label>
+                <input
+                  id="caseStudyMetaProject"
+                  type="text"
+                  placeholder="e.g. Chotulang (Version 0.0.7)"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudyPageTitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Page Title (Headline)</label>
+                <input
+                  id="caseStudyPageTitle"
+                  type="text"
+                  placeholder="e.g. Designing &amp; Implementing Chotulang"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudyPageSubtitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Page Subtitle (Premise Intro)</label>
+                <textarea
+                  id="caseStudyPageSubtitle"
+                  placeholder="e.g. Chotulang is a dynamic, Python-compatible programming language..."
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[80px] resize-y"
+                ></textarea>
+              </div>
+              <div>
+                <label for="caseStudyMetaDeveloper" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Developer Name</label>
+                <input
+                  id="caseStudyMetaDeveloper"
+                  type="text"
+                  placeholder="e.g. Vishnu Deviprasad Shetty"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label for="caseStudyMetaType" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Project Type</label>
+                <input
+                  id="caseStudyMetaType"
+                  type="text"
+                  placeholder="e.g. Language Design &amp; Interpreter Development"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion 3: Media & Images -->
+          <div class="border border-black dark:border-white/10 rounded-lg overflow-hidden">
+            <button type="button" onclick="toggleAccordion('sectionMediaImages')" class="w-full bg-gray-50 dark:bg-[#0f172a] px-6 py-4 flex justify-between items-center border-b border-black dark:border-white/10 focus:outline-none select-none">
+              <span class="font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white">3. Media &amp; Images</span>
+              <span id="icon-sectionMediaImages" class="material-symbols-outlined transition-transform duration-300 transform">expand_more</span>
+            </button>
+            <div id="sectionMediaImages" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-[#09101f] hidden">
+              <div class="md:col-span-2">
+                <label for="caseStudyMediaTitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Visuals Section Title</label>
+                <input
+                  id="caseStudyMediaTitle"
+                  type="text"
+                  placeholder="e.g. Tooling &amp; Interface"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudyImage1Url" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Primary Image URL (IDE / Main Visual)</label>
+                <input
+                  id="caseStudyImage1Url"
+                  type="text"
+                  placeholder="e.g. https://example.com/screenshot1.png"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudyImage1Caption" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Primary Image Caption</label>
+                <input
+                  id="caseStudyImage1Caption"
+                  type="text"
+                  placeholder="e.g. VS Code Extension &amp; Syntax Highlighting"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label for="caseStudyImage2Url" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Secondary Image URL (Architecture / Diagram)</label>
+                <input
+                  id="caseStudyImage2Url"
+                  type="text"
+                  placeholder="e.g. https://example.com/screenshot2.png"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label for="caseStudyImage2Caption" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Secondary Image Caption</label>
+                <input
+                  id="caseStudyImage2Caption"
+                  type="text"
+                  placeholder="e.g. System Process Architecture &amp; Dataflow"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label for="caseStudyImage3Url" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Tertiary Image URL (Code / Additional)</label>
+                <input
+                  id="caseStudyImage3Url"
+                  type="text"
+                  placeholder="e.g. https://example.com/screenshot3.png"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div>
+                <label for="caseStudyImage3Caption" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Tertiary Image Caption</label>
+                <input
+                  id="caseStudyImage3Caption"
+                  type="text"
+                  placeholder="e.g. Detailed syntax representation and scoping rules"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              
+              <!-- Dynamic Additional Showcase Images (Gallery) -->
+              <div class="md:col-span-2 border-t border-black/10 dark:border-white/10 pt-6 mt-4">
+                <h4 class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-4">Additional Gallery Showcase Images</h4>
+                <div id="additionalImagesContainer" class="flex flex-col gap-4">
+                  <!-- Dynamic rows of URL, Caption, and Remove button will go here -->
+                </div>
+                <button
+                  type="button"
+                  id="addGalleryImageBtn"
+                  class="mt-4 px-4 py-2 border border-black dark:border-white/20 text-black dark:text-white bg-white dark:bg-[#0f172a] font-sans text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300 flex items-center gap-2 focus:outline-none"
+                >
+                  <span class="material-symbols-outlined text-sm">add</span> Add Gallery Image
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion 4: Narrative & Text -->
+          <div class="border border-black dark:border-white/10 rounded-lg overflow-hidden">
+            <button type="button" onclick="toggleAccordion('sectionNarrativeText')" class="w-full bg-gray-50 dark:bg-[#0f172a] px-6 py-4 flex justify-between items-center border-b border-black dark:border-white/10 focus:outline-none select-none">
+              <span class="font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white">4. Narrative &amp; Text</span>
+              <span id="icon-sectionNarrativeText" class="material-symbols-outlined transition-transform duration-300 transform">expand_more</span>
+            </button>
+            <div id="sectionNarrativeText" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-[#09101f] hidden">
+              <div>
+                <label for="caseStudyPremiseTitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Summary Header (Premise)</label>
+                <input
+                  id="caseStudyPremiseTitle"
+                  type="text"
+                  placeholder="default: EXECUTIVE SUMMARY"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudySummaryContent" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Executive Summary Content</label>
+                <textarea
+                  id="caseStudySummaryContent"
+                  placeholder="Describe the summary narrative..."
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[100px] resize-y"
+                ></textarea>
+              </div>
+              <div>
+                <label for="caseStudyProblemTitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Problem Header</label>
+                <input
+                  id="caseStudyProblemTitle"
+                  type="text"
+                  placeholder="default: PROBLEM &amp; MOTIVATION"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudyProblemContent" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Problem &amp; Motivation Content</label>
+                <textarea
+                  id="caseStudyProblemContent"
+                  placeholder="Explain the problem statement and motivation..."
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[100px] resize-y"
+                ></textarea>
+              </div>
+              <div>
+                <label for="caseStudyConclusionTitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Conclusion Header</label>
+                <input
+                  id="caseStudyConclusionTitle"
+                  type="text"
+                  placeholder="default: Conclusion"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudyConclusionContent" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Conclusion Content</label>
+                <textarea
+                  id="caseStudyConclusionContent"
+                  placeholder="Write the closing wrap-up and future work details..."
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[100px] resize-y"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion 5: System Architecture -->
+          <div class="border border-black dark:border-white/10 rounded-lg overflow-hidden">
+            <button type="button" onclick="toggleAccordion('sectionSystemArch')" class="w-full bg-gray-50 dark:bg-[#0f172a] px-6 py-4 flex justify-between items-center border-b border-black dark:border-white/10 focus:outline-none select-none">
+              <span class="font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white">5. System Architecture</span>
+              <span id="icon-sectionSystemArch" class="material-symbols-outlined transition-transform duration-300 transform">expand_more</span>
+            </button>
+            <div id="sectionSystemArch" class="p-6 grid grid-cols-1 gap-6 bg-white dark:bg-[#09101f] hidden">
+              <div>
+                <label for="caseStudyArchTitle" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Architecture Section Title</label>
+                <input
+                  id="caseStudyArchTitle"
+                  type="text"
+                  placeholder="default: System Architecture"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <hr class="border-black/10 dark:border-white/10" />
+              <!-- Col 1 -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-l-2 border-black/30 dark:border-white/30 pl-4">
+                <div class="md:col-span-2 font-sans font-bold text-xs uppercase text-black/60 dark:text-slate-400">Column 1 (e.g. Lexer)</div>
+                <div>
+                  <label for="caseStudyArch1Title" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Title</label>
+                  <input
+                    id="caseStudyArch1Title"
+                    type="text"
+                    placeholder="e.g. Lexical Analyzer"
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                  />
+                </div>
+                <div class="md:col-span-2">
+                  <label for="caseStudyArch1Desc" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Description</label>
+                  <textarea
+                    id="caseStudyArch1Desc"
+                    placeholder="Brief description of the component..."
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[60px] resize-y"
+                  ></textarea>
+                </div>
+                <div class="md:col-span-2">
+                  <label for="caseStudyArch1Bullets" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Bullets (comma separated, optionally label:value)</label>
+                  <textarea
+                    id="caseStudyArch1Bullets"
+                    placeholder="e.g. Token Stream: converts code, Regex Matching: fast match"
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[60px] resize-y"
+                  ></textarea>
+                </div>
+              </div>
+              <hr class="border-black/10 dark:border-white/10" />
+              <!-- Col 2 -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-l-2 border-black/30 dark:border-white/30 pl-4">
+                <div class="md:col-span-2 font-sans font-bold text-xs uppercase text-black/60 dark:text-slate-400">Column 2 (e.g. Parser)</div>
+                <div>
+                  <label for="caseStudyArch2Title" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Title</label>
+                  <input
+                    id="caseStudyArch2Title"
+                    type="text"
+                    placeholder="e.g. Syntax Parser"
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                  />
+                </div>
+                <div class="md:col-span-2">
+                  <label for="caseStudyArch2Desc" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Description</label>
+                  <textarea
+                    id="caseStudyArch2Desc"
+                    placeholder="Brief description of the component..."
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[60px] resize-y"
+                  ></textarea>
+                </div>
+                <div class="md:col-span-2">
+                  <label for="caseStudyArch2Bullets" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Bullets (comma separated, optionally label:value)</label>
+                  <textarea
+                    id="caseStudyArch2Bullets"
+                    placeholder="e.g. AST Tree: syntax map, Error Recovery: clear pointers"
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[60px] resize-y"
+                  ></textarea>
+                </div>
+              </div>
+              <hr class="border-black/10 dark:border-white/10" />
+              <!-- Col 3 -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-l-2 border-black/30 dark:border-white/30 pl-4">
+                <div class="md:col-span-2 font-sans font-bold text-xs uppercase text-black/60 dark:text-slate-400">Column 3 (e.g. Evaluator)</div>
+                <div>
+                  <label for="caseStudyArch3Title" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Title</label>
+                  <input
+                    id="caseStudyArch3Title"
+                    type="text"
+                    placeholder="e.g. Evaluation Engine"
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                  />
+                </div>
+                <div class="md:col-span-2">
+                  <label for="caseStudyArch3Desc" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Description</label>
+                  <textarea
+                    id="caseStudyArch3Desc"
+                    placeholder="Brief description of the component..."
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[60px] resize-y"
+                  ></textarea>
+                </div>
+                <div class="md:col-span-2">
+                  <label for="caseStudyArch3Bullets" class="font-mono text-xs uppercase tracking-widest text-black/50 dark:text-slate-400 mb-1 block">Bullets (comma separated, optionally label:value)</label>
+                  <textarea
+                    id="caseStudyArch3Bullets"
+                    placeholder="e.g. Execution: runs trees, Variable Scopes: strict lookup"
+                    class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300 min-h-[60px] resize-y"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion 6: Links & Footer -->
+          <div class="border border-black dark:border-white/10 rounded-lg overflow-hidden">
+            <button type="button" onclick="toggleAccordion('sectionLinksFooter')" class="w-full bg-gray-50 dark:bg-[#0f172a] px-6 py-4 flex justify-between items-center border-b border-black dark:border-white/10 focus:outline-none select-none">
+              <span class="font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white">6. Links &amp; Footer</span>
+              <span id="icon-sectionLinksFooter" class="material-symbols-outlined transition-transform duration-300 transform">expand_more</span>
+            </button>
+            <div id="sectionLinksFooter" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6 bg-white dark:bg-[#09101f] hidden">
+              <div class="md:col-span-2">
+                <label for="caseStudyGithubLink" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Github Link (URL)</label>
+                <input
+                  id="caseStudyGithubLink"
+                  type="url"
+                  placeholder="https://github.com/username/project"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudyDocsLink" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">Documentation Link (URL)</label>
+                <input
+                  id="caseStudyDocsLink"
+                  type="url"
+                  placeholder="https://docs.example.com/project"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <label for="caseStudyLicenseLink" class="font-mono text-xs uppercase tracking-widest font-bold text-black/60 dark:text-slate-400 mb-2 block">License Link (URL)</label>
+                <input
+                  id="caseStudyLicenseLink"
+                  type="url"
+                  placeholder="https://github.com/username/project/blob/main/LICENSE"
+                  class="w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-4 py-3 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+                />
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="flex gap-4 justify-end mt-8 pt-4 border-t border-black/10 dark:border-white/10">
+          <button
+            class="px-6 py-3 border border-black dark:border-white/20 text-black dark:text-white bg-white dark:bg-[#0f172a] font-sans text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300"
+            id="cancelProjectBtn"
+          >
+            Cancel
+          </button>
+          <button
+            class="px-6 py-3 bg-black text-white border border-black font-sans text-xs font-bold uppercase tracking-wider hover:bg-white hover:text-black transition-colors duration-300 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,0)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.15)] dark:hover:shadow-[0px_0px_0px_0px_rgba(0,0,0,0)] focus:outline-none btn-dark-mode-white"
+            id="saveProjectBtn"
+          >
+            Save Project
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK & Controller logic -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        push,
+        update,
+        remove,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+      // Auth validation immediately
+      function checkAuth() {
+        if (sessionStorage.getItem("isAdmin") !== "true") {
+          window.location.href = "login.html";
+        }
+      }
+      checkAuth();
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCxc67ZQiY4hHfAkvNq1emVC8qUoT_diBQ",
+        authDomain: "portfoilio-manager.firebaseapp.com",
+        databaseURL: "https://portfoilio-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "portfoilio-manager",
+        storageBucket: "portfoilio-manager.appspot.com",
+        messagingSenderId: "1065030502150",
+        appId: "1:1065030502150:web:27e2601523587f4ac64087",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const projectsRef = ref(db, "portfolioProjects");
+
+      const logoutBtn = document.getElementById("logoutBtn");
+      const newProjectBtn = document.getElementById("newProjectBtn");
+      const projectModal = document.getElementById("projectModal");
+      const closeModal = document.getElementById("closeModal");
+      const cancelProjectBtn = document.getElementById("cancelProjectBtn");
+      const saveProjectBtn = document.getElementById("saveProjectBtn");
+      const searchInput = document.getElementById("searchInput");
+      const statusFilter = document.getElementById("statusFilter");
+      const projectGrid = document.getElementById("projectGrid");
+      const modalTitle = document.getElementById("modalTitle");
+      const projectTitleInput = document.getElementById("projectTitle");
+      const projectSubtitleInput = document.getElementById("projectSubtitle");
+      const projectDescriptionInput = document.getElementById("projectDescription");
+      const projectTagsInput = document.getElementById("projectTags");
+      const projectStatusInput = document.getElementById("projectStatus");
+      const projectLinkInput = document.getElementById("projectLink");
+      const totalProjects = document.getElementById("totalProjects");
+      const activeProjects = document.getElementById("activeProjects");
+      const draftProjects = document.getElementById("draftProjects");
+      const reviewProjects = document.getElementById("reviewProjects");
+
+      // Case Study fields
+      const caseStudyPageLabelInput = document.getElementById("caseStudyPageLabel");
+      const caseStudyPageTitleInput = document.getElementById("caseStudyPageTitle");
+      const caseStudyPageSubtitleInput = document.getElementById("caseStudyPageSubtitle");
+      const caseStudyMetaProjectInput = document.getElementById("caseStudyMetaProject");
+      const caseStudyMetaDeveloperInput = document.getElementById("caseStudyMetaDeveloper");
+      const caseStudyMetaTypeInput = document.getElementById("caseStudyMetaType");
+      const caseStudyMediaTitleInput = document.getElementById("caseStudyMediaTitle");
+      const caseStudyImage1UrlInput = document.getElementById("caseStudyImage1Url");
+      const caseStudyImage1CaptionInput = document.getElementById("caseStudyImage1Caption");
+      const caseStudyImage2UrlInput = document.getElementById("caseStudyImage2Url");
+      const caseStudyImage2CaptionInput = document.getElementById("caseStudyImage2Caption");
+      const caseStudyImage3UrlInput = document.getElementById("caseStudyImage3Url");
+      const caseStudyImage3CaptionInput = document.getElementById("caseStudyImage3Caption");
+      const caseStudyPremiseTitleInput = document.getElementById("caseStudyPremiseTitle");
+      const caseStudySummaryContentInput = document.getElementById("caseStudySummaryContent");
+      const caseStudyProblemTitleInput = document.getElementById("caseStudyProblemTitle");
+      const caseStudyProblemContentInput = document.getElementById("caseStudyProblemContent");
+      const caseStudyConclusionTitleInput = document.getElementById("caseStudyConclusionTitle");
+      const caseStudyConclusionContentInput = document.getElementById("caseStudyConclusionContent");
+      const caseStudyArchTitleInput = document.getElementById("caseStudyArchTitle");
+      const caseStudyArch1TitleInput = document.getElementById("caseStudyArch1Title");
+      const caseStudyArch1DescInput = document.getElementById("caseStudyArch1Desc");
+      const caseStudyArch1BulletsInput = document.getElementById("caseStudyArch1Bullets");
+      const caseStudyArch2TitleInput = document.getElementById("caseStudyArch2Title");
+      const caseStudyArch2DescInput = document.getElementById("caseStudyArch2Desc");
+      const caseStudyArch2BulletsInput = document.getElementById("caseStudyArch2Bullets");
+      const caseStudyArch3TitleInput = document.getElementById("caseStudyArch3Title");
+      const caseStudyArch3DescInput = document.getElementById("caseStudyArch3Desc");
+      const caseStudyArch3BulletsInput = document.getElementById("caseStudyArch3Bullets");
+      const caseStudyGithubLinkInput = document.getElementById("caseStudyGithubLink");
+      const caseStudyDocsLinkInput = document.getElementById("caseStudyDocsLink");
+      const caseStudyLicenseLinkInput = document.getElementById("caseStudyLicenseLink");
+
+      const additionalImagesContainer = document.getElementById("additionalImagesContainer");
+      const addGalleryImageBtn = document.getElementById("addGalleryImageBtn");
+
+      let currentProjectId = null;
+      let projectSnapshot = {};
+
+      function createAdditionalImageRow(url = "", caption = "") {
+        const row = document.createElement("div");
+        row.className = "gallery-image-row grid grid-cols-1 md:grid-cols-12 gap-4 items-end border-b border-dashed border-black/10 dark:border-white/10 pb-4";
+        
+        row.innerHTML = `
+          <div class="md:col-span-6">
+            <label class="font-mono text-[10px] uppercase tracking-widest text-black/50 dark:text-slate-500 mb-1 block">Image URL</label>
+            <input
+              type="text"
+              placeholder="https://example.com/image.png"
+              class="gallery-image-url w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-xs focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+              value="${url}"
+            />
+          </div>
+          <div class="md:col-span-5">
+            <label class="font-mono text-[10px] uppercase tracking-widest text-black/50 dark:text-slate-500 mb-1 block">Caption</label>
+            <input
+              type="text"
+              placeholder="Description of this visual"
+              class="gallery-image-caption w-full border border-black dark:border-white/20 bg-white dark:bg-[#060a16] text-black dark:text-white px-3 py-2 font-sans text-xs focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-all duration-300"
+              value="${caption}"
+            />
+          </div>
+          <div class="md:col-span-1 flex justify-end">
+            <button
+              type="button"
+              class="remove-gallery-row-btn p-2 border border-rose-600/30 dark:border-rose-400/30 text-rose-600 dark:text-rose-400 hover:bg-rose-600 hover:text-white dark:hover:bg-rose-400 dark:hover:text-black transition-colors duration-300 flex items-center justify-center"
+              aria-label="Remove image"
+            >
+              <span class="material-symbols-outlined text-sm">delete</span>
+            </button>
+          </div>
+        `;
+        
+        row.querySelector(".remove-gallery-row-btn").addEventListener("click", () => {
+          row.remove();
+        });
+        
+        return row;
+      }
+
+      window.toggleAccordion = function(id) {
+        const panel = document.getElementById(id);
+        const icon = document.getElementById("icon-" + id);
+        if (!panel || !icon) return;
+        const isHidden = panel.classList.contains("hidden");
+        if (isHidden) {
+          panel.classList.remove("hidden");
+          icon.classList.add("rotate-180");
+        } else {
+          panel.classList.add("hidden");
+          icon.classList.remove("rotate-180");
+        }
+      };
+
+      function resetAccordions() {
+        const panels = [
+          "sectionCardBasics",
+          "sectionHeroMeta",
+          "sectionMediaImages",
+          "sectionNarrativeText",
+          "sectionSystemArch",
+          "sectionLinksFooter"
+        ];
+        panels.forEach((id, idx) => {
+          const panel = document.getElementById(id);
+          const icon = document.getElementById("icon-" + id);
+          if (!panel || !icon) return;
+          if (idx === 0) {
+            panel.classList.remove("hidden");
+            icon.classList.add("rotate-180");
+          } else {
+            panel.classList.add("hidden");
+            icon.classList.remove("rotate-180");
+          }
+        });
+      }
+
+      function openModal(edit = false, project = null) {
+        resetAccordions();
+        projectModal.classList.add("open");
+        if (edit && project) {
+          modalTitle.textContent = "Edit Project";
+          projectTitleInput.value = project.title || "";
+          projectSubtitleInput.value = project.subtitle || "";
+          projectDescriptionInput.value = project.description || "";
+          projectTagsInput.value = (project.tags || []).join(", ");
+          projectStatusInput.value = project.status || "Draft";
+          projectLinkInput.value = project.link || "";
+          currentProjectId = project.id;
+
+          const cs = project.caseStudy || {};
+          caseStudyPageLabelInput.value = cs.pageLabel || "";
+          caseStudyPageTitleInput.value = cs.pageTitle || "";
+          caseStudyPageSubtitleInput.value = cs.pageSubtitle || "";
+          caseStudyMetaProjectInput.value = cs.metaProject || "";
+          caseStudyMetaDeveloperInput.value = cs.metaDeveloper || "";
+          caseStudyMetaTypeInput.value = cs.metaType || "";
+          caseStudyMediaTitleInput.value = cs.mediaTitle || "";
+          caseStudyImage1UrlInput.value = cs.image1Url || "";
+          caseStudyImage1CaptionInput.value = cs.image1Caption || "";
+          caseStudyImage2UrlInput.value = cs.image2Url || "";
+          caseStudyImage2CaptionInput.value = cs.image2Caption || "";
+          caseStudyImage3UrlInput.value = cs.image3Url || "";
+          caseStudyImage3CaptionInput.value = cs.image3Caption || "";
+          caseStudyPremiseTitleInput.value = cs.premiseTitle || "";
+          caseStudySummaryContentInput.value = cs.summaryContent || "";
+          caseStudyProblemTitleInput.value = cs.problemTitle || "";
+          caseStudyProblemContentInput.value = cs.problemContent || "";
+          caseStudyConclusionTitleInput.value = cs.conclusionTitle || "";
+          caseStudyConclusionContentInput.value = cs.conclusionContent || "";
+          caseStudyArchTitleInput.value = cs.archTitle || "";
+          caseStudyArch1TitleInput.value = cs.arch1Title || "";
+          caseStudyArch1DescInput.value = cs.arch1Desc || "";
+          caseStudyArch1BulletsInput.value = cs.arch1Bullets || "";
+          caseStudyArch2TitleInput.value = cs.arch2Title || "";
+          caseStudyArch2DescInput.value = cs.arch2Desc || "";
+          caseStudyArch2BulletsInput.value = cs.arch2Bullets || "";
+          caseStudyArch3TitleInput.value = cs.arch3Title || "";
+          caseStudyArch3DescInput.value = cs.arch3Desc || "";
+          caseStudyArch3BulletsInput.value = cs.arch3Bullets || "";
+          caseStudyGithubLinkInput.value = cs.githubLink || "";
+          caseStudyDocsLinkInput.value = cs.docsLink || "";
+          caseStudyLicenseLinkInput.value = cs.licenseLink || "";
+
+          // Populate dynamic gallery rows
+          additionalImagesContainer.innerHTML = "";
+          if (cs.additionalImages && Array.isArray(cs.additionalImages)) {
+            cs.additionalImages.forEach(img => {
+              additionalImagesContainer.appendChild(createAdditionalImageRow(img.url, img.caption));
+            });
+          }
+        } else {
+          modalTitle.textContent = "New Project";
+          projectTitleInput.value = "";
+          projectSubtitleInput.value = "";
+          projectDescriptionInput.value = "";
+          projectTagsInput.value = "";
+          projectStatusInput.value = "Draft";
+          projectLinkInput.value = "";
+          currentProjectId = null;
+
+          additionalImagesContainer.innerHTML = "";
+
+          caseStudyPageLabelInput.value = "";
+          caseStudyPageTitleInput.value = "";
+          caseStudyPageSubtitleInput.value = "";
+          caseStudyMetaProjectInput.value = "";
+          caseStudyMetaDeveloperInput.value = "";
+          caseStudyMetaTypeInput.value = "";
+          caseStudyMediaTitleInput.value = "";
+          caseStudyImage1UrlInput.value = "";
+          caseStudyImage1CaptionInput.value = "";
+          caseStudyImage2UrlInput.value = "";
+          caseStudyImage2CaptionInput.value = "";
+          caseStudyImage3UrlInput.value = "";
+          caseStudyImage3CaptionInput.value = "";
+          caseStudyPremiseTitleInput.value = "";
+          caseStudySummaryContentInput.value = "";
+          caseStudyProblemTitleInput.value = "";
+          caseStudyProblemContentInput.value = "";
+          caseStudyConclusionTitleInput.value = "";
+          caseStudyConclusionContentInput.value = "";
+          caseStudyArchTitleInput.value = "";
+          caseStudyArch1TitleInput.value = "";
+          caseStudyArch1DescInput.value = "";
+          caseStudyArch1BulletsInput.value = "";
+          caseStudyArch2TitleInput.value = "";
+          caseStudyArch2DescInput.value = "";
+          caseStudyArch2BulletsInput.value = "";
+          caseStudyArch3TitleInput.value = "";
+          caseStudyArch3DescInput.value = "";
+          caseStudyArch3BulletsInput.value = "";
+          caseStudyGithubLinkInput.value = "";
+          caseStudyDocsLinkInput.value = "";
+          caseStudyLicenseLinkInput.value = "";
+        }
+      }
+
+      function closeProjectModal() {
+        projectModal.classList.remove("open");
+        currentProjectId = null;
+      }
+
+      function renderProjects() {
+        projectGrid.innerHTML = "";
+        const query = searchInput.value.toLowerCase();
+        const status = statusFilter.value;
+
+        const entries = Object.entries(projectSnapshot || {});
+        let visibleCount = 0;
+        let liveCount = 0;
+        let draftCount = 0;
+        let reviewCount = 0;
+
+        entries.forEach(([id, project]) => {
+          if (!project || !project.title) return;
+          const searchText = [project.title, project.subtitle, project.description, (project.tags || []).join(" ")]
+            .join(" ")
+            .toLowerCase();
+
+          if (query && !searchText.includes(query)) return;
+          if (status && project.status !== status) return;
+
+          visibleCount += 1;
+          if (project.status === "Live") liveCount += 1;
+          if (project.status === "Draft") draftCount += 1;
+          if (project.status === "Review") reviewCount += 1;
+
+          const card = document.createElement("article");
+          card.className = "group bg-white dark:bg-[#0f172a] border border-black dark:border-white/10 flex flex-col hover:-translate-y-2 transition-all duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)] dark:hover:shadow-[12px_12px_0px_0px_rgba(255,255,255,0.12)] p-8 gap-6";
+          
+          const tagsHtml = (project.tags || []).map(tag => 
+            `<span class="border border-black dark:border-white/20 text-[10px] uppercase font-bold tracking-widest text-black dark:text-white px-3 py-1.5">${tag.trim()}</span>`
+          ).join("");
+
+          const statusColors = {
+            Live: "bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900/50",
+            Review: "bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-900/50",
+            Archived: "bg-gray-100 text-gray-800 border-gray-300 dark:bg-gray-800/40 dark:text-gray-300 dark:border-gray-700/50",
+            Draft: "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900/50"
+          };
+          const statusStyle = statusColors[project.status] || statusColors.Draft;
+
+          card.innerHTML = `
+            <div class="flex justify-between items-start gap-4 flex-wrap border-b border-black/10 dark:border-white/10 pb-4">
+              <div>
+                <span class="font-mono text-xs text-black/50 dark:text-slate-400 uppercase tracking-wider font-bold block mb-1">
+                  ${project.subtitle || "No Subtitle"}
+                </span>
+                <h3 class="font-sans font-bold text-black dark:text-white text-2xl tracking-tight group-hover:underline underline-offset-4 decoration-2">
+                  ${project.title}
+                </h3>
+              </div>
+              <span class="font-mono text-[10px] font-bold uppercase border px-2.5 py-1 tracking-widest ${statusStyle}">
+                ${project.status || "Draft"}
+              </span>
+            </div>
+            
+            <p class="font-sans text-base text-black/70 dark:text-slate-300 leading-relaxed flex-grow">
+              ${project.description || "No description added yet."}
+            </p>
+
+            <div class="flex flex-wrap gap-2">
+              ${tagsHtml || "<span class='font-mono text-xs text-black/40 dark:text-white/40'>No tags</span>"}
+            </div>
+
+            <div class="border-t border-black/10 dark:border-white/10 pt-4 flex flex-col gap-4">
+              <div class="flex justify-between items-center text-xs font-mono font-bold text-black/40 dark:text-slate-400">
+                <span>ID: ${id}</span>
+                ${project.link ? `<a href="${project.link}" target="_blank" class="flex items-center gap-1 text-black dark:text-white hover:underline">Link <span class="material-symbols-outlined text-xs">north_east</span></a>` : ""}
+              </div>
+              <div class="flex gap-3">
+                <button class="flex-1 py-2 bg-white dark:bg-[#0f172a] text-black dark:text-white border border-black dark:border-white/20 font-sans text-xs font-bold uppercase tracking-wider hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors duration-300" data-action="edit" data-id="${id}">
+                  Edit
+                </button>
+                <button class="flex-1 py-2 bg-rose-50 dark:bg-rose-950/20 text-rose-600 dark:text-rose-400 border border-rose-600/30 dark:border-rose-400/30 font-sans text-xs font-bold uppercase tracking-wider hover:bg-rose-600 hover:text-white dark:hover:bg-rose-400 dark:hover:text-black transition-colors duration-300" data-action="delete" data-id="${id}">
+                  Delete
+                </button>
+              </div>
+            </div>
+          `;
+
+          projectGrid.appendChild(card);
+        });
+
+        totalProjects.textContent = entries.length;
+        activeProjects.textContent = liveCount;
+        draftProjects.textContent = draftCount;
+        reviewProjects.textContent = reviewCount;
+
+        if (projectGrid.innerHTML === "") {
+          projectGrid.innerHTML = `
+            <div class="col-span-full text-center py-12 border border-black/10 dark:border-white/10 bg-white dark:bg-[#0f172a] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.08)]">
+              <p class="font-sans text-base text-black/70 dark:text-slate-400">No projects match your filters yet. Add a new project to get started.</p>
+            </div>
+          `;
+        }
+      }
+
+      function submitProject() {
+        const title = projectTitleInput.value.trim();
+        if (!title) {
+          alert("Please provide a project title.");
+          return;
+        }
+
+        const project = {
+          title: title,
+          subtitle: projectSubtitleInput.value.trim(),
+          description: projectDescriptionInput.value.trim(),
+          tags: projectTagsInput.value
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter(Boolean),
+          status: projectStatusInput.value,
+          link: projectLinkInput.value.trim(),
+          updatedAt: Date.now(),
+          caseStudy: {
+            pageLabel: caseStudyPageLabelInput.value.trim(),
+            pageTitle: caseStudyPageTitleInput.value.trim(),
+            pageSubtitle: caseStudyPageSubtitleInput.value.trim(),
+            metaProject: caseStudyMetaProjectInput.value.trim(),
+            metaDeveloper: caseStudyMetaDeveloperInput.value.trim(),
+            metaType: caseStudyMetaTypeInput.value.trim(),
+            mediaTitle: caseStudyMediaTitleInput.value.trim(),
+            image1Url: caseStudyImage1UrlInput.value.trim(),
+            image1Caption: caseStudyImage1CaptionInput.value.trim(),
+            image2Url: caseStudyImage2UrlInput.value.trim(),
+            image2Caption: caseStudyImage2CaptionInput.value.trim(),
+            image3Url: caseStudyImage3UrlInput.value.trim(),
+            image3Caption: caseStudyImage3CaptionInput.value.trim(),
+            premiseTitle: caseStudyPremiseTitleInput.value.trim(),
+            summaryContent: caseStudySummaryContentInput.value.trim(),
+            problemTitle: caseStudyProblemTitleInput.value.trim(),
+            problemContent: caseStudyProblemContentInput.value.trim(),
+            conclusionTitle: caseStudyConclusionTitleInput.value.trim(),
+            conclusionContent: caseStudyConclusionContentInput.value.trim(),
+            archTitle: caseStudyArchTitleInput.value.trim(),
+            arch1Title: caseStudyArch1TitleInput.value.trim(),
+            arch1Desc: caseStudyArch1DescInput.value.trim(),
+            arch1Bullets: caseStudyArch1BulletsInput.value.trim(),
+            arch2Title: caseStudyArch2TitleInput.value.trim(),
+            arch2Desc: caseStudyArch2DescInput.value.trim(),
+            arch2Bullets: caseStudyArch2BulletsInput.value.trim(),
+            arch3Title: caseStudyArch3TitleInput.value.trim(),
+            arch3Desc: caseStudyArch3DescInput.value.trim(),
+            arch3Bullets: caseStudyArch3BulletsInput.value.trim(),
+            githubLink: caseStudyGithubLinkInput.value.trim(),
+            docsLink: caseStudyDocsLinkInput.value.trim(),
+            licenseLink: caseStudyLicenseLinkInput.value.trim(),
+            additionalImages: Array.from(additionalImagesContainer.querySelectorAll(".gallery-image-row")).map(row => {
+              const urlInput = row.querySelector(".gallery-image-url");
+              const capInput = row.querySelector(".gallery-image-caption");
+              return {
+                url: urlInput ? urlInput.value.trim() : "",
+                caption: capInput ? capInput.value.trim() : ""
+              };
+            }).filter(img => img.url !== "")
+          }
+        };
+
+        if (currentProjectId) {
+          if (!project.link) {
+            project.link = `projects/project.html?id=${currentProjectId}`;
+          }
+          update(ref(db, `portfolioProjects/${currentProjectId}`), project);
+          closeProjectModal();
+        } else {
+          const newProjectRef = push(projectsRef);
+          const newId = newProjectRef.key;
+          if (!project.link) {
+            project.link = `projects/project.html?id=${newId}`;
+          }
+          update(newProjectRef, project);
+          closeProjectModal();
+        }
+      }
+
+      function deleteProject(id) {
+        if (confirm("Delete this project permanently?")) {
+          remove(ref(db, `portfolioProjects/${id}`));
+        }
+      }
+
+      function initEventListeners() {
+        newProjectBtn.addEventListener("click", () => openModal(false));
+        closeModal.addEventListener("click", closeProjectModal);
+        cancelProjectBtn.addEventListener("click", closeProjectModal);
+        saveProjectBtn.addEventListener("click", submitProject);
+        
+        if (addGalleryImageBtn) {
+          addGalleryImageBtn.addEventListener("click", () => {
+            additionalImagesContainer.appendChild(createAdditionalImageRow("", ""));
+          });
+        }
+        logoutBtn.addEventListener("click", () => {
+          sessionStorage.removeItem("isAdmin");
+          window.location.href = "login.html";
+        });
+
+        searchInput.addEventListener("input", renderProjects);
+        statusFilter.addEventListener("change", renderProjects);
+
+        projectGrid.addEventListener("click", (event) => {
+          const action = event.target.getAttribute("data-action");
+          const id = event.target.getAttribute("data-id");
+          if (!action || !id) return;
+
+          if (action === "edit") {
+            const project = projectSnapshot[id];
+            openModal(true, { ...project, id });
+          }
+          if (action === "delete") {
+            deleteProject(id);
+          }
+        });
+
+        projectModal.addEventListener("click", (event) => {
+          if (event.target === projectModal) {
+            closeProjectModal();
+          }
+        });
+      }
+
+      function attachProjectListener() {
+        onValue(projectsRef, (snapshot) => {
+          projectSnapshot = snapshot.val() || {};
+          renderProjects();
+        });
+      }
+
+      // Theme toggle handlers
+      const themeToggle = document.getElementById("themeToggle");
+
+      function updateThemeButton() {
+        const isDark = document.documentElement.classList.contains("dark");
+        if (themeToggle) {
+          const icon = themeToggle.querySelector("#themeIcon");
+          if (icon) {
+            icon.textContent = isDark ? "light_mode" : "dark_mode";
+          }
+        }
+      }
+
+      function loadTheme() {
+        const saved = localStorage.getItem("theme");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", prefersDark);
+        }
+        updateThemeButton();
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+          const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
+          localStorage.setItem("theme", current);
+          updateThemeButton();
+        });
+      }
+
+      loadTheme();
+      initEventListeners();
+      attachProjectListener();
+    </script>
+  </body>
+</html>

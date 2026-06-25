@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | Portfolio Manager</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f6f5f2;
+      font-family: 'Geist', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #111;
+      animation: fadeInBody 1s ease forwards;
+    }
+
+    @keyframes fadeInBody {
+      0% {
+        opacity: 0;
+        transform: scale(1.02);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .login-container {
+      background: #fff;
+      padding: 50px 40px;
+      border-radius: 24px;
+      box-shadow: 12px 12px 0px rgba(0, 0, 0, 0.08);
+      border: 1px solid #000;
+      width: 100%;
+      max-width: 420px;
+      text-align: left;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInForm 1.2s ease forwards;
+    }
+
+    @keyframes fadeInForm {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 24px;
+      padding: 12px 18px;
+      background-color: #000;
+      color: #fff;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid #000;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #1da851;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(37, 211, 102, 0.4);
+    }
+
+    .login-container h2 {
+      font-weight: 800;
+      font-size: 34px;
+      margin-bottom: 22px;
+      color: #000;
+    }
+
+    .login-container label {
+      display: block;
+      text-align: left;
+      font-size: 13px;
+      margin-bottom: 8px;
+      margin-top: 20px;
+      color: #444;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #000;
+      border-radius: 14px;
+      background: #f8f7f4;
+      color: #111;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .login-container input:focus {
+      border-color: #000;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+      outline: none;
+    }
+
+    .login-container button {
+      width: 100%;
+      margin-top: 30px;
+      padding: 16px 0;
+      border: 1px solid #000;
+      border-radius: 14px;
+      background-color: #000;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.08);
+      transition: all 0.2s ease;
+    }
+
+    .login-container button:hover {
+      background-color: #111;
+      transform: translateY(-2px);
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+
+    #loginMessage {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #e74c3c;
+      min-height: 18px;
+      transition: all 0.3s ease;
+    }
+
+    @media(max-width: 420px) {
+      .login-container {
+        padding: 40px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-container">
+    <a href="../index.html" class="back-button"><span class="material-symbols-outlined">arrow_back</span> Back</a>
+    <h2>Admin Login</h2>
+    <form id="adminLoginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter your username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required>
+
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage"></p>
+  </div>
+
+  <script src="./login.js"></script>
+</body>
+</html>

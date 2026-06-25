@@ -1,0 +1,1711 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Vishnu - Crafted Experiences</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Config -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Geist", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            spacing: {
+              "margin-mobile": "20px",
+              "section-gap": "160px",
+              "stack-lg": "48px",
+              "stack-md": "24px",
+              "stack-sm": "8px",
+              gutter: "24px",
+              "container-max": "1440px",
+            },
+            maxWidth: {
+              "container-max": "1440px",
+            },
+            animation: {
+              shimmer: "shimmer 15s ease-in-out infinite alternate",
+            },
+            keyframes: {
+              shimmer: {
+                "0%": { backgroundPosition: "0% 50%" },
+                "100%": { backgroundPosition: "100% 50%" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Grid Container layout matching chotulang */
+      .grid-container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 64px;
+        width: 100%;
+      }
+      @media (max-width: 1024px) {
+        .grid-container {
+          padding: 0 32px;
+        }
+      }
+      @media (max-width: 767px) {
+        .grid-container {
+          padding: 0 24px;
+        }
+      }
+
+      /* ── Page Transition: Split-Panel Wipe ── */
+      .page-transition {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 99999;
+        pointer-events: none;
+        display: flex;
+      }
+      .page-transition .panel {
+        flex: 1;
+        background: #f9f9f9;
+        will-change: transform;
+      }
+      .dark .page-transition .panel {
+        background: #121212;
+      }
+
+      /* Exit: panels slide IN to cover the page */
+      .page-transition.exit .panel:first-child {
+        transform: translateX(-100%);
+        animation: panelSlideInLeft 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+      }
+      .page-transition.exit .panel:last-child {
+        transform: translateX(100%);
+        animation: panelSlideInRight 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+      }
+
+      /* Enter: panels slide OUT to reveal the page */
+      .page-transition.enter .panel:first-child {
+        transform: translateX(0);
+        animation: panelSlideOutLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+      }
+      .page-transition.enter .panel:last-child {
+        transform: translateX(0);
+        animation: panelSlideOutRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+      }
+
+      @keyframes panelSlideInLeft  { to { transform: translateX(0); } }
+      @keyframes panelSlideInRight { to { transform: translateX(0); } }
+      @keyframes panelSlideOutLeft  { to { transform: translateX(-100%); } }
+      @keyframes panelSlideOutRight { to { transform: translateX(100%); } }
+
+      body {
+        opacity: 1;
+      }
+
+      /* ── Skeleton Loading Shimmer ── */
+      @keyframes skeletonShimmer {
+        0% { background-position: -400px 0; }
+        100% { background-position: 400px 0; }
+      }
+      .skeleton {
+        background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 37%, #e0e0e0 63%);
+        background-size: 800px 100%;
+        animation: skeletonShimmer 1.8s ease-in-out infinite;
+        border-radius: 4px;
+      }
+      .dark .skeleton {
+        background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 37%, #1e1e1e 63%);
+        background-size: 800px 100%;
+      }
+      .skeleton-card {
+        border: 1px solid rgba(0,0,0,0.08);
+        padding: 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .dark .skeleton-card {
+        border-color: rgba(255,255,255,0.08);
+      }
+
+      /* ── Staggered card entrance ── */
+      .project-card-enter {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: cardFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes cardFadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .img-grayscale {
+        filter: grayscale(100%);
+        transition: filter 0.5s ease;
+      }
+      .group:hover .img-grayscale {
+        filter: grayscale(0%);
+      }
+
+      /* Availability dot: black in light, white in dark */
+      .dot-availability {
+        background-color: #000;
+      }
+      .dark .dot-availability {
+        background-color: #fff !important;
+      }
+
+      /* Ambient Hero Background */
+      .ambient-bg {
+        background: radial-gradient(
+          circle at center,
+          #f5f5f5 0%,
+          #ffffff 50%,
+          #ffffff 100%
+        );
+        background-size: 200% 200%;
+      }
+
+      /* Reveal Animations */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Staggered Delays */
+      .delay-100 {
+        transition-delay: 100ms;
+      }
+      .delay-200 {
+        transition-delay: 200ms;
+      }
+      .delay-300 {
+        transition-delay: 300ms;
+      }
+      .delay-400 {
+        transition-delay: 400ms;
+      }
+
+      /* Dark mode color overrides (Darker Charcoal Theme) */
+      .dark .bg-white {
+        background-color: #1a1a1a !important;
+      }
+      .dark .border-black {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .text-black,
+      .dark .text-black\/60,
+      .dark .text-black\/70,
+      .dark .text-black\/50 {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .dark .bg-white,
+      .dark .bg-gray-50 {
+        background-color: #1a1a1a !important;
+      }
+      .dark .bg-white\/90 {
+        background-color: rgba(26, 26, 26, 0.9) !important;
+      }
+      .dark .bg-white\/80 {
+        background-color: rgba(26, 26, 26, 0.8) !important;
+      }
+      .dark .bg-white\/70 {
+        background-color: rgba(26, 26, 26, 0.7) !important;
+      }
+      .dark .bg-white\/60 {
+        background-color: rgba(26, 26, 26, 0.6) !important;
+      }
+      .dark .hover\:text-black:hover {
+        color: #ffffff !important;
+      }
+      .dark .hover\:text-white:hover {
+        color: #ffffff !important;
+      }
+      .dark .hover\:bg-black:hover,
+      .dark .hover\:bg-black\/80:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .hover\:bg-white:hover,
+      .dark .hover\:bg-white\/90:hover,
+      .dark .hover\:bg-white\/80:hover,
+      .dark .hover\:bg-white\/70:hover,
+      .dark .hover\:bg-white\/60:hover,
+      .dark .hover\:bg-gray-50:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .ambient-bg {
+        background: radial-gradient(
+          circle at center,
+          #1f1f1f 0%,
+          #161616 60%,
+          #121212 100%
+        );
+        background-size: 200% 200%;
+      }
+      .dark body,
+      .dark html {
+        background: #121212;
+      }
+      .dark .bg-black {
+        background-color: #1a1a1a !important;
+      }
+      
+      /* Active outline and tap-highlight reset */
+      button, a {
+        -webkit-tap-highlight-color: transparent !important;
+        outline: none !important;
+      }
+      button:focus, a:focus, button:active, a:active {
+        outline: none !important;
+      }
+      .dark .btn-dark-mode-white {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #ffffff !important;
+      }
+      .dark .btn-dark-mode-white:hover {
+        background-color: transparent !important;
+        color: #ffffff !important;
+      }
+    </style>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const isDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+        const bgColor = isDark ? "#121212" : "#f9f9f9";
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        document.documentElement.style.backgroundColor = bgColor;
+      } catch (error) {
+        console.warn("Theme initialization failed", error);
+      }
+    </script>
+  </head>
+  <body
+    class="bg-white text-black dark:bg-[#030712] dark:text-slate-100 font-sans antialiased selection:bg-black selection:text-white"
+  >
+    <!-- Static transition overlay: visible from first paint, removed/animated by JS -->
+    <div id="pageTransitionOverlay" class="page-transition" style="display:none">
+      <div class="panel"></div>
+      <div class="panel"></div>
+    </div>
+    <script>
+      (function(){
+        var el = document.getElementById('pageTransitionOverlay');
+        if (sessionStorage.getItem('page-transitioning')) {
+          el.style.display = 'flex';
+        }
+      })();
+    </script>
+    <!-- TopNavBar Shared Component -->
+    <header
+      class="bg-white/90 dark:bg-[#0f1323]/90 backdrop-blur-md fixed top-0 w-full border-b border-black dark:border-white/10 z-50 transition-all duration-300"
+    >
+      <div
+        class="grid-container py-4 flex justify-between items-center w-full"
+      >
+        <!-- Brand -->
+        <a
+          class="font-sans text-2xl font-bold tracking-tighter text-black hover:opacity-70 transition-opacity"
+          href="#"
+        >
+          Vishnu
+        </a>
+        <!-- Navigation -->
+        <nav
+          class="hidden md:flex items-center gap-8 font-sans text-base font-medium"
+        >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="#offerings"
+            >Work</a
+          >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="#projects"
+            >Projects</a
+          >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="#contact"
+            >About</a
+          >
+        </nav>
+        <div class="flex items-center gap-4">
+          <a
+            class="hidden md:inline-block px-6 py-2 bg-black text-white border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 focus:outline-none btn-dark-mode-white"
+            href="#contact"
+          >
+            Let's Talk
+          </a>
+          <button
+            id="themeToggle"
+            class="px-4 py-2 border border-black dark:border-white/10 text-black dark:text-white bg-white dark:bg-[#0f172a] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 flex items-center justify-center focus:outline-none"
+            aria-label="Toggle dark mode"
+          >
+            <span id="themeIcon" class="material-symbols-outlined text-sm">dark_mode</span>
+          </button>
+          <!-- Mobile Menu Toggle -->
+          <button
+            id="mobileMenuToggle"
+            class="md:hidden text-black dark:text-white hover:opacity-70 transition-opacity flex items-center focus:outline-none"
+            aria-label="Toggle mobile menu"
+          >
+            <span id="mobileMenuIcon" class="material-symbols-outlined">menu</span>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile Menu Dropdown -->
+      <div
+        id="mobileMenu"
+        class="hidden md:hidden border-t border-black dark:border-white/10 bg-white dark:bg-[#0f1323] px-8 py-6 flex flex-col gap-6 font-sans text-lg font-medium shadow-lg"
+      >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="#offerings"
+          >Work</a
+        >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="#projects"
+          >Projects</a
+        >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="#contact"
+          >About</a
+        >
+        <div class="flex items-center justify-between border-t border-black/10 dark:border-white/10 pt-6">
+          <a
+            class="px-6 py-2 bg-black text-white border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 focus:outline-none btn-dark-mode-white"
+            href="#contact"
+          >
+            Let's Talk
+          </a>
+        </div>
+      </div>
+    </header>
+    <main class="w-full overflow-hidden">
+      <!-- Hero Section -->
+      <section
+        class="relative ambient-bg animate-shimmer"
+      >
+        <div class="grid-container min-h-screen flex flex-col justify-center pt-32 pb-section-gap">
+          <div
+            class="flex flex-col items-start gap-stack-md max-w-4xl relative z-10"
+          >
+          <div
+            class="reveal flex items-center gap-3 border border-black px-4 py-2 hover:bg-gray-50 transition-colors"
+          >
+            <span class="w-2 h-2 dot-availability"></span>
+            <span
+              class="font-mono text-xs text-black uppercase font-bold tracking-widest"
+              >Currently Available for Collaborations</span
+            >
+          </div>
+          <h2
+            class="reveal delay-100 font-mono text-sm text-black tracking-[0.2em] uppercase font-bold mt-4"
+          >
+            Crafted Experiences
+          </h2>
+          <h1
+            class="reveal delay-200 font-sans text-[64px] md:text-[96px] font-bold text-black leading-none tracking-tighter mt-2"
+          >
+            Hey — I'm Vishnu
+          </h1>
+          <p
+            class="reveal delay-300 font-sans text-xl md:text-2xl text-black/70 max-w-2xl mt-8 leading-relaxed font-medium"
+          >
+            I design and develop full-stack web applications, creative digital
+            experiences, and interactive products that balance functionality
+            with beauty. This site is more than a portfolio — it’s a living
+            example of how I build with precision, clarity, and motion.
+          </p>
+          <div class="reveal delay-400 flex flex-wrap items-center gap-4 mt-12">
+            <a
+              class="px-8 py-4 bg-black text-white font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black border border-black transition-all duration-300 hover:scale-[1.02]"
+              href="#projects"
+            >
+              View Projects
+            </a>
+            <a
+              class="px-8 py-4 bg-white text-black border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-all duration-300 hover:scale-[1.02]"
+              href="#contact"
+            >
+              Say Hello
+            </a>
+          </div>
+        </div>
+        <!-- Quick Stats -->
+        <div
+          class="reveal grid grid-cols-2 md:grid-cols-4 gap-8 mt-32 border-t border-black pt-12"
+        >
+          <div
+            class="flex flex-col gap-2 hover:-translate-y-1 transition-transform duration-300 cursor-default"
+          >
+            <span
+              class="font-sans text-5xl font-bold text-black tracking-tighter"
+              >17+</span
+            >
+            <span
+              class="font-mono text-xs uppercase tracking-widest text-black/60 font-bold"
+              >Years Exp.</span
+            >
+          </div>
+          <div
+            class="flex flex-col gap-2 hover:-translate-y-1 transition-transform duration-300 cursor-default"
+          >
+            <span
+              class="font-sans text-5xl font-bold text-black tracking-tighter"
+              >25+</span
+            >
+            <span
+              class="font-mono text-xs uppercase tracking-widest text-black/60 font-bold"
+              >Completed Projects</span
+            >
+          </div>
+          <div
+            class="flex flex-col gap-2 hover:-translate-y-1 transition-transform duration-300 cursor-default"
+          >
+            <span
+              class="font-mono text-xs uppercase tracking-widest text-black font-bold mb-1"
+              >FRONT-END</span
+            >
+            <span class="font-sans text-base text-black/70 font-medium"
+              >HTML • CSS • JS</span
+            >
+          </div>
+          <div
+            class="flex flex-col gap-2 hover:-translate-y-1 transition-transform duration-300 cursor-default"
+          >
+            <span
+              class="font-mono text-xs uppercase tracking-widest text-black font-bold mb-1"
+              >BACK-END</span
+            >
+            <span class="font-sans text-base text-black/70 font-medium"
+              >Firebase • Node.js</span
+            >
+          </div>
+        </div>
+      </section>
+      <!-- What I Offer -->
+      <section class="border-t border-black dark:border-white/10" id="offerings">
+        <div class="grid-container py-section-gap">
+        <div class="reveal">
+          <h2
+            class="font-sans text-5xl font-bold text-black tracking-tighter mb-stack-lg"
+          >
+            What I Offer
+          </h2>
+          <p
+            class="font-sans text-xl text-black/70 max-w-3xl mb-16 font-medium leading-relaxed"
+          >
+            I help individuals, startups, and organizations transform ideas into
+            interactive digital products. From front-end design to back-end
+            architecture, I deliver complete solutions that work seamlessly
+            across devices.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Offer Card 1 -->
+          <div
+            class="reveal bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >smartphone</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Mobile-First Design
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Modern, mobile-first website designs with highly responsive
+              layouts tailored for all screen sizes.
+            </p>
+          </div>
+          <!-- Offer Card 2 -->
+          <div
+            class="reveal delay-100 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >code_blocks</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Full-Stack Dev
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              End-to-end full-stack development focusing on clean architecture
+              and scalable codebases.
+            </p>
+          </div>
+          <!-- Offer Card 3 -->
+          <div
+            class="reveal delay-200 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >api</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              API Integration
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Seamless integration with external APIs, payment systems, and
+              real-time data pipelines.
+            </p>
+          </div>
+          <!-- Offer Card 4 -->
+          <div
+            class="reveal bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >speed</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Performance
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Deep performance tuning, accessibility improvements, and
+              comprehensive SEO setup.
+            </p>
+          </div>
+          <!-- Offer Card 5 -->
+          <div
+            class="reveal delay-100 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >dashboard</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Interactive UX
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Complex interactive dashboards, live state updates, and heavily
+              user-focused UX design.
+            </p>
+          </div>
+          <!-- Offer Card 6 -->
+          <div
+            class="reveal delay-200 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >smart_toy</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Automation &amp; IoT
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Custom scripting for workflow automation and embedded systems
+              integration for hardware.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- Projects Section -->
+      <section class="border-t border-black dark:border-white/10" id="projects">
+        <div class="grid-container py-section-gap">
+        <div class="reveal">
+          <h2
+            class="font-sans text-5xl font-bold text-black dark:text-white tracking-tighter mb-stack-lg"
+          >
+            Featured Projects
+          </h2>
+        </div>
+        <div id="projectsLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-0">
+          <div class="skeleton-card"><div class="flex gap-2"><div class="skeleton" style="width:70px;height:24px"></div><div class="skeleton" style="width:55px;height:24px"></div><div class="skeleton" style="width:80px;height:24px"></div></div><div class="skeleton" style="width:75%;height:32px"></div><div class="skeleton" style="width:100%;height:14px"></div><div class="skeleton" style="width:90%;height:14px"></div><div class="skeleton" style="width:60%;height:14px"></div><div class="skeleton" style="width:130px;height:16px;margin-top:auto"></div></div>
+          <div class="skeleton-card"><div class="flex gap-2"><div class="skeleton" style="width:65px;height:24px"></div><div class="skeleton" style="width:75px;height:24px"></div></div><div class="skeleton" style="width:65%;height:32px"></div><div class="skeleton" style="width:100%;height:14px"></div><div class="skeleton" style="width:85%;height:14px"></div><div class="skeleton" style="width:50%;height:14px"></div><div class="skeleton" style="width:130px;height:16px;margin-top:auto"></div></div>
+          <div class="skeleton-card"><div class="flex gap-2"><div class="skeleton" style="width:80px;height:24px"></div><div class="skeleton" style="width:60px;height:24px"></div><div class="skeleton" style="width:50px;height:24px"></div></div><div class="skeleton" style="width:70%;height:32px"></div><div class="skeleton" style="width:100%;height:14px"></div><div class="skeleton" style="width:80%;height:14px"></div><div class="skeleton" style="width:65%;height:14px"></div><div class="skeleton" style="width:130px;height:16px;margin-top:auto"></div></div>
+          <div class="skeleton-card hidden md:flex"><div class="flex gap-2"><div class="skeleton" style="width:60px;height:24px"></div><div class="skeleton" style="width:70px;height:24px"></div></div><div class="skeleton" style="width:80%;height:32px"></div><div class="skeleton" style="width:100%;height:14px"></div><div class="skeleton" style="width:75%;height:14px"></div><div class="skeleton" style="width:55%;height:14px"></div><div class="skeleton" style="width:130px;height:16px;margin-top:auto"></div></div>
+          <div class="skeleton-card hidden md:flex"><div class="flex gap-2"><div class="skeleton" style="width:75px;height:24px"></div><div class="skeleton" style="width:65px;height:24px"></div></div><div class="skeleton" style="width:60%;height:32px"></div><div class="skeleton" style="width:100%;height:14px"></div><div class="skeleton" style="width:90%;height:14px"></div><div class="skeleton" style="width:45%;height:14px"></div><div class="skeleton" style="width:130px;height:16px;margin-top:auto"></div></div>
+          <div class="skeleton-card hidden lg:flex"><div class="flex gap-2"><div class="skeleton" style="width:55px;height:24px"></div><div class="skeleton" style="width:80px;height:24px"></div><div class="skeleton" style="width:60px;height:24px"></div></div><div class="skeleton" style="width:72%;height:32px"></div><div class="skeleton" style="width:100%;height:14px"></div><div class="skeleton" style="width:82%;height:14px"></div><div class="skeleton" style="width:58%;height:14px"></div><div class="skeleton" style="width:130px;height:16px;margin-top:auto"></div></div>
+        </div>
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+      </section>
+      <!-- Contact Section -->
+      <section
+        class="border-t border-black dark:border-white/10"
+        id="contact"
+      >
+        <div class="grid-container py-section-gap flex flex-col items-center text-center">
+        <div class="reveal">
+          <h2
+            class="font-sans text-5xl md:text-7xl font-bold text-black tracking-tighter mb-8"
+          >
+            Let's build something.
+          </h2>
+          <p
+            class="font-sans text-xl text-black/70 max-w-xl mb-12 font-medium leading-relaxed mx-auto"
+          >
+            Whether it's a new product, a technical challenge, or just a
+            conversation about design and engineering, I'm open to connecting.
+          </p>
+          <a
+            class="text-lg sm:text-2xl md:text-4xl font-sans font-bold text-black border-b-4 border-black px-4 md:px-0 pb-2 hover:bg-black hover:text-white transition-colors duration-300 mb-16 inline-block"
+            href="mailto:work.vishnushetty@gmail.com"
+          >
+            work.vishnushetty@gmail.com
+          </a>
+          <div class="flex flex-wrap justify-center gap-12">
+            <a
+              class="group font-mono text-sm font-bold text-black hover:text-gray-600 transition-colors uppercase tracking-widest flex items-center gap-2"
+              href="https://www.linkedin.com/in/vishnu-deviprasad-shetty-515429319"
+            >
+              LinkedIn
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                >north_east</span
+              >
+            </a>
+            <a
+              class="group font-mono text-sm font-bold text-black hover:text-gray-600 transition-colors uppercase tracking-widest flex items-center gap-2"
+              href="https://github.com/idkshetty"
+            >
+              GitHub
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                >north_east</span
+              >
+            </a>
+            <a
+              class="group font-mono text-sm font-bold text-black hover:text-gray-600 transition-colors uppercase tracking-widest flex items-center gap-2"
+              href="https://instagram.com/idkshetty"
+            >
+              Instagram
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                >north_east</span
+              >
+            </a>
+          </div>
+        </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer Shared Component -->
+    <footer
+      class="w-full py-stack-lg border-t border-black dark:border-white/10 bg-white dark:bg-[#030712] text-black dark:text-slate-100 font-mono text-sm"
+    >
+      <div
+        class="grid-container reveal flex flex-col md:flex-row justify-between items-center gap-stack-md"
+      >
+        <div
+          class="uppercase font-bold tracking-widest hover:opacity-70 transition-opacity cursor-default"
+        >
+          © 2024 Vishnu. Built with Precision.
+        </div>
+        <nav class="flex gap-8 font-bold">
+          <a
+            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
+            href="#"
+            >Github</a
+          >
+          <a
+            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
+            href="#"
+            >LinkedIn</a
+          >
+          <a
+            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
+            href="#"
+            >Source</a
+          >
+        </nav>
+      </div>
+    </footer>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        push,
+        set,
+        update,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCxc67ZQiY4hHfAkvNq1emVC8qUoT_diBQ",
+        authDomain: "portfoilio-manager.firebaseapp.com",
+        databaseURL:
+          "https://portfoilio-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "portfoilio-manager",
+        storageBucket: "portfoilio-manager.appspot.com",
+        messagingSenderId: "1065030502150",
+        appId: "1:1065030502150:web:27e2601523587f4ac64087",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const projectsRef = ref(db, "portfolioProjects");
+      const projectsGrid = document.getElementById("projectsGrid");
+      const projectsLoading = document.getElementById("projectsLoading");
+      const themeToggle = document.getElementById("themeToggle");
+
+      const defaultProjects = [
+        {
+          title: "Know Your Plants",
+          subtitle: "Agritech · PWA · Data",
+          description:
+            "An agricultural guide for Indian farmers featuring district-wise crop recommendations, offline plant data, and smart crop planning tools.",
+          tags: ["Agritech", "PWA", "Data"],
+          link: "#",
+        },
+        {
+          title: "Mudball Federation",
+          subtitle: "Payments · Automation",
+          description:
+            "A secure donation platform with UPI payments, automated receipts, donor perks, and SEO optimization.",
+          tags: ["Payments", "Automation"],
+          link: "#",
+        },
+        {
+          title: "Checkout Address Finder",
+          subtitle: "Maps · Geocoding · Component",
+          description:
+            "An interactive, dark-mode address selection tool built with Leaflet.js and OpenStreetMap Nominatim geocoding API for smooth checkouts.",
+          tags: ["Maps", "Geocoding", "Component"],
+          link: "#",
+        },
+
+        {
+          title: "Safemet",
+          subtitle: "IoT · Safety",
+          description:
+            "An IoT-based helmet add-on with fall detection, SOS alerts, and cancel timers designed to improve rider safety.",
+          tags: ["IoT", "Safety"],
+          link: "#",
+        },
+        {
+          title: "Clean India Drive Enrollment Portal",
+          subtitle: "Full-Stack · Realtime · Firebase",
+          description:
+            "A volunteer registration and admin management system with Firebase authentication, realtime analytics, and on-site QR code check-ins.",
+          tags: ["Full-Stack", "Realtime", "Firebase"],
+          link: "#",
+        },
+        {
+          title: "Prove You Are Human",
+          subtitle: "Game UX · Psychology",
+          description:
+            "A deceptive and fun web game using logic traps, reaction tests, and misleading UI to verify human behavior.",
+          tags: ["Game UX", "Psychology"],
+          link: "#",
+        },
+        {
+          title: "Birthday Reminder App",
+          subtitle: "Flutter · SQLite · Mobile",
+          description:
+            "A Flutter-based offline app to store birthdays, notes, and reminders with a clean, minimal UI.",
+          tags: ["Flutter", "SQLite", "Mobile"],
+          link: "#",
+        },
+        {
+          title: "ESP32-CAM",
+          subtitle: "ESP32 · Embedded · IoT",
+          description:
+            "An embedded surveillance system with live video streaming, image capture, and remote monitoring.",
+          tags: ["ESP32", "Embedded", "IoT"],
+          link: "#",
+        },
+        {
+          title: "Chotulang",
+          subtitle: "Programming · Interpreter · Python",
+          description:
+            "A Python-based interpreted programming language featuring a lexer, parser, AST, lambdas, pipes, strict typing, and a full CLI.",
+          tags: ["Programming", "Interpreter", "Python"],
+          link: "projects/chotulang.html",
+          caseStudy: {
+            pageLabel: "/ LANGUAGE DESIGN /",
+            pageTitle: "Designing and Implementing a Programming Language",
+            pageSubtitle: "A dynamic, Python-compatible language built from scratch with clean syntax and functional paradigms.",
+            metaProject: "Chotulang (Version 0.0.7)",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Language Design & Interpreter Development",
+            image1Url: "https://lh3.googleusercontent.com/aida-public/AB6AXuBPV1CPyy1F0ZWXeMe-xnU4_b4OwkJml5Tn9TP8JFSquZOsLlJyLsMG4cpLQt-aLsRsvyzGd8NDMi5kByyMAbyTCzDMkmSgSzLbW9klJ-YTJBQkXKaObU1UjRzulX-M72DUkIcUHrXX8zBrXTuLh9di1DCjH9lzExKfYDI47gcoXRx1r_b9DFTI7woTju9m7lFjQNtnxEGDPSgalm2MV8xAv4F68Gu4iAPLVmVGatxPVYcuZKSXGjTcaYpYGghZueEp28ad_laApvR4",
+            image1Caption: "Custom IDE & REPL Environment",
+            image2Url: "https://lh3.googleusercontent.com/aida-public/AB6AXuDvoHD8VmkZK9oZFUxNgaQ3UbEvdGcp5-6GqUxI-CIR-eyycyhHqALS9M_ggVGzw-1USZ60bjvGQ2jnu_Ir5JU8LyFo5-Av0a1Q_Mw8-hv-m8QetEJXdPtBSPsBQhHKqISdy_zNp6IkqhfbgqUjjrZEIPJ5EKioUTEva2ZN_FTR8VoO2DZy2yqFO_deO-s7ln0hG3XhgSiWcvVzU4c8BEdDS-f-wNdv9_UCmA8qCnp3avR-GLxKIIe_BZcdzjZA4pByQ6aOOrrIKAID",
+            image2Caption: "System Architecture Diagram",
+            image3Url: "https://lh3.googleusercontent.com/aida-public/AB6AXuD2oMB1oLay_GiX4Oc7nqZvqHHgbpWj4k_VKG8NfwasOcMMz-NT_raM1rk1qVl65n2kctxWoXyCgMeZEcFq4bnXNZ-QkaJzonFgONTauenodZ9dxwo7uvvKdeB05EufRlmZZOceyjvVX8BVu3QRm-Pt1fLhRuZk4xf10hzaWe6oLDlHdXipWYRJsbiSNmtlcdEu2C2MUIRZ0CKWG6J-eKkj3_-4vJUmP2kmF06AO5hYoVPnmKlM8pWApp1Qz9mSEJSabGAKZa7IyDzK",
+            image3Caption: "Functional Syntax & Pipelines",
+            premiseTitle: "The Premise",
+            summaryContent: "Chotulang is an ambitious endeavor to create a programming language from the ground up. It focuses on delivering a dynamic, Python-compatible environment that emphasizes clean syntax, functional programming paradigms, and an improved developer experience.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Modern development often involves wrestling with syntactic baggage and opaque error reporting. The primary motivation behind Chotulang was to strip away unnecessary complexity and provide developers with pinpoint accuracy when things go wrong.\n\nBy implementing highly specific error reporting and resolving common developer pain points, Chotulang aims to significantly improve the overall Developer Experience (DX).",
+            archTitle: "System Architecture",
+            arch1Title: "Lexical Analyzer",
+            arch1Desc: "Responsible for precise token conversion and handling complex multi-character operators.",
+            arch1Bullets: "Token Conversion, Operators: |> ?? ..",
+            arch2Title: "Syntax Parser",
+            arch2Desc: "Generates the Abstract Syntax Tree (AST) and manages intricate sub-expression handling for method chaining.",
+            arch2Bullets: "AST Generation, Sub-expression Handler",
+            arch3Title: "Evaluation Engine",
+            arch3Desc: "Executes the AST, managing lexical scoping and the sophisticated implementation of closures.",
+            arch3Bullets: "AST Traversal, Lexical Scoping & Closures",
+            conclusionTitle: "Conclusion",
+            conclusionContent: "Chotulang successfully demonstrates a complete, Turing-complete system-level programming logic built from the ground up. It serves as a testament to rigorous architectural planning and a commitment to elegant, functional design principles.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          }
+        },
+        {
+          title: "CyberShield",
+          subtitle: "Cybersecurity · Flask · Awareness",
+          description:
+            "A controlled phishing simulation built with Flask to demonstrate real-world attack vectors and educate users about cybersecurity risks.",
+          tags: ["Cybersecurity", "Flask", "Awareness"],
+          link: "#",
+        },
+        {
+          title: "F1 Win Probability Finder",
+          subtitle: "Data Science · CLI · Predictive Modeling",
+          description:
+            "A predictive analytics CLI application to forecast Formula 1 race win probabilities using Elo ratings, recent form, and qualifying grids.",
+          tags: ["Data Science", "CLI", "Python"],
+          link: "#",
+        },
+        {
+          title: "Mindful - Mental Wellness Companion",
+          subtitle: "PWA · Wellness · Vanilla JS",
+          description:
+            "An offline-first, privacy-focused mental wellness Progressive Web App featuring interactive breathing visualizers and local storage tracking.",
+          tags: ["PWA", "Wellness", "Vanilla JS"],
+          link: "#",
+        },
+        {
+          title: "FillMyFile",
+          subtitle: "CLI · TUI · Python · Productivity",
+          description:
+            "An offline-first snippet manager and project bootstrapper built with Python, featuring a click-powered CLI and rich Textual-based TUI.",
+          tags: ["CLI", "TUI", "Python"],
+          link: "#",
+        },
+        {
+          title: "Workspace",
+          subtitle: "Linux · LXC · DevOps · Automation",
+          description:
+            "A self-hosted development lab using Linux, containers, and automation to safely test and deploy systems.",
+          tags: ["Linux", "LXC", "DevOps", "Automation"],
+          link: "#",
+        },
+        {
+          title: "NASA Space Explorer",
+          subtitle: "API Dashboard · Space Data · Web",
+          description:
+            "An interactive dashboard aggregating NASA Open APIs and space data with real-time ISS Leaflet geospatial tracking.",
+          tags: ["API Dashboard", "Space Data", "Web"],
+          link: "#",
+        },
+        {
+          title: "After12",
+          subtitle: "Psychometrics · UI/UX · JavaScript · Web App",
+          description:
+            "An interactive psychometric-style career discovery experience that maps cognitive traits to career archetypes using animated UI, progress tracking, and dynamic results.",
+          tags: ["Psychometrics", "UI/UX", "JavaScript", "Web App"],
+          link: "#",
+        },
+        {
+          title: "Chotulang VS Code Extension",
+          subtitle: "IDE Tooling · Developer Experience · VS Code",
+          description:
+            "A dedicated VS Code extension providing syntax highlighting, bracket matching, and one-click code execution for the Chotulang programming language.",
+          tags: ["IDE Tooling", "Developer Experience", "DX"],
+          link: "#",
+        },
+        {
+          title: "DayDot",
+          subtitle: "Flutter · Dart · SQLite · Mobile",
+          description:
+            "A privacy-focused, offline-first mobile birthday tracker built with Flutter, featuring custom infinite-scroll calendars, background notifications, and secure Raspberry Pi backup.",
+          tags: ["Flutter", "Mobile", "SQLite", "Offline-First"],
+          link: "#",
+        },
+        {
+          title: "ESP32Cam",
+          subtitle: "C++ · Edge AI · IoT · ESP32",
+          description:
+            "An offline-first edge AI vision system built on an ESP32 microcontroller featuring real-time face detection, recognition, and MJPEG video streaming without cloud connectivity.",
+          tags: ["C++", "Edge AI", "IoT", "ESP32"],
+          link: "#",
+        },
+        {
+          title: "SafeMet",
+          subtitle: "C/C++ · Flutter · BLE GATT · IoT",
+          description:
+            "An end-to-end IoT fall detection ecosystem featuring a custom ESP32 wearable and a Flutter mobile gateway for background BLE SOS alerts.",
+          tags: ["C/C++", "Flutter", "BLE GATT", "IoT"],
+          link: "#",
+        },
+      ];
+
+      function buildProjectCard(project) {
+        const tags = (project.tags || []).map(
+          (tag) =>
+            `<span class="border border-black dark:border-white/20 text-[10px] uppercase font-bold tracking-widest text-black dark:text-white px-4 py-2">${tag}</span>`
+        );
+
+        return `
+          <article class="reveal group bg-white dark:bg-[#0f172a] border border-black dark:border-white/10 flex flex-col hover:-translate-y-2 transition-transform duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+            <div class="flex flex-col flex-grow p-12">
+              <div class="flex items-center gap-3 mb-6 flex-wrap">${tags.join("")}</div>
+              <h3 class="font-sans font-bold text-black dark:text-white mb-4 tracking-tight group-hover:underline underline-offset-4 decoration-2 text-4xl">${project.title}</h3>
+              <p class="font-sans text-base text-black/70 dark:text-white/70 mb-8 font-medium leading-relaxed">${project.description}</p>
+              <a class="mt-auto flex items-center gap-2 font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white group-hover:gap-4 transition-all duration-300 w-fit" href="${project.link || '#'}">
+                View Case Study
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderProjects(data) {
+        if (!data) {
+          projectsGrid.innerHTML =
+            "<div class='col-span-full text-center text-black/70 dark:text-white/70'>No projects found yet.</div>";
+          projectsLoading.classList.add("hidden");
+          return;
+        }
+
+        const projects = Object.values(data)
+          .sort((a, b) => (a.title || "").localeCompare(b.title || ""));
+
+        const items = projects.map((project, index) => {
+          const tags = (project.tags || []).map(
+            (tag) =>
+              `<span class="border border-black dark:border-white/20 text-[10px] uppercase font-bold tracking-widest text-black dark:text-white px-4 py-2">${tag}</span>`
+          );
+
+          return `
+            <article class="project-card-enter group bg-white dark:bg-[#0f172a] border border-black dark:border-white/10 flex flex-col hover:-translate-y-2 transition-transform duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]" style="animation-delay: ${index * 80}ms">
+              <div class="flex flex-col flex-grow p-12">
+                <div class="flex items-center gap-3 mb-6 flex-wrap">${tags.join("")}</div>
+                <h3 class="font-sans font-bold text-black dark:text-white mb-4 tracking-tight group-hover:underline underline-offset-4 decoration-2 text-4xl">${project.title}</h3>
+                <p class="font-sans text-base text-black/70 dark:text-white/70 mb-8 font-medium leading-relaxed">${project.description}</p>
+                <a class="mt-auto flex items-center gap-2 font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white group-hover:gap-4 transition-all duration-300 w-fit" href="${project.link || '#'}">
+                  View Case Study
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+              </div>
+            </article>
+          `;
+        });
+
+        // Fade out skeletons, then swap in real cards
+        projectsLoading.style.transition = 'opacity 0.3s ease';
+        projectsLoading.style.opacity = '0';
+        setTimeout(() => {
+          projectsLoading.classList.add("hidden");
+          projectsGrid.innerHTML = items.join("");
+        }, 300);
+      }
+
+      function generateDefaultCaseStudy(project) {
+        const subtitleParts = (project.subtitle || "").split("·").map(s => s.trim());
+        const category = subtitleParts[0] || "PROJECT";
+
+        if (project.title === "Chotulang") {
+          return {
+            pageLabel: "/ LANGUAGE DESIGN /",
+            pageTitle: "Designing and Implementing a Programming Language",
+            pageSubtitle: "A dynamic, Python-compatible language built from scratch with clean syntax and functional paradigms.",
+            metaProject: "Chotulang (Version 0.0.7)",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Language Design & Interpreter Development",
+            image1Url: "https://lh3.googleusercontent.com/aida-public/AB6AXuBPV1CPyy1F0ZWXeMe-xnU4_b4OwkJml5Tn9TP8JFSquZOsLlJyLsMG4cpLQt-aLsRsvyzGd8NDMi5kByyMAbyTCzDMkmSgSzLbW9klJ-YTJBQkXKaObU1UjRzulX-M72DUkIcUHrXX8zBrXTuLh9di1DCjH9lzExKfYDI47gcoXRx1r_b9DFTI7woTju9m7lFjQNtnxEGDPSgalm2MV8xAv4F68Gu4iAPLVmVGatxPVYcuZKSXGjTcaYpYGghZueEp28ad_laApvR4",
+            image1Caption: "Custom IDE & REPL Environment",
+            image2Url: "https://lh3.googleusercontent.com/aida-public/AB6AXuDvoHD8VmkZK9oZFUxNgaQ3UbEvdGcp5-6GqUxI-CIR-eyycyhHqALS9M_ggVGzw-1USZ60bjvGQ2jnu_Ir5JU8LyFo5-Av0a1Q_Mw8-hv-m8QetEJXdPtBSPsBQhHKqISdy_zNp6IkqhfbgqUjjrZEIPJ5EKioUTEva2ZN_FTR8VoO2DZy2yqFO_deO-s7ln0hG3XhgSiWcvVzU4c8BEdDS-f-wNdv9_UCmA8qCnp3avR-GLxKIIe_BZcdzjZA4pByQ6aOOrrIKAID",
+            image2Caption: "System Architecture Diagram",
+            image3Url: "https://lh3.googleusercontent.com/aida-public/AB6AXuD2oMB1oLay_GiX4Oc7nqZvqHHgbpWj4k_VKG8NfwasOcMMz-NT_raM1rk1qVl65n2kctxWoXyCgMeZEcFq4bnXNZ-QkaJzonFgONTauenodZ9dxwo7uvvKdeB05EufRlmZZOceyjvVX8BVu3QRm-Pt1fLhRuZk4xf10hzaWe6oLDlHdXipWYRJsbiSNmtlcdEu2C2MUIRZ0CKWG6J-eKkj3_-4vJUmP2kmF06AO5hYoVPnmKlM8pWApp1Qz9mSEJSabGAKZa7IyDzK",
+            image3Caption: "Functional Syntax & Pipelines",
+            mediaTitle: "Tooling & Interface",
+            premiseTitle: "The Premise",
+            summaryContent: "Chotulang is an ambitious endeavor to create a programming language from the ground up. It focuses on delivering a dynamic, Python-compatible environment that emphasizes clean syntax, functional programming paradigms, and an improved developer experience.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Modern development often involves wrestling with syntactic baggage and opaque error reporting. The primary motivation behind Chotulang was to strip away unnecessary complexity and provide developers with pinpoint accuracy when things go wrong.\n\nBy implementing highly specific error reporting and resolving common developer pain points, Chotulang aims to significantly improve the overall Developer Experience (DX).",
+            archTitle: "System Architecture",
+            arch1Title: "Lexical Analyzer",
+            arch1Desc: "Responsible for precise token conversion and handling complex multi-character operators.",
+            arch1Bullets: "Token Conversion, Operators: |> ?? ..",
+            arch2Title: "Syntax Parser",
+            arch2Desc: "Generates the Abstract Syntax Tree (AST) and manages intricate sub-expression handling for method chaining.",
+            arch2Bullets: "AST Generation, Sub-expression Handler",
+            arch3Title: "Evaluation Engine",
+            arch3Desc: "Executes the AST, managing lexical scoping and the sophisticated implementation of closures.",
+            arch3Bullets: "AST Traversal, Lexical Scoping & Closures",
+            conclusionTitle: "Conclusion",
+            conclusionContent: "Chotulang successfully demonstrates a complete, Turing-complete system-level programming logic built from the ground up. It serves as a testament to rigorous architectural planning and a commitment to elegant, functional design principles.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        if (project.title === "Chotulang VS Code Extension") {
+          return {
+            pageLabel: "/ IDE TOOLING /",
+            pageTitle: "Enhancing Developer Experience with the Chotulang VS Code Extension",
+            pageSubtitle: "A dedicated VS Code extension providing syntax highlighting, bracket matching, and one-click code execution for the Chotulang programming language.",
+            metaProject: "Chotulang VS Code Extension (Version 1.0.6)",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "IDE Tooling & Developer Experience (DX)",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "Tooling & Interface",
+            premiseTitle: "The Premise",
+            summaryContent: "To elevate the Chotulang programming language from a functional interpreter to a highly usable development tool, a dedicated Visual Studio Code extension was engineered. This extension integrates Chotulang directly into the VS Code ecosystem, providing essential modern IDE features such as custom syntax highlighting, bracket matching, and one-click code execution.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Building a custom programming language solves only half of the development equation; if the language is difficult to read or execute in a standard text editor, adoption and usability suffer. The objective of this project was to remove the friction of writing Chotulang code by providing native editor support, reducing cognitive load, and streamlining the run/debug cycle.",
+            archTitle: "Extension Architecture",
+            arch1Title: "Syntax Highlighting",
+            arch1Desc: "Leveraging a declarative TextMate grammar, the extension provides robust syntax coloring for keywords, custom operators, comments, strings, and numeric literals.",
+            arch1Bullets: "TextMate Grammar, Custom Operators: |> ?? ..",
+            arch2Title: "Configuration Schema",
+            arch2Desc: "Native configuration mappings integrate with VS Code's editor settings, controlling language rules and icon association.",
+            arch2Bullets: "Configuration Mappings, Language Rules",
+            arch3Title: "One-Click Execution",
+            arch3Desc: "A custom command is bound to a status bar button and keyboard shortcut, launching the Chotulang interpreter (python -m chotulang) in a terminal with the active document preloaded.",
+            arch3Bullets: "Status Bar Button, Keyboard Shortcuts",
+            conclusionTitle: "Conclusion",
+            conclusionContent: "The Chotulang VS Code Extension bridges the gap between language development and user adoption. By integrating directly with VS Code, it delivers a modern IDE experience that empowers developers to write and run Chotulang code seamlessly.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        if (project.title === "Clean India Drive Enrollment Portal") {
+          return {
+            pageLabel: "/ FULL-STACK /",
+            pageTitle: "Clean India Drive Enrollment & Admin System",
+            pageSubtitle: "A volunteer registration and admin management system with Firebase authentication, realtime analytics, and on-site QR code check-ins.",
+            metaProject: "Clean India Drive Enrollment Portal (CleanUpDrive)",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Full-Stack Web Application & Management Dashboard",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "System Interface & Flow",
+            premiseTitle: "The Premise",
+            summaryContent: "The Clean India Drive Enrollment system is a full-stack, web application that enables volunteer registration and manages admin tasks for environmental cleanup drives. With a responsive frontend and a serverless Firebase backend, it has a public-facing enrollment form and a secured admin dashboard complete with live statistics and an on-site QR code scanner.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Coordinating mass volunteer drives can be fragmented—paper forms, manual check-ins, and messy spreadsheets. This project aimed to build a unified, digital-first ecosystem to solve those logistical nightmares. It needed a frictionless onboarding flow for users and a robust, mobile-friendly set of tools for admins to monitor resources (e.g., bags of recyclables) and verify volunteers on site.",
+            archTitle: "System Architecture",
+            arch1Title: "Public Facing App",
+            arch1Desc: "A lean, responsive frontend built with HTML5, CSS3, and vanilla JS for a fast and accessible volunteer enrollment experience.",
+            arch1Bullets: "Responsive Design, Client-side validation, Privacy & Terms Integration",
+            arch2Title: "Auth & State Manager",
+            arch2Desc: "Firebase Authentication secures routes with client-side guards, allowing only logged-in admins to view stats or scan QR codes.",
+            arch2Bullets: "Firebase Auth, Route guarding, Auth state observer",
+            arch3Title: "Real-Time Firestore",
+            arch3Desc: "A serverless NoSQL database that stores volunteer registrations and live scan events, updating admin stats instantly without page refreshes.",
+            arch3Bullets: "Firestore NoSQL, Real-time updates, Stat aggregation",
+            conclusionTitle: "Conclusion & Features Overview",
+            conclusionContent: "4. Core Features & Implementation\n• User Enrollment Flow: Dynamic forms performing validation prior to submission, integrated with compliance pages.\n• Secured Admin Portal: Command hub (admin/dashboard.html) for search and volunteer management, alongside statistics.html tracking enrollments and collection targets (e.g. plastic bottles).\n• QR Code Verification: Browser-based scanner (qrscanner.html) utilizing WebRTC for cross-device camera access, and qr-details.html to unfurl and confirm attendance.\n\n5. Technical Challenges & Solutions\n• Challenge (Cross Device Camera Access): Leveraged modern WebRTC APIs in qrscanner.html to securely request stream capture across iOS and Android browsers.\n• Challenge (Securing Routes on Static Host): Engineered a client-side Firebase Auth observer targeting dashboard.html and statistics.html, instantaneously redirecting unauthorized visits to login.html.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        if (project.title === "FillMyFile") {
+          return {
+            pageLabel: "/ CLI & TUI TOOLING /",
+            pageTitle: "Designing and Implementing FillMyFile",
+            pageSubtitle: "Meet your one-stop hub for reusable, offline-first, and fast-bootstrapping code snippets and entire project templates.",
+            metaProject: "FillMyFile",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "CLI Tool & Terminal User Interface (TUI) Application",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "Terminal Interfaces",
+            premiseTitle: "The Premise",
+            summaryContent: "Meet your one-stop hub for reusable, offline-first, and fast-bootstrapping code snippets and entire project templates. Eliminate tedious boilerplate by storing, managing, and instantly deploying your go-to code snippets and entire project scaffolds directly from your terminal. Whether you need a quick script to fetch your coffee or want to create a fully featured FastAPI service, FillMyFile has got you covered with its blazing fast command line interface (CLI) and sleek terminal user interface (TUI)!",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "If you’re like us, you spend a significant amount of time rewriting or copy-pasting boilerplate code — from simple one-liner bash scripts to fully fledged project structures (like a FastAPI service skeleton). Though there are cloud options (like GitHub Gists), they are overly cumbersome. You have to switch to the browser, find the right gist, and then remember where you last copied it. And if you don't have Wi-Fi at home? Or you just prefer to work locally on the couch instead of at the desk? We were looking for a universal, offline, lightning-fast template manager that lived right inside our terminal, providing powerful organization and templating tools without the hefty bloat of a full IDE.",
+            archTitle: "Application Architecture",
+            arch1Title: "Engine Layer (engine/)",
+            arch1Desc: "Separates UI concerns from business logic. DatabaseEngine and IndexerEngine manage SQLite indexing, PackManager handles zip exporting, and VariablePromptEngine uses Regex to parse templates.",
+            arch1Bullets: "Database & Indexer Engine, Portable pack zipping, Variable Regex parsing",
+            arch2Title: "Command Line UI",
+            arch2Desc: "Uses the Click library to route terminal commands and Rich for clean, color-coded console formatting.",
+            arch2Bullets: "Click Command Routing, Rich Console layouts, Color-coded outputs",
+            arch3Title: "TUI Dashboard (tui/)",
+            arch3Desc: "A complete keyboard-driven Textual interface with a command palette, live search, and lists for favorites and recents.",
+            arch3Bullets: "Textual TUI, Command Palette (Ctrl+P), Live Search (Ctrl+F)",
+            conclusionTitle: "Conclusion & Key Features",
+            conclusionContent: "4. Key Features Built\n• Unified Template Management: Organized template categories utilizing tags in meta.json files.\n• Dynamic Variable Substitution: Interactively asks for {{variable}} values and generates the files via VariablePromptEngine.\n• Analytics & Recents: StatisticsEngine and RecentsEngine auto-surface most-used templates.\n\n5. Technical Challenges & Solutions\n• Challenge (Search Performance on Large Libraries): Syncing files via filesystem traversals was slow. Solved by IndexerEngine caching scattered meta.json fields to SQLite on library updates, enabling sub-millisecond SearchEngine response times.\n• Challenge (Cross-Platform Config Paths): Secure application data directory pathing varies across platforms. Solved by writing paths.py to query OS environment paths dynamically (e.g. AppData\\Local on Windows) for zero-config portability.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        if (project.title === "F1 Win Probability Finder") {
+          return {
+            pageLabel: "/ DATA SCIENCE /",
+            pageTitle: "F1 Win Probability Predictor",
+            pageSubtitle: "A predictive analytics Command Line Interface (CLI) application designed to forecast the outcomes of Formula 1 races.",
+            metaProject: "F1 Win Probability Finder",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Data Science CLI & Predictive Modeling",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "Predictive Output",
+            premiseTitle: "The Premise",
+            summaryContent: "The F1 Win Probability Finder is a predictive analytics Command Line Interface (CLI) application designed to forecast the outcomes of Formula 1 races. By pulling real-time and historical telemetry data from the OpenF1 API, the application feeds driver performance metrics into a custom-built algorithmic engine. The engine evaluates historical Elo ratings, recent track form, and current qualifying grids to output a mathematically sound win probability distribution for every driver on the grid.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Predicting motorsport outcomes is notoriously difficult due to the sheer number of variables involved. Standard betting odds or subjective punditry often miss nuanced statistical trends. The goal of this project was to remove subjective bias by building a purely data-driven model. It required developing an architecture that could independently fetch real-time session data, historically track driver skill over time, and mathematically synthesize different performance dimensions into a clear, normalized percentage chance of victory.",
+            archTitle: "System Architecture",
+            arch1Title: "Data Ingestion Layer",
+            arch1Desc: "Uses requests library to interface with the OpenF1 API (api.openf1.org), intelligently locating next race meetings based on UTC time with fallback options.",
+            arch1Bullets: "OpenF1 API integration, Real-time session data, Session date tracking",
+            arch2Title: "Elo Persistent Memory",
+            arch2Desc: "Maintains driver skill state dynamically across a season in a local elo_ratings.json file, eliminating heavy database overhead.",
+            arch2Bullets: "Elo ratings storage, JSON persistent state, Dynamic driver adjustments",
+            arch3Title: "Analytics & Output Engine",
+            arch3Desc: "Processes Elo, recent form (last 3 races), and current qualifying grid position. Normalizes raw outputs using a Softmax distribution to next_race_probs.csv.",
+            arch3Bullets: "Elo & Form weights, Softmax normalization, CSV output formatting",
+            conclusionTitle: "Conclusion & Key Features",
+            conclusionContent: "4. Core Algorithmic Features Developed\n• Custom Elo Rating System: Chess-like skill ranking update algorithm with a standard K-factor of 16.\n• Recent Form & Grid Integration: Dynamic scoring for top-5 finishes and starting positions.\n• Softmax Probability Normalization: Converts unbounded values into normalized percentages summing to 100%.\n\n5. Technical Challenges & Solutions\n• Challenge (Multi-Competitor Elo Updates): Standard Elo is 1-vs-1. Solved by engineering a multi-loop evaluation treating races as a series of micro-matchups, iterating actual vs expected scores for all 20 drivers.\n• Challenge (Mathematical Overflow in Softmax): Large Elo calculations and exponents caused float overflow in math.exp(). Solved by implementing numerical stability (subtracting maximum score prior to exponentiation) to safely normalize data without overflow.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+
+        if (project.title === "NASA Space Explorer") {
+          return {
+            pageLabel: "/ API DASHBOARD /",
+            pageTitle: "Designing and Building the NASA Space Explorer",
+            pageSubtitle: "An interactive dashboard aggregating NASA Open APIs and space data with real-time ISS Leaflet geospatial tracking.",
+            metaProject: "NASA Space Explorer",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Frontend Web Application & API Dashboard",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "Dashboard Interface",
+            premiseTitle: "The Premise",
+            summaryContent: "NASA Space Explorer brings together data from across NASA’s Open Data Portal and a handful of third-party space tracking services into a single, interactive website. Basically, instead of digging through raw JSON or dozens of different endpoints, you get a dashboard that’s both visually sharp and genuinely easy to use. The project runs entirely in the browser with no heavy frontend frameworks, but still handles tricky stuff like async code, UI state, and making everything scale smoothly on any screen.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "NASA gives the public a huge trove of cosmic data, but the reality is a jumble: different APIs, mismatched data formats, and you’re stuck parsing raw JSON. For most people, that just isn’t possible. The solution here was clear: build a single dashboard that ties all this stuff together, hides the ugly bits of HTTP, and lets anybody browse Mars Rover telemetry, track asteroids, or follow the International Space Station—no technical background required.",
+            archTitle: "Application Architecture",
+            arch1Title: "API Gateway & Controller",
+            arch1Desc: "At the center is script.js and its makeAPIRequest function, which manages network requests, rate limiting, UI updates, and error handling modularly.",
+            arch1Bullets: "makeAPIRequest function, Rate limit tracking, Async state handling",
+            arch2Title: "Component UI & Routing",
+            arch2Desc: "A tab-switching layout delivering a Single Page App experience without heavy framework overhead, rendering DOM components dynamically.",
+            arch2Bullets: "Vanilla DOM Rendering, Single Page App feel, Tab-based components",
+            arch3Title: "Geospatial & Design",
+            arch3Desc: "Sticks to custom explorer.css tokens. Integrated Leaflet.js map plots live International Space Station coordinates and telemetry routes.",
+            arch3Bullets: "Leaflet.js Mapping, Responsive clamp typography, Hardware-accelerated transitions",
+            conclusionTitle: "Conclusion & Key Features",
+            conclusionContent: "4. Key Features Developed\n• Multi-Endpoint Data Orchestration: Plots APOD modals, Mars Rover filters (by Rover and Martian Sol), Near Earth Object hazard metrics, real-time ISS tracking (polling every 10s via wheretheiss.at), and live ISS crew manifests.\n• Robust Error Notifications: Gracefully handles failures and rate limits without app crashes.\n\n5. Technical Challenges & Solutions\n• Challenge (Map Rendering in Hidden Tabs): Leaflet chokes when initialized in a hidden container (display: none). Resolved by building a lazy-loading mechanism that initializes the map instance with a setTimeout only after the ISS tab becomes active.\n• Challenge (Memory Leaks in Live Polling): Redrawing the map and marker every 10s caused memory leaks. Resolved by creating the map/marker once and dynamically updating position telemetry during cycles.\n• Challenge (Cross-Origin HTTPS Blockages): Serve blockages on mixed content APIs. Resolved by building HTTPS fallback paths that attempt secure endpoints first, switching to simulated mock data if blocked.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+
+        if (project.title === "Mindful - Mental Wellness Companion") {
+          return {
+            pageLabel: "/ PWA /",
+            pageTitle: "Designing and Implementing \"Mindful\"",
+            pageSubtitle: "An offline-first, privacy-focused mental wellness Progressive Web App featuring interactive breathing visualizers and local storage tracking.",
+            metaProject: "Mindful - Mental Wellness Companion",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Progressive Web Application (PWA) / Single Page Application (SPA)",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "Wellness Interface",
+            premiseTitle: "The Premise",
+            summaryContent: "Mindful is a full-featured, client-side mental wellness app that makes anxiety relief, meditation, and mindfulness tools easy to access. No subscriptions, no accounts—just instant, private help. It runs as a lightweight Single Page Application, built completely with Vanilla JavaScript, and has zero backend. That means everything happens right on your device. The project really highlights sharp use of browser APIs, smart performance tweaks, and a crisp, responsive interface that actually works well for everyone.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "If you've ever tried mental health apps, you know the drill: expensive paywalls, cloud logins, endless barriers—and your private data sitting somewhere out there. Mindful doesn’t play that game. The goal here was to build an offline, private place where you can get proven tools—like 4-7-8 breathing or the 5-4-3-2-1 grounding method—right when you need them. One click, zero friction. It’s about making real help actually available, even when stress hits hardest.",
+            archTitle: "Application Architecture",
+            arch1Title: "State & Privacy Layer",
+            arch1Desc: "Moods, logs, and quotes are saved locally as JSON in HTML5 localStorage. No telemetry or tracking scripts leave the user's browser.",
+            arch1Bullets: "LocalStorage API, JSON state storage, Absolute user privacy",
+            arch2Title: "Background Work Scheduler",
+            arch2Desc: "A custom scheduleWork engine leveraging requestIdleCallback runs heavy I/O operations asynchronously to prevent layout blockages.",
+            arch2Bullets: "requestIdleCallback queues, Background writing thread, Smooth UI layout lifecycle",
+            arch3Title: "Lazy-Loaded SPA Router",
+            arch3Desc: "A client-side template router serves up views (Meditation Timer, Grounding UI) on demand using vanilla JS strings, preventing server loads.",
+            arch3Bullets: "Vanilla SPA routing, On-demand template loading, Fast page loads",
+            conclusionTitle: "Conclusion & Key Features",
+            conclusionContent: "4. Core Features Developed\n• Interactive Breathing Visualizer: Uses hardware-accelerated CSS animations to guide users through Box and 4-7-8 breathing exercises.\n• Meditation Engine: Tweakable countdown timer supporting accurate pausing and state tracking.\n• Mood Tracker: Stamped timeline updates stored dynamically in LocalStorage.\n• Dynamic Resource Library: Client-side sorting and filter logic for static articles.\n\n5. Technical Challenges & Solutions\n• Challenge (UI Blocking During Saves): localStorage calls block UI execution during fast entries. Resolved by queueing database saves in the background using the scheduleWork idle callback engine.\n• Challenge (Flash of Unstyled Content): Jarvis-like loading delays in CSS styling. Resolved by injecting critical styles (layouts, variables, typography) inline inside the head tag, loading non-essential rules dynamically after initial painting.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        if (project.title === "Know Your Plants") {
+          return {
+            pageLabel: "/ AGRITECH /",
+            pageTitle: "Designing and Implementing \"Know Your Plants\"",
+            pageSubtitle: "An agricultural guide for Indian farmers featuring district-wise crop recommendations, soil details, and farming methods tailored to their geography.",
+            metaProject: "Know Your Plants (Vigges)",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Frontend Web Application & Agricultural Data Portal",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "Agricultural Dashboard",
+            premiseTitle: "The Premise",
+            summaryContent: "\"Know Your Plants\" is a client-side web app built to serve as a hyper-local guide for agriculture and botany in India. Instead of the usual server setups, it relies on flat-file JSON databases—users can explore data right down to the district level, getting specific crop recommendations, soil details, and farming methods tailored to their geography. The whole thing just runs in the browser. No fancy JavaScript frameworks, no backend servers—just solid frontend engineering, smart state management, and a disciplined way to organize a lot of data.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Farming changes from one region to the next: soils, climate, everything shifts. But people who actually need this info—farmers, scientists, curious plant folks—rarely have one place to get clear, district-level guidance. The goal? Fix this problem with a web app that's fast, easy to use, and lets anyone pick their state and district, then see tailored advice about crops, spacing, irrigation, and pest control. No confusion, no clutter, just the essentials.",
+            archTitle: "System Architecture",
+            arch1Title: "Serverless Static Data",
+            arch1Desc: "All agricultural and geographic database parameters reside entirely within a structured tree of static JSON files representing states and districts.",
+            arch1Bullets: "Flat-File JSON tree, Decentralized data mapping, Zero server request overhead",
+            arch2Title: "On-Demand Fetching Engine",
+            arch2Desc: "JavaScript module district.js fetches precise 10KB district files dynamically based on client navigation, avoiding monolithic data payloads.",
+            arch2Bullets: "Dynamic client-side fetches, Lazy-loaded datasets, Low bandwidth consumption",
+            arch3Title: "Stateless State Router",
+            arch3Desc: "Navigates between HTML page components (states, districts, profiles) using URLSearchParams to carry variables, backed by LocalStorage caching.",
+            arch3Bullets: "URL parameters transport, LocalStorage user preferences, Multi-page static architecture",
+            conclusionTitle: "Conclusion & Features Overview",
+            conclusionContent: "4. Core Features Developed\n• Hierarchical Navigation & Live Search: Fast, responsive grids with instant client-side filtering.\n• Granular District Profiles: Custom soil/climate metrics (pH, minerals), crop specifications (yield, spacing, harvest times), and fertilizer schedules.\n• Integrated Pest Management: Eco-friendly solutions (neem oil, pheromones) mapped to specific crop variants.\n• Fluid Design System: Custom style.css leveraging nature-inspired variables and clamp() font resizing for responsive readability.\n\n5. Technical Challenges & Solutions\n• Challenge (Relating Databases Offline): No server database mapping. Resolved by implementing a master districts.json index mapping states to district file URLs, which are decoded on target template routes.\n• Challenge (Handling Missing Data): Incomplete agricultural records caused display issues. Resolved by building null/empty safety checks in rendering helpers, substituting generic 'None' strings without crashing layout boxes.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        if (project.title === "Checkout Address Finder") {
+          return {
+            pageLabel: "/ MAPS /",
+            pageTitle: "Designing and Implementing \"Checkout Address Finder\"",
+            pageSubtitle: "An interactive, dark-mode address selection tool built with Leaflet.js and OpenStreetMap Nominatim geocoding API for smooth checkouts.",
+            metaProject: "Checkout Address Finder (Geolocator)",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Frontend Component & Geospatial Web Application",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "Map Interface & Controls",
+            premiseTitle: "The Premise",
+            summaryContent: "The Geolocator Checkout Address Finder is a map-based address selection tool built for smoother onboarding and e-commerce checkout. It’s made with only Vanilla JavaScript and Leaflet.js, so it stays lightweight and fast. You can look up addresses by typing them in or just drop a pin on the interactive map—both work seamlessly. Forward and reverse geocoding are handled in real-time through open-source mapping APIs. And, yeah, the whole thing is wrapped in a sharp, dark-mode interface.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Let’s face it, old-school address forms are annoying. They're slow, clunky, break the flow—and worst of all, they make people bail on their carts. People guess at how to fill them, and delivery folks end up with wrong info all the time. This project’s goal was to rethink the address entry process with a visual, map-first approach. You can just type—or point and click—and get valid, formatted addresses and exact GPS coordinates with zero hassle.",
+            archTitle: "System Architecture",
+            arch1Title: "Leaflet Mapping Engine",
+            arch1Desc: "Renders interactive maps using Leaflet.js and dark-themed CartoDB (dark_matter) map tiles matching the dark UI theme.",
+            arch1Bullets: "Leaflet.js mapping library, CartoDB dark_matter tiles, Custom styling variables",
+            arch2Title: "Geocoding Integration",
+            arch2Desc: "Interfaces with OpenStreetMap Nominatim API to perform real-time forward geocoding (search queries) and reverse geocoding (coordinate decoding).",
+            arch2Bullets: "Nominatim API, Forward geocoding search, Reverse geocoding pin-drop",
+            arch3Title: "State Synchronizer",
+            arch3Desc: "A central logic component keeping input fields, map views, suggestions, and drag markers updated in tight bi-directional synchronization.",
+            arch3Bullets: "Bi-directional event dispatch, Local address caches, Coordinated UI elements",
+            conclusionTitle: "Conclusion & Key Features",
+            conclusionContent: "4. Core Features Developed\n• Live Address Autocomplete: Parses street, suburb, and city suggestions dynamically.\n• Bi-Directional Interaction: Drag-and-drop pin placements trigger reverse geocoding, while coordinate extraction displays live coordinates under the map.\n• Dark-Glassmorphism UI: Frosted glass effect with loading status indicators.\n\n5. Technical Challenges & Solutions\n• Challenge (API Rate Limiting & Keystroke Lags): High frequency of search API requests. Resolved by implementing a 500ms debounce timer function.\n• Challenge (State Desynchronization): Mismatched coordinates between map drags, clicks, and text searches. Resolved by routing all updates to a single centralized reverse-geocoding function.\n• Challenge (Incomplete Address Data): Inconsistent address details returned from geocoding. Resolved by implementing fallback parsing merging road/suburb/town names dynamically.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        if (project.title === "After12") {
+          return {
+            pageLabel: "/ PSYCHOMETRICS /",
+            pageTitle: "Designing \"After12\" – The Career Archetype Test",
+            pageSubtitle: "An interactive web app and gamified career quiz mapping situational student responses to professional archetypes on the fly.",
+            metaProject: "After12 – The Career Archetype Test",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Interactive Web App & Gamified Quiz",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "Interactive Assessment Interface",
+            premiseTitle: "The Premise",
+            summaryContent: "After12 is a modern, interactive web app that helps high school graduates figure out what careers fit them best. Instead of making users slog through stiff, boring assessments, this app turns career counseling into a game. Users answer situational questions, and the app calculates their dominant traits on the fly. The design ditches the dated, clinical look of standard tests and brings in a dark theme, glassy UI, fluid animations, and a personalized results dashboard with data visualizations.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Let’s face it—most 12th graders are overwhelmed when it comes to picking a degree or a career. Traditional aptitude tests don’t help much; they’re too long, look dull, and just feel like taking another exam, so students stop halfway. This project was about flipping the script. The idea was to create a quick, genuinely fun, great-looking “personality quiz” with a Gen-Z vibe. The aim: instantly show users how their soft skills and interests connect to real degree options and career paths.",
+            archTitle: "Application Architecture",
+            arch1Title: "SPA Quiz Controller",
+            arch1Desc: "A zero-dependency Single Page Application preloading all screen states (start, quiz, loading, results) in a modular container system.",
+            arch1Bullets: "Zero-dependency layout, Dynamic switchScreen navigator, Conditional class activations",
+            arch2Title: "Weighted Score Engine",
+            arch2Desc: "Calculates archetype weights on the fly (Tech, Business, Creative, People) via situational mapping objects with no database queries.",
+            arch2Bullets: "Real-time selectOption increments, Hidden situational weights, Scores state management",
+            arch3Title: "Interactive Dashboard",
+            arch3Desc: "Instantly formats dynamic career advice, degree proposals, and 3-step roadmaps, styled with custom progress indicators.",
+            arch3Bullets: "Dynamic degree recommendation, Responsive SVG stats bars, Personalized roadmap rendering",
+            conclusionTitle: "Conclusion & Key Features",
+            conclusionContent: "4. Core Features Developed\n• Weighted Scoring: Multi-archetype tracking variables (Tech, Business, Creative, People) computed on the fly.\n• Gamified Interstitial Loader: Fakes a thinking processor to build suspense before results rendering.\n• Premium Glassmorphism UI: CSS gradients, backdrop filters, and custom scaling animations.\n\n5. Technical Challenges & Solutions\n• Challenge (Jumpy DOM Transitions): Instant display: block changes kill CSS slide/fade animations. Resolved by creating a two-step switchScreen handler that increments classes, letting CSS manage smooth opacity changes.\n• Challenge (Efficient Archetype Sorting): Clunky loops to find the highest-scoring archetype. Resolved by leveraging modern ES6 Object.entries(scores).sort((a,b) => b[1]-a[1]) sorting algorithms to extract the top traits cleanly.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        if (project.title === "DayDot") {
+          return {
+            pageLabel: "/ MOBILE APP /",
+            pageTitle: "Designing DayDot – The Offline-First Birthday Tracker",
+            pageSubtitle: "A privacy-focused, offline-first mobile app built with Flutter that tracks birthdays with reliable local reminders, custom calendars, and secure self-hosted backup.",
+            metaProject: "DayDot (Internal code name: RememberMe)",
+            metaDeveloper: "Vishnu Deviprasad Shetty",
+            metaType: "Cross-Platform Mobile App",
+            image1Url: "",
+            image1Caption: "",
+            image2Url: "",
+            image2Caption: "",
+            image3Url: "",
+            image3Caption: "",
+            mediaTitle: "App Interface & Calendar",
+            premiseTitle: "The Premise",
+            summaryContent: "DayDot is a privacy-focused, offline-first mobile app that tracks birthdays and delivers reliable local reminders. The whole thing's built in Flutter—no social media tie-ins, no bloat, and your data stays put in your pocket. Instead of syncing with online calendars, DayDot uses a snappy local SQLite database. It comes with a custom infinite-scroll calendar, background notifications that know your timezone, and a way to backup your data to your own Raspberry Pi. The project flexes skills in state management, background scheduling, and database migrations, keeping everything fast and private.",
+            problemTitle: "PROBLEM & MOTIVATION",
+            problemContent: "Let's face it—the usual way of relying on social media for birthday reminders isn't that reliable. You miss out when platforms mess with your feed, or when friends just delete their profiles. Standard calendar apps? They end up crowding your work agenda with personal stuff. DayDot steps in as a dedicated solution that actually delivers birthday reminders on its own—no cloud accounts, no wifi required. The aim is simple: give people an easy-to-use, visual tool with notifications that they can trust, no matter what.",
+            archTitle: "System Architecture",
+            arch1Title: "Local SQLite Database",
+            arch1Desc: "Uses sqflite for offline-first storage. Schema covers unique IDs, names, dates, notes, and custom reminder settings with safe migration support.",
+            arch1Bullets: "sqflite SQLite engine, ALTER TABLE migrations, Offline-first data layer",
+            arch2Title: "Notification Engine",
+            arch2Desc: "Powered by flutter_local_notifications and the timezone package, it schedules background notifications with exactAllowWhileIdle for reliable delivery.",
+            arch2Bullets: "flutter_local_notifications, Timezone-aware scheduling, Background-safe delivery",
+            arch3Title: "Raspberry Pi Backup",
+            arch3Desc: "Securely POST-s the raw .db file to a self-hosted Raspberry Pi REST API, giving users full control over their data backups.",
+            arch3Bullets: "REST API backup, Self-hosted storage, Raw database export",
+            conclusionTitle: "Conclusion & Key Features",
+            conclusionContent: "4. Core Features Developed\n• Custom Infinite Calendar: Horizontal PageView.builder rendering months on demand, with birthday dot indicators and smooth 60fps scrolling.\n• Smart Age Calculation: Leap-year-aware algorithm computing exact next-birthday ages dynamically.\n• Bi-Directional Event Tracking: Tap-to-filter calendar dashboard synced with a searchable list view for instant birthday lookup.\n• Automated Annual Reminders: Auto-schedules next year's notification if this year's birthday has passed.\n\n5. Technical Challenges & Solutions\n• Challenge (Safe Schema Upgrades): Adding notes and custom reminder columns required non-destructive migrations. Resolved by version-checking the database and running conditional ALTER TABLE commands preserving all existing user data.\n• Challenge (Timezone-Accurate Background Scheduling): Notifications must fire reliably across timezones and device sleep states. Resolved by localizing all DateTime objects with the timezone data package and using Android's exactAllowWhileIdle mode.\n• Challenge (Infinite Pagination Performance): Pre-building calendar months crashes performance. Resolved by leveraging PageView.builder with a large initial page index, only constructing visible months and destroying offscreen ones.",
+            githubLink: "https://github.com/idkshetty",
+            docsLink: "#",
+            licenseLink: "#"
+          };
+        }
+
+        return {
+          pageLabel: `/ ${category.toUpperCase()} /`,
+          pageTitle: `Designing and Implementing ${project.title}`,
+          pageSubtitle: project.description,
+          metaProject: project.title,
+          metaDeveloper: "Vishnu Deviprasad Shetty",
+          metaType: project.subtitle || "Development & Engineering",
+          image1Url: "",
+          image1Caption: "Primary overview of the system",
+          image2Url: "",
+          image2Caption: "",
+          image3Url: "",
+          image3Caption: "",
+          mediaTitle: "Visuals & Media",
+          premiseTitle: "The Premise",
+          summaryContent: `${project.title} is an innovative project designed to solve real-world challenges in the ${category.toLowerCase()} space. It is built to deliver a seamless user experience, high efficiency, and clean architecture.`,
+          problemTitle: "PROBLEM & MOTIVATION",
+          problemContent: "Explain the main problem statement and key motivations behind starting this project. How does it improve current workflows or address user needs?",
+          archTitle: "System Architecture",
+          arch1Title: "Core Engine",
+          arch1Desc: "Processes the primary business logic and handles input verification.",
+          arch1Bullets: "Logic Engine, Performance: high speed",
+          arch2Title: "Interface Layer",
+          arch2Desc: "Provides a responsive user interface built using modern web standard technologies.",
+          arch2Bullets: "Responsive Design, Theme Support",
+          arch3Title: "Data Store",
+          arch3Desc: "Manages state persistence, offline capabilities, or external API communications.",
+          arch3Bullets: "Firebase integration, Local storage support",
+          conclusionTitle: "Conclusion",
+          conclusionContent: "This project successfully demonstrates how modern technologies can address critical industry requirements. Future versions will expand functionality, improve scaling, and add more advanced modules.",
+          githubLink: "https://github.com/idkshetty",
+          docsLink: "#",
+          licenseLink: "#"
+        };
+      }
+
+      function seedInitialProjects() {
+        const initialData = {};
+        defaultProjects.forEach((project) => {
+          const newKey = push(projectsRef).key;
+          project.link = `projects/project.html?id=${newKey}`;
+          project.caseStudy = generateDefaultCaseStudy(project);
+          initialData[newKey] = project;
+        });
+        set(projectsRef, initialData);
+      }
+
+      onValue(projectsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (!data) {
+          seedInitialProjects();
+          return;
+        }
+
+        // Database migration check:
+        // 1. Convert static links (# or hardcoded html files) to dynamic project.html?id=... links.
+        // 2. Prefill/repair missing or empty caseStudy sections.
+        Object.entries(data).forEach(([id, project]) => {
+          let updates = {};
+          let needsUpdate = false;
+
+          if (project) {
+            if (!project.link || project.link === "#" || project.link.includes("chotulang.html")) {
+              const newLink = `projects/project.html?id=${id}`;
+              updates.link = newLink;
+              project.link = newLink;
+              needsUpdate = true;
+            }
+
+            // Check if caseStudy is completely missing or lacks a pageTitle (empty/incomplete)
+            const isMissingCaseStudy = !project.caseStudy || 
+                                       !project.caseStudy.pageTitle || 
+                                       project.caseStudy.pageTitle === "" ||
+                                       (project.title === "Chotulang" && (!project.caseStudy.summaryContent || project.caseStudy.summaryContent === ""));
+
+            if (isMissingCaseStudy) {
+              const defaultCs = generateDefaultCaseStudy(project);
+              updates.caseStudy = defaultCs;
+              project.caseStudy = defaultCs;
+              needsUpdate = true;
+            }
+          }
+
+          if (needsUpdate) {
+            update(ref(db, `portfolioProjects/${id}`), updates);
+          }
+        });
+
+        renderProjects(data);
+      });
+
+      function updateThemeButton() {
+        const isDark = document.documentElement.classList.contains("dark");
+        if (themeToggle) {
+          const icon = themeToggle.querySelector("#themeIcon");
+          if (icon) {
+            icon.textContent = isDark ? "light_mode" : "dark_mode";
+          }
+        }
+      }
+
+      function loadTheme() {
+        const saved = localStorage.getItem("theme");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", prefersDark);
+        }
+        updateThemeButton();
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+          const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
+          localStorage.setItem("theme", current);
+          updateThemeButton();
+        });
+      }
+
+      loadTheme();
+
+      // Mobile Menu Toggle Logic
+      const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileMenuIcon = document.getElementById("mobileMenuIcon");
+
+      if (mobileMenuToggle && mobileMenu && mobileMenuIcon) {
+        mobileMenuToggle.addEventListener("click", () => {
+          const isHidden = mobileMenu.classList.contains("hidden");
+          if (isHidden) {
+            mobileMenu.classList.remove("hidden");
+            mobileMenuIcon.textContent = "close";
+          } else {
+            mobileMenu.classList.add("hidden");
+            mobileMenuIcon.textContent = "menu";
+          }
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            mobileMenu.classList.add("hidden");
+            mobileMenuIcon.textContent = "menu";
+          });
+        });
+      }
+
+      // Intersection Observer for scroll animations
+      document.addEventListener("DOMContentLoaded", () => {
+        // === SPLIT-PANEL PAGE TRANSITION ===
+        const overlayEl = document.getElementById('pageTransitionOverlay');
+        if (sessionStorage.getItem('page-transitioning')) {
+          sessionStorage.removeItem('page-transitioning');
+          overlayEl.classList.add('enter');
+          overlayEl.querySelector('.panel:last-child').addEventListener('animationend', () => {
+            overlayEl.remove();
+          });
+        } else {
+          overlayEl.remove();
+        }
+
+        // Scroll to hash anchor after page loads (fixes #contact from case study)
+        if (window.location.hash) {
+          const scrollToHash = () => {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+              window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+            }
+          };
+          // Retry a few times to handle lazy-loaded content shifting the layout
+          setTimeout(scrollToHash, 300);
+          setTimeout(scrollToHash, 800);
+          setTimeout(scrollToHash, 1500);
+        }
+
+        // Handle browser back button restores (bfcache)
+        window.addEventListener("pageshow", (event) => {
+          if (event.persisted) {
+            document.querySelectorAll('.page-transition').forEach(el => el.remove());
+          }
+        });
+
+        // Intercept local page links for split-panel exit
+        document.body.addEventListener("click", (e) => {
+          const link = e.target.closest("a");
+          if (!link) return;
+
+          const href = link.getAttribute("href");
+          if (
+            href &&
+            !href.startsWith("#") &&
+            !href.startsWith("mailto:") &&
+            !href.startsWith("tel:") &&
+            link.target !== "_blank" &&
+            !link.hasAttribute("download") &&
+            (link.hostname === window.location.hostname || !href.includes("://"))
+          ) {
+            e.preventDefault();
+            sessionStorage.setItem('page-transitioning', '1');
+
+            const exitEl = document.createElement('div');
+            exitEl.className = 'page-transition exit';
+            exitEl.innerHTML = '<div class="panel"></div><div class="panel"></div>';
+            document.body.appendChild(exitEl);
+
+            setTimeout(() => {
+              window.location.href = href;
+            }, 500);
+          }
+        });
+
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.1,
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        const revealElements = document.querySelectorAll(".reveal");
+        revealElements.forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>

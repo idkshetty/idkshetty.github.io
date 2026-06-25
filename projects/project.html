@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Case Study | Vishnu</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <!-- Fonts Preconnect -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <!-- Typography Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-secondary-fixed-variant": "#464747",
+              secondary: "#5e5e5e",
+              error: "#ba1a1a",
+              "outline-variant": "#cfc4c5",
+              "secondary-fixed": "#e4e2e2",
+              "on-primary-fixed": "#1b1b1b",
+              "inverse-primary": "#c6c6c6",
+              "surface-dim": "#dadada",
+              "on-secondary": "#ffffff",
+              outline: "#7e7576",
+              "on-primary": "#ffffff",
+              "primary-fixed": "#e2e2e2",
+              "on-error": "#ffffff",
+              "surface-tint": "#5e5e5e",
+              "on-secondary-container": "#626262",
+              "surface-container-lowest": "#ffffff",
+              primary: "#000000",
+              "on-primary-container": "#848484",
+              "on-tertiary-fixed-variant": "#474747",
+              "on-tertiary-container": "#848484",
+              "inverse-surface": "#2f3131",
+              "primary-container": "#1b1b1b",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#e2e2e2",
+              "surface-bright": "#f9f9f9",
+              "surface-container-low": "#f3f3f3",
+              surface: "#f9f9f9",
+              "on-secondary-fixed": "#1b1c1c",
+              "surface-container-high": "#e8e8e8",
+              "tertiary-fixed": "#e2e2e2",
+              "on-background": "#1a1c1c",
+              "on-primary-fixed-variant": "#474747",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed-dim": "#c6c6c6",
+              "secondary-container": "#e1dfdf",
+              "secondary-fixed-dim": "#c7c6c6",
+              "on-surface-variant": "#4c4546",
+              "inverse-on-surface": "#f1f1f1",
+              "on-tertiary-fixed": "#1b1b1b",
+              "tertiary": "#000000",
+              "surface-container": "#eeeeee",
+              "primary-fixed-dim": "#c6c6c6",
+              "tertiary-container": "#1b1b1b",
+              "surface-variant": "#e2e2e2",
+              background: "#f9f9f9",
+              "error-container": "#ffdad6",
+              "on-surface": "#1a1c1c",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "grid-margin": "clamp(16px, 5vw, 64px)",
+              gutter: "clamp(16px, 3vw, 24px)",
+              base: "8px",
+              "section-gap": "clamp(64px, 10vw, 120px)",
+              "content-gap": "clamp(32px, 5vw, 48px)",
+            },
+            fontFamily: {
+              sans: ["Geist", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+              "display-lg-mobile": ["Inter"],
+              "display-lg": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg": ["Inter"],
+              "body-md": ["Inter"],
+              "headline-xl": ["Inter"],
+              "label-caps": ["JetBrains Mono"],
+            },
+            fontSize: {
+              "display-lg-mobile": [
+                "48px",
+                { lineHeight: "1.1", letterSpacing: "-0.04em", fontWeight: "700" },
+              ],
+              "display-lg": [
+                "72px",
+                { lineHeight: "1.1", letterSpacing: "-0.04em", fontWeight: "700" },
+              ],
+              "body-lg": [
+                "20px",
+                { lineHeight: "1.6", letterSpacing: "-0.01em", fontWeight: "400" },
+              ],
+              "headline-lg": ["32px", { lineHeight: "1.3", fontWeight: "600" }],
+              "body-md": ["16px", { lineHeight: "1.6", fontWeight: "400" }],
+              "headline-xl": [
+                "40px",
+                { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" },
+              ],
+              "label-caps": [
+                "12px",
+                { lineHeight: "1.0", letterSpacing: "0.1em", fontWeight: "500" },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: theme("colors.background");
+        color: theme("colors.on-background");
+      }
+      .grid-container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 theme("spacing.grid-margin");
+        width: 100%;
+      }
+      @media (max-width: 1024px) {
+        .grid-container {
+          padding: 0 32px;
+        }
+      }
+      @media (max-width: 767px) {
+        .grid-container {
+          padding: 0 24px;
+        }
+      }
+
+      /* ── Page Transition: Split-Panel Wipe ── */
+      .page-transition {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 99999;
+        pointer-events: none;
+        display: flex;
+      }
+      .page-transition .panel {
+        flex: 1;
+        background: #f9f9f9;
+        will-change: transform;
+      }
+      .dark .page-transition .panel {
+        background: #121212;
+      }
+
+      /* Exit: panels slide IN to cover the page */
+      .page-transition.exit .panel:first-child {
+        transform: translateX(-100%);
+        animation: panelSlideInLeft 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+      }
+      .page-transition.exit .panel:last-child {
+        transform: translateX(100%);
+        animation: panelSlideInRight 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+      }
+
+      /* Enter: panels slide OUT to reveal the page */
+      .page-transition.enter .panel:first-child {
+        transform: translateX(0);
+        animation: panelSlideOutLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+      }
+      .page-transition.enter .panel:last-child {
+        transform: translateX(0);
+        animation: panelSlideOutRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+      }
+
+      @keyframes panelSlideInLeft  { to { transform: translateX(0); } }
+      @keyframes panelSlideInRight { to { transform: translateX(0); } }
+      @keyframes panelSlideOutLeft  { to { transform: translateX(-100%); } }
+      @keyframes panelSlideOutRight { to { transform: translateX(100%); } }
+
+      body {
+        opacity: 1;
+      }
+
+      .font-display-lg {
+        font-family: theme("fontFamily.display-lg");
+        font-size: clamp(32px, 6vw, 72px) !important;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        font-weight: 700;
+      }
+      .text-display-lg {
+        font-size: clamp(32px, 6vw, 72px) !important;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        font-weight: 700;
+      }
+
+      .font-display-lg-mobile {
+        font-family: theme("fontFamily.display-lg-mobile");
+        font-size: 48px;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        font-weight: 700;
+      }
+      .text-display-lg-mobile {
+        font-size: 48px;
+        line-height: 1.1;
+        letter-spacing: -0.04em;
+        font-weight: 700;
+      }
+
+      .font-body-lg {
+        font-family: theme("fontFamily.body-lg");
+        font-size: clamp(16px, 2vw, 20px);
+        line-height: 1.6;
+        letter-spacing: -0.01em;
+        font-weight: 400;
+      }
+      .text-body-lg {
+        font-size: clamp(16px, 2vw, 20px);
+        line-height: 1.6;
+        letter-spacing: -0.01em;
+        font-weight: 400;
+      }
+
+      .font-headline-lg {
+        font-family: theme("fontFamily.headline-lg");
+        font-size: clamp(24px, 4vw, 32px);
+        line-height: 1.3;
+        font-weight: 600;
+      }
+      .text-headline-lg {
+        font-size: clamp(24px, 4vw, 32px);
+        line-height: 1.3;
+        font-weight: 600;
+      }
+
+      .font-body-md {
+        font-family: theme("fontFamily.body-md");
+        font-size: 16px;
+        line-height: 1.6;
+        font-weight: 400;
+      }
+      .text-body-md {
+        font-size: 16px;
+        line-height: 1.6;
+        font-weight: 400;
+      }
+
+      .font-headline-xl {
+        font-family: theme("fontFamily.headline-xl");
+        font-size: clamp(28px, 5vw, 40px);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        font-weight: 600;
+      }
+      .text-headline-xl {
+        font-size: clamp(28px, 5vw, 40px);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        font-weight: 600;
+      }
+
+      .font-label-caps {
+        font-family: theme("fontFamily.label-caps");
+        font-size: 12px;
+        line-height: 1.0;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+      }
+      .text-label-caps {
+        font-size: 12px;
+        line-height: 1.0;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+      }
+
+      /* Custom UI Elements */
+      .hairline-border {
+        border: 1px solid theme("colors.outline-variant");
+      }
+      .hairline-border-b {
+        border-bottom: 1px solid theme("colors.outline-variant");
+      }
+      .hairline-border-t {
+        border-top: 1px solid theme("colors.outline-variant");
+      }
+
+      .code-block {
+        background-color: theme("colors.surface-container-low");
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        padding: 24px;
+        border-radius: theme("borderRadius.DEFAULT");
+      }
+
+      /* Reveal Animations */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Staggered Delays */
+      .delay-100 {
+        transition-delay: 100ms;
+      }
+      .delay-200 {
+        transition-delay: 200ms;
+      }
+      .delay-300 {
+        transition-delay: 300ms;
+      }
+      .delay-400 {
+        transition-delay: 400ms;
+      }
+
+      /* Dark mode color overrides (Darker Charcoal Theme) */
+      .dark body {
+        background-color: #121212 !important;
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .dark header {
+        background-color: rgba(26, 26, 26, 0.9) !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .text-primary {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .dark .text-secondary {
+        color: rgba(255, 255, 255, 0.6) !important;
+      }
+      .dark .bg-surface-container-lowest {
+        background-color: #1a1a1a !important;
+      }
+      .dark .border-outline-variant,
+      .dark .hairline-border,
+      .dark .hairline-border-b,
+      .dark .hairline-border-t {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .code-block {
+        background-color: #1a1a1a !important;
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .dark .bg-background {
+        background-color: #121212 !important;
+      }
+      .dark .bg-surface-container-low {
+        background-color: #1a1a1a !important;
+      }
+
+      /* Navigation Overrides from index.html */
+      .dark .bg-white {
+        background-color: #1a1a1a !important;
+      }
+      .dark .border-black {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .text-black {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .dark .bg-white\/90 {
+        background-color: rgba(26, 26, 26, 0.9) !important;
+      }
+      .dark .btn-dark-mode-white {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #ffffff !important;
+      }
+      .dark .btn-dark-mode-white:hover {
+        background-color: transparent !important;
+        color: #ffffff !important;
+      }
+
+      /* Reset Tap Highlights & Outlines */
+      button, a {
+        -webkit-tap-highlight-color: transparent !important;
+        outline: none !important;
+      }
+      button:focus, a:focus, button:active, a:active {
+        outline: none !important;
+      }
+    </style>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const isDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+        const bgColor = isDark ? "#121212" : "#f9f9f9";
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        document.documentElement.style.backgroundColor = bgColor;
+      } catch (error) {
+        console.warn("Theme initialization failed", error);
+      }
+    </script>
+  </head>
+  <body
+    class="bg-background text-on-background antialiased min-h-screen flex flex-col transition-colors duration-300"
+  >
+    <!-- Static transition overlay -->
+    <div id="pageTransitionOverlay" class="page-transition" style="display:none">
+      <div class="panel"></div>
+      <div class="panel"></div>
+    </div>
+    <script>
+      (function(){
+        var el = document.getElementById('pageTransitionOverlay');
+        if (sessionStorage.getItem('page-transitioning')) {
+          el.style.display = 'flex';
+        }
+      })();
+    </script>
+    <!-- TopNavBar Shared Component -->
+    <header
+      class="bg-white/90 dark:bg-[#0f1323]/90 backdrop-blur-md fixed top-0 w-full border-b border-black dark:border-white/10 z-50 transition-all duration-300"
+    >
+      <div
+        class="grid-container py-4 flex justify-between items-center w-full"
+      >
+        <!-- Brand -->
+        <a
+          class="font-sans text-2xl font-bold tracking-tighter text-black hover:opacity-70 transition-opacity"
+          href="../index.html"
+        >
+          Vishnu
+        </a>
+        <!-- Navigation -->
+        <nav
+          class="hidden md:flex items-center gap-8 font-sans text-base font-medium"
+        >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="../index.html#offerings"
+            >Work</a
+          >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="../index.html#projects"
+            >Projects</a
+          >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="../index.html#contact"
+            >About</a
+          >
+        </nav>
+        <div class="flex items-center gap-4">
+          <a
+            class="hidden md:inline-block px-6 py-2 bg-black text-white border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 focus:outline-none btn-dark-mode-white"
+            href="../index.html#contact"
+          >
+            Let's Talk
+          </a>
+          <button
+            id="themeToggle"
+            class="px-4 py-2 border border-black dark:border-white/10 text-black dark:text-white bg-white dark:bg-[#0f172a] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 flex items-center justify-center focus:outline-none"
+            aria-label="Toggle dark mode"
+          >
+            <span id="themeIcon" class="material-symbols-outlined text-sm">dark_mode</span>
+          </button>
+          <!-- Mobile Menu Toggle -->
+          <button
+            id="mobileMenuToggle"
+            class="md:hidden text-black dark:text-white hover:opacity-70 transition-opacity flex items-center focus:outline-none"
+            aria-label="Toggle mobile menu"
+          >
+            <span id="mobileMenuIcon" class="material-symbols-outlined">menu</span>
+          </button>
+        </div>
+      </div>
+      <!-- Mobile Menu Dropdown -->
+      <div
+        id="mobileMenu"
+        class="hidden md:hidden border-t border-black dark:border-white/10 bg-white dark:bg-[#0f1323] px-8 py-6 flex flex-col gap-6 font-sans text-lg font-medium shadow-lg"
+      >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="../index.html#offerings"
+          >Work</a
+        >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="../index.html#projects"
+          >Projects</a
+        >
+        <a
+          class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300 focus:outline-none"
+          href="../index.html#contact"
+          >About</a
+        >
+        <div class="flex items-center justify-between border-t border-black/10 dark:border-white/10 pt-6">
+          <a
+            class="px-6 py-2 bg-black text-white border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 focus:outline-none btn-dark-mode-white"
+            href="../index.html#contact"
+          >
+            Let's Talk
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow pt-[120px]">
+      <!-- Loading State -->
+      <div id="loader" class="grid-container py-32 flex flex-col items-center justify-center gap-4 text-center">
+        <div class="w-12 h-12 border-4 border-black dark:border-white border-t-transparent dark:border-t-transparent rounded-full animate-spin"></div>
+        <p class="font-mono text-sm tracking-widest text-secondary mt-4">RETRIEVING CASE STUDY DATA...</p>
+      </div>
+
+      <!-- 404/Error State -->
+      <div id="errorState" class="hidden grid-container py-32 flex flex-col items-center justify-center text-center">
+        <span class="material-symbols-outlined text-6xl text-error mb-6">error</span>
+        <h1 class="font-sans text-3xl font-bold tracking-tight mb-4">Case Study Not Found</h1>
+        <p class="font-body-lg text-body-lg text-secondary max-w-md mb-8">
+          The requested project case study could not be loaded. It may have been moved or does not exist.
+        </p>
+        <a href="../index.html" class="px-6 py-3 bg-black text-white dark:bg-white dark:text-black font-sans text-sm font-bold uppercase tracking-wider hover:opacity-80 transition-opacity">
+          Return to Home
+        </a>
+      </div>
+
+      <!-- Content Container -->
+      <div id="caseStudyContent" class="hidden">
+        <!-- Back to projects link -->
+        <section class="grid-container pt-8 pb-4">
+          <a href="../index.html#projects" class="group inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-secondary hover:text-primary transition-colors duration-300">
+            <span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            Back to Projects
+          </a>
+        </section>
+
+        <!-- Hero Section -->
+        <section class="grid-container py-12 flex flex-col items-center text-center reveal">
+          <div id="pageLabel" class="inline-block px-3 py-1 mb-6 hairline-border bg-surface-container-lowest font-label-caps text-label-caps rounded-DEFAULT">
+            / CASE STUDY /
+          </div>
+          <h1 id="pageTitle" class="font-display-lg text-display-lg text-primary max-w-4xl mb-6 reveal delay-100 leading-tight text-balance break-words">
+            Project Case Study
+          </h1>
+          <p id="pageSubtitle" class="font-body-lg text-body-lg text-secondary max-w-2xl reveal delay-200">
+            Details of this project case study.
+          </p>
+        </section>
+
+        <!-- Project Info Grid -->
+        <section class="grid-container mb-section-gap reveal">
+          <div class="grid grid-cols-1 md:grid-cols-3 hairline-border bg-surface-container-lowest rounded-DEFAULT">
+            <div class="p-8 hairline-border-b md:hairline-border-b-0 md:border-r border-outline-variant">
+              <p class="font-label-caps text-label-caps text-secondary mb-2">PROJECT</p>
+              <p id="metaProject" class="font-body-md text-body-md text-primary font-semibold">--</p>
+            </div>
+            <div class="p-8 hairline-border-b md:hairline-border-b-0 md:border-r border-outline-variant">
+              <p class="font-label-caps text-label-caps text-secondary mb-2">DEVELOPER</p>
+              <p id="metaDeveloper" class="font-body-md text-body-md text-primary font-semibold">--</p>
+            </div>
+            <div class="p-8">
+              <p class="font-label-caps text-label-caps text-secondary mb-2">TYPE</p>
+              <p id="metaType" class="font-body-md text-body-md text-primary font-semibold">--</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dynamic Visualization Section (Images) -->
+        <section id="mediaSection" class="grid-container mb-section-gap reveal hidden">
+          <div class="mb-12">
+            <h2 id="mediaSectionTitle" class="font-label-caps text-label-caps tracking-widest text-secondary uppercase">Visuals &amp; Media</h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <!-- Large Image Box -->
+            <div id="image1Box" class="md:col-span-8 flex flex-col gap-4 reveal hidden">
+              <div class="hairline-border rounded-DEFAULT overflow-hidden bg-surface-container-lowest aspect-video flex items-center justify-center relative bg-gray-100 dark:bg-slate-900">
+                <img id="image1" alt="Image 1" class="w-full h-auto block" src="" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                <div class="hidden absolute inset-0 flex items-center justify-center bg-zinc-100 dark:bg-slate-800 text-zinc-400 dark:text-slate-500 font-mono text-xs">
+                  [ Image Offline ]
+                </div>
+              </div>
+              <p id="image1Cap" class="font-label-caps text-label-caps text-secondary"></p>
+            </div>
+            <!-- Smaller Images Column -->
+            <div id="imageSideCol" class="md:col-span-4 flex flex-col gap-8 hidden">
+              <!-- Image 2 Box -->
+              <div id="image2Box" class="flex flex-col gap-4 reveal hidden">
+                <div class="hairline-border rounded-DEFAULT overflow-hidden bg-surface-container-lowest aspect-[4/3] flex items-center justify-center relative bg-gray-100 dark:bg-slate-900">
+                  <img id="image2" alt="Image 2" class="w-full h-auto block" src="" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                  <div class="hidden absolute inset-0 flex items-center justify-center bg-zinc-100 dark:bg-slate-800 text-zinc-400 dark:text-slate-500 font-mono text-xs">
+                    [ Image Offline ]
+                  </div>
+                </div>
+                <p id="image2Cap" class="font-label-caps text-label-caps text-secondary"></p>
+              </div>
+              <!-- Image 3 Box -->
+              <div id="image3Box" class="flex flex-col gap-4 reveal hidden">
+                <div class="hairline-border rounded-DEFAULT overflow-hidden bg-surface-container-lowest aspect-[4/3] flex items-center justify-center relative bg-gray-100 dark:bg-slate-900">
+                  <img id="image3" alt="Image 3" class="w-full h-auto block" src="" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                  <div class="hidden absolute inset-0 flex items-center justify-center bg-zinc-100 dark:bg-slate-800 text-zinc-400 dark:text-slate-500 font-mono text-xs">
+                    [ Image Offline ]
+                  </div>
+                </div>
+                <p id="image3Cap" class="font-label-caps text-label-caps text-secondary"></p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Additional Gallery Section -->
+          <div id="additionalGalleryBox" class="mt-12 pt-12 border-t border-outline-variant hidden">
+            <h3 class="font-label-caps text-label-caps text-secondary uppercase mb-8">Additional Showcase</h3>
+            <div id="additionalGalleryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <!-- Dynamically loaded gallery images -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Executive Summary & Problem (Narratives) -->
+        <section id="narrativesSection" class="grid-container grid grid-cols-1 md:grid-cols-12 gap-gutter mb-section-gap reveal hidden">
+          <div class="md:col-span-4">
+            <h2 class="font-headline-lg text-headline-lg text-primary mb-content-gap md:sticky md:top-32">
+              The Premise
+            </h2>
+          </div>
+          <div class="md:col-span-8 flex flex-col gap-content-gap">
+            <!-- Summary Narrative -->
+            <div id="summaryBlock" class="reveal hidden">
+              <h3 id="premiseTitle" class="font-label-caps text-label-caps text-secondary mb-4">EXECUTIVE SUMMARY</h3>
+              <p id="summaryContent" class="font-body-lg text-body-lg text-primary whitespace-pre-line"></p>
+            </div>
+            <!-- Problem Narrative -->
+            <div id="problemBlock" class="hairline-border-t pt-8 reveal hidden">
+              <h3 id="problemTitle" class="font-label-caps text-label-caps text-secondary mb-4">PROBLEM &amp; MOTIVATION</h3>
+              <p id="problemContent" class="font-body-md text-body-md text-secondary whitespace-pre-line"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Architecture (3-Column Grid) -->
+        <section id="archSection" class="bg-surface-container-lowest py-section-gap hairline-border-t hairline-border-b mb-section-gap reveal hidden">
+          <div class="grid-container">
+            <h2 id="archTitle" class="font-headline-xl text-headline-xl text-primary mb-12 text-center reveal">
+              System Architecture
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <!-- Column 1 -->
+              <div id="arch1Box" class="p-8 hairline-border bg-background rounded-lg hover:shadow-sm transition-shadow duration-300 reveal delay-100 hidden">
+                <div class="w-12 h-12 bg-primary text-on-primary flex items-center justify-center rounded-DEFAULT mb-6">
+                  <span class="material-symbols-outlined">data_object</span>
+                </div>
+                <h3 id="arch1Title" class="font-headline-lg text-headline-lg text-primary mb-4 text-2xl">--</h3>
+                <p id="arch1Desc" class="font-body-md text-body-md text-secondary mb-4">--</p>
+                <ul id="arch1Bullets" class="font-label-caps text-label-caps text-primary space-y-2"></ul>
+              </div>
+              <!-- Column 2 -->
+              <div id="arch2Box" class="p-8 hairline-border bg-background rounded-lg hover:shadow-sm transition-shadow duration-300 reveal delay-200 hidden">
+                <div class="w-12 h-12 bg-primary text-on-primary flex items-center justify-center rounded-DEFAULT mb-6">
+                  <span class="material-symbols-outlined">account_tree</span>
+                </div>
+                <h3 id="arch2Title" class="font-headline-lg text-headline-lg text-primary mb-4 text-2xl">--</h3>
+                <p id="arch2Desc" class="font-body-md text-body-md text-secondary mb-4">--</p>
+                <ul id="arch2Bullets" class="font-label-caps text-label-caps text-primary space-y-2"></ul>
+              </div>
+              <!-- Column 3 -->
+              <div id="arch3Box" class="p-8 hairline-border bg-background rounded-lg hover:shadow-sm transition-shadow duration-300 reveal delay-300 hidden">
+                <div class="w-12 h-12 bg-primary text-on-primary flex items-center justify-center rounded-DEFAULT mb-6">
+                  <span class="material-symbols-outlined">memory</span>
+                </div>
+                <h3 id="arch3Title" class="font-headline-lg text-headline-lg text-primary mb-4 text-2xl">--</h3>
+                <p id="arch3Desc" class="font-body-md text-body-md text-secondary mb-4">--</p>
+                <ul id="arch3Bullets" class="font-label-caps text-label-caps text-primary space-y-2"></ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section id="conclusionSection" class="grid-container mb-section-gap text-center max-w-3xl mx-auto reveal hidden">
+          <h2 id="conclusionTitle" class="font-headline-xl text-headline-xl text-primary mb-6">Conclusion</h2>
+          <p id="conclusionContent" class="font-body-lg text-body-lg text-secondary whitespace-pre-line">--</p>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer Component -->
+    <footer
+      class="w-full py-section-gap px-grid-margin flex flex-col md:flex-row justify-between items-center gap-base bg-surface-container-low border-t border-outline-variant"
+    >
+      <div id="footerCopyright" class="font-label-caps text-label-caps font-bold text-primary">
+        © 2024 VISHNU. BUILT WITH PRECISION.
+      </div>
+      <div class="flex gap-6">
+        <a
+          id="githubLink"
+          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200 hidden"
+          href="#"
+          >Github</a
+        >
+        <a
+          id="docsLink"
+          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200 hidden"
+          href="#"
+          >Documentation</a
+        >
+        <a
+          id="licenseLink"
+          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200 hidden"
+          href="#"
+          >License</a
+        >
+        <a
+          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200"
+          href="../index.html#contact"
+          >Contact</a
+        >
+      </div>
+    </footer>
+
+    <!-- Firebase App/Database and Script Loading -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCxc67ZQiY4hHfAkvNq1emVC8qUoT_diBQ",
+        authDomain: "portfoilio-manager.firebaseapp.com",
+        databaseURL:
+          "https://portfoilio-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "portfoilio-manager",
+        storageBucket: "portfoilio-manager.appspot.com",
+        messagingSenderId: "1065030502150",
+        appId: "1:1065030502150:web:27e2601523587f4ac64087",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      // DOM Elements
+      const loader = document.getElementById("loader");
+      const errorState = document.getElementById("errorState");
+      const caseStudyContent = document.getElementById("caseStudyContent");
+      const pageLabel = document.getElementById("pageLabel");
+      const pageTitle = document.getElementById("pageTitle");
+      const pageSubtitle = document.getElementById("pageSubtitle");
+      const metaProject = document.getElementById("metaProject");
+      const metaDeveloper = document.getElementById("metaDeveloper");
+      const metaType = document.getElementById("metaType");
+
+      const mediaSection = document.getElementById("mediaSection");
+      const mediaSectionTitle = document.getElementById("mediaSectionTitle");
+      const image1Box = document.getElementById("image1Box");
+      const image1 = document.getElementById("image1");
+      const image1Cap = document.getElementById("image1Cap");
+      const imageSideCol = document.getElementById("imageSideCol");
+      const image2Box = document.getElementById("image2Box");
+      const image2 = document.getElementById("image2");
+      const image2Cap = document.getElementById("image2Cap");
+      const image3Box = document.getElementById("image3Box");
+      const image3 = document.getElementById("image3");
+      const image3Cap = document.getElementById("image3Cap");
+      const additionalGalleryBox = document.getElementById("additionalGalleryBox");
+      const additionalGalleryGrid = document.getElementById("additionalGalleryGrid");
+
+      const narrativesSection = document.getElementById("narrativesSection");
+      const premiseTitle = document.getElementById("premiseTitle");
+      const summaryBlock = document.getElementById("summaryBlock");
+      const summaryContent = document.getElementById("summaryContent");
+      const problemTitle = document.getElementById("problemTitle");
+      const problemBlock = document.getElementById("problemBlock");
+      const problemContent = document.getElementById("problemContent");
+
+      const archSection = document.getElementById("archSection");
+      const archTitle = document.getElementById("archTitle");
+      const arch1Box = document.getElementById("arch1Box");
+      const arch1Title = document.getElementById("arch1Title");
+      const arch1Desc = document.getElementById("arch1Desc");
+      const arch1Bullets = document.getElementById("arch1Bullets");
+      const arch2Box = document.getElementById("arch2Box");
+      const arch2Title = document.getElementById("arch2Title");
+      const arch2Desc = document.getElementById("arch2Desc");
+      const arch2Bullets = document.getElementById("arch2Bullets");
+      const arch3Box = document.getElementById("arch3Box");
+      const arch3Title = document.getElementById("arch3Title");
+      const arch3Desc = document.getElementById("arch3Desc");
+      const arch3Bullets = document.getElementById("arch3Bullets");
+
+      const conclusionSection = document.getElementById("conclusionSection");
+      const conclusionTitle = document.getElementById("conclusionTitle");
+      const conclusionContent = document.getElementById("conclusionContent");
+
+      const footerCopyright = document.getElementById("footerCopyright");
+      const githubLink = document.getElementById("githubLink");
+      const docsLink = document.getElementById("docsLink");
+      const licenseLink = document.getElementById("licenseLink");
+
+      // Retrieve ID parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get("id");
+
+      if (!projectId) {
+        showError();
+      } else {
+        const projectRef = ref(db, `portfolioProjects/${projectId}`);
+        onValue(projectRef, (snapshot) => {
+          const project = snapshot.val();
+          if (!project) {
+            showError();
+          } else {
+            renderCaseStudy(project);
+          }
+        }, () => {
+          showError();
+        });
+      }
+
+      function showError() {
+        loader.classList.add("hidden");
+        caseStudyContent.classList.add("hidden");
+        errorState.classList.remove("hidden");
+        document.body.classList.add("page-loaded");
+      }
+
+      function renderCaseStudy(project) {
+        // Fallbacks are built-in for empty case study fields
+        const cs = project.caseStudy || {};
+        
+        // Document Title
+        document.title = `${project.title} Case Study | Vishnu`;
+        
+        // Basic Card Info mappings
+        metaProject.textContent = cs.metaProject || project.title;
+        metaDeveloper.textContent = cs.metaDeveloper || "Vishnu Deviprasad Shetty";
+        metaType.textContent = cs.metaType || project.subtitle;
+        
+        // Header Label & Headline
+        pageLabel.textContent = cs.pageLabel || `/ ${project.subtitle ? project.subtitle.split('·')[0].trim().toUpperCase() : 'PROJECT'} /`;
+        pageTitle.textContent = cs.pageTitle || `Designing and Implementing ${project.title}`;
+        pageSubtitle.textContent = cs.pageSubtitle || project.description;
+        
+        // Visuals/Media Title
+        if (mediaSectionTitle) {
+          mediaSectionTitle.textContent = cs.mediaTitle || "Visuals & Media";
+        }
+
+        // Visuals/Media Sections
+        let hasImages = false;
+        
+        let sideColImages = 0;
+        if (cs.image2Url) {
+          image2.src = cs.image2Url;
+          image2Cap.textContent = cs.image2Caption || "Secondary depiction";
+          image2Box.classList.remove("hidden");
+          sideColImages++;
+          hasImages = true;
+        } else {
+          image2Box.classList.add("hidden");
+        }
+        if (cs.image3Url) {
+          image3.src = cs.image3Url;
+          image3Cap.textContent = cs.image3Caption || "Supporting capture";
+          image3Box.classList.remove("hidden");
+          sideColImages++;
+          hasImages = true;
+        } else {
+          image3Box.classList.add("hidden");
+        }
+        
+        if (sideColImages > 0) {
+          imageSideCol.classList.remove("hidden");
+        } else {
+          imageSideCol.classList.add("hidden");
+        }
+
+        if (cs.image1Url) {
+          image1.src = cs.image1Url;
+          image1Cap.textContent = cs.image1Caption || "Project Overview screenshot";
+          image1Box.classList.remove("hidden");
+          
+          // Adaptive column span
+          if (sideColImages > 0) {
+            image1Box.classList.remove("md:col-span-12");
+            image1Box.classList.add("md:col-span-8");
+          } else {
+            image1Box.classList.remove("md:col-span-8");
+            image1Box.classList.add("md:col-span-12");
+          }
+          hasImages = true;
+        } else {
+          image1Box.classList.add("hidden");
+        }
+        
+        // Render additional gallery images
+        additionalGalleryGrid.innerHTML = "";
+        if (cs.additionalImages && Array.isArray(cs.additionalImages) && cs.additionalImages.length > 0) {
+          cs.additionalImages.forEach(img => {
+            const card = document.createElement("div");
+            card.className = "flex flex-col gap-4 reveal";
+            card.innerHTML = `
+              <div class="hairline-border rounded-DEFAULT overflow-hidden bg-surface-container-lowest aspect-video flex items-center justify-center relative bg-gray-100 dark:bg-slate-900">
+                <img alt="${img.caption || 'Showcase Image'}" class="w-full h-auto block" src="${img.url}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                <div class="hidden absolute inset-0 flex items-center justify-center bg-zinc-100 dark:bg-slate-800 text-zinc-400 dark:text-slate-500 font-mono text-xs">
+                  [ Image Offline ]
+                </div>
+              </div>
+              <p class="font-label-caps text-label-caps text-secondary">${img.caption || 'Visual showcase'}</p>
+            `;
+            additionalGalleryGrid.appendChild(card);
+          });
+          additionalGalleryBox.classList.remove("hidden");
+          hasImages = true;
+        } else {
+          additionalGalleryBox.classList.add("hidden");
+        }
+
+        if (hasImages) {
+          mediaSection.classList.remove("hidden");
+        }
+
+        // Narrative sections
+        let hasNarrative = false;
+        if (cs.summaryContent) {
+          premiseTitle.textContent = cs.premiseTitle || "EXECUTIVE SUMMARY";
+          summaryContent.textContent = cs.summaryContent;
+          summaryBlock.classList.remove("hidden");
+          hasNarrative = true;
+        }
+        if (cs.problemContent) {
+          problemTitle.textContent = cs.problemTitle || "PROBLEM & MOTIVATION";
+          problemContent.textContent = cs.problemContent;
+          problemBlock.classList.remove("hidden");
+          hasNarrative = true;
+        }
+        if (hasNarrative) {
+          narrativesSection.classList.remove("hidden");
+        }
+
+        // System Architecture (Columns)
+        let hasArch = false;
+        if (cs.archTitle) {
+          archTitle.textContent = cs.archTitle;
+        }
+        if (cs.arch1Title && cs.arch1Desc) {
+          arch1Title.textContent = cs.arch1Title;
+          arch1Desc.textContent = cs.arch1Desc;
+          renderBulletList(arch1Bullets, cs.arch1Bullets);
+          arch1Box.classList.remove("hidden");
+          hasArch = true;
+        }
+        if (cs.arch2Title && cs.arch2Desc) {
+          arch2Title.textContent = cs.arch2Title;
+          arch2Desc.textContent = cs.arch2Desc;
+          renderBulletList(arch2Bullets, cs.arch2Bullets);
+          arch2Box.classList.remove("hidden");
+          hasArch = true;
+        }
+        if (cs.arch3Title && cs.arch3Desc) {
+          arch3Title.textContent = cs.arch3Title;
+          arch3Desc.textContent = cs.arch3Desc;
+          renderBulletList(arch3Bullets, cs.arch3Bullets);
+          arch3Box.classList.remove("hidden");
+          hasArch = true;
+        }
+        if (hasArch) {
+          archSection.classList.remove("hidden");
+        }
+
+        // Conclusion section
+        if (cs.conclusionContent) {
+          conclusionTitle.textContent = cs.conclusionTitle || "Conclusion";
+          conclusionContent.textContent = cs.conclusionContent;
+          conclusionSection.classList.remove("hidden");
+        }
+
+        // Footer copyright & links
+        footerCopyright.textContent = `© 2024 ${project.title.toUpperCase()}. BUILT WITH PRECISION.`;
+        
+        if (cs.githubLink) {
+          githubLink.href = cs.githubLink;
+          githubLink.classList.remove("hidden");
+        }
+        if (cs.docsLink) {
+          docsLink.href = cs.docsLink;
+          docsLink.classList.remove("hidden");
+        }
+        if (cs.licenseLink) {
+          licenseLink.href = cs.licenseLink;
+          licenseLink.classList.remove("hidden");
+        }
+
+        // Show content & remove loader
+        loader.classList.add("hidden");
+        caseStudyContent.classList.remove("hidden");
+        
+        // Trigger animations
+        requestAnimationFrame(() => {
+          document.body.classList.add("page-loaded");
+          setTimeout(() => {
+            document.querySelectorAll(".reveal").forEach((el) => {
+              el.classList.add("active");
+            });
+          }, 100);
+        });
+      }
+
+      function renderBulletList(ulElement, bulletsString) {
+        ulElement.innerHTML = "";
+        if (!bulletsString) return;
+        
+        const bullets = bulletsString.split(",").map(b => b.trim()).filter(Boolean);
+        bullets.forEach(bullet => {
+          const li = document.createElement("li");
+          li.className = "flex justify-between hairline-border-b pb-2";
+          
+          // Format bullet if it has label and value separated by colon
+          if (bullet.includes(":")) {
+            const [label, val] = bullet.split(":");
+            li.innerHTML = `<span class="text-secondary">${label.trim()}:</span> ${val.trim()}`;
+          } else {
+            li.innerHTML = bullet;
+          }
+          ulElement.appendChild(li);
+        });
+      }
+    </script>
+
+    <!-- Theme and Transition handling scripts -->
+    <script>
+      // Theme toggling for Case Study
+      const themeToggle = document.getElementById("themeToggle");
+
+      function updateThemeButton() {
+        const isDark = document.documentElement.classList.contains("dark");
+        if (themeToggle) {
+          const icon = themeToggle.querySelector("#themeIcon");
+          if (icon) {
+            icon.textContent = isDark ? "light_mode" : "dark_mode";
+          }
+        }
+      }
+
+      function loadTheme() {
+        const saved = localStorage.getItem("theme");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", prefersDark);
+        }
+        updateThemeButton();
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+          const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
+          localStorage.setItem("theme", current);
+          updateThemeButton();
+        });
+      }
+
+      loadTheme();
+
+      // Mobile Menu Toggle Logic
+      const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileMenuIcon = document.getElementById("mobileMenuIcon");
+
+      if (mobileMenuToggle && mobileMenu && mobileMenuIcon) {
+        mobileMenuToggle.addEventListener("click", () => {
+          const isHidden = mobileMenu.classList.contains("hidden");
+          if (isHidden) {
+            mobileMenu.classList.remove("hidden");
+            mobileMenuIcon.textContent = "close";
+          } else {
+            mobileMenu.classList.add("hidden");
+            mobileMenuIcon.textContent = "menu";
+          }
+        });
+
+        // Close mobile menu when clicking a link
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            mobileMenu.classList.add("hidden");
+            mobileMenuIcon.textContent = "menu";
+          });
+        });
+      }
+
+      // DOMContentLoaded for transitions and navigation
+      document.addEventListener("DOMContentLoaded", () => {
+        // === SPLIT-PANEL PAGE TRANSITION ===
+        const overlayEl = document.getElementById('pageTransitionOverlay');
+        if (sessionStorage.getItem('page-transitioning')) {
+          sessionStorage.removeItem('page-transitioning');
+          overlayEl.classList.add('enter');
+          overlayEl.querySelector('.panel:last-child').addEventListener('animationend', () => {
+            overlayEl.remove();
+          });
+        } else {
+          overlayEl.remove();
+        }
+
+        // Scroll to hash anchor after page loads
+        if (window.location.hash) {
+          const scrollToHash = () => {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+              window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+            }
+          };
+          setTimeout(scrollToHash, 300);
+          setTimeout(scrollToHash, 800);
+          setTimeout(scrollToHash, 1500);
+        }
+
+        // Handle browser back button restores (bfcache)
+        window.addEventListener("pageshow", (event) => {
+          if (event.persisted) {
+            document.querySelectorAll('.page-transition').forEach(el => el.remove());
+          }
+        });
+
+        // Intercept local page links for split-panel exit
+        document.body.addEventListener("click", (e) => {
+          const link = e.target.closest("a");
+          if (!link) return;
+
+          const href = link.getAttribute("href");
+          if (
+            href &&
+            !href.startsWith("#") &&
+            !href.startsWith("mailto:") &&
+            !href.startsWith("tel:") &&
+            link.target !== "_blank" &&
+            !link.hasAttribute("download") &&
+            (link.hostname === window.location.hostname || !href.includes("://"))
+          ) {
+            e.preventDefault();
+            sessionStorage.setItem('page-transitioning', '1');
+
+            const exitEl = document.createElement('div');
+            exitEl.className = 'page-transition exit';
+            exitEl.innerHTML = '<div class="panel"></div><div class="panel"></div>';
+            document.body.appendChild(exitEl);
+
+            setTimeout(() => {
+              window.location.href = href;
+            }, 500);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

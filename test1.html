@@ -1,0 +1,858 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Vishnu - Crafted Experiences</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Material Symbols -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind Config -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Geist", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+            spacing: {
+              "margin-mobile": "20px",
+              "section-gap": "160px",
+              "stack-lg": "48px",
+              "stack-md": "24px",
+              "stack-sm": "8px",
+              gutter: "24px",
+              "container-max": "1200px",
+            },
+            animation: {
+              shimmer: "shimmer 15s ease-in-out infinite alternate",
+            },
+            keyframes: {
+              shimmer: {
+                "0%": { backgroundPosition: "0% 50%" },
+                "100%": { backgroundPosition: "100% 50%" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      .img-grayscale {
+        filter: grayscale(100%);
+        transition: filter 0.5s ease;
+      }
+      .group:hover .img-grayscale {
+        filter: grayscale(0%);
+      }
+
+      /* Availability dot: black in light, white in dark */
+      .dot-availability {
+        background-color: #000;
+      }
+      .dark .dot-availability {
+        background-color: #fff !important;
+      }
+
+      /* Ambient Hero Background */
+      .ambient-bg {
+        background: radial-gradient(
+          circle at center,
+          #f5f5f5 0%,
+          #ffffff 50%,
+          #ffffff 100%
+        );
+        background-size: 200% 200%;
+      }
+
+      /* Reveal Animations */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Staggered Delays */
+      .delay-100 {
+        transition-delay: 100ms;
+      }
+      .delay-200 {
+        transition-delay: 200ms;
+      }
+      .delay-300 {
+        transition-delay: 300ms;
+      }
+      .delay-400 {
+        transition-delay: 400ms;
+      }
+
+      /* Dark mode color overrides */
+      .dark .bg-white {
+        background-color: #09101f !important;
+      }
+      .dark .border-black {
+        border-color: rgba(255, 255, 255, 0.14) !important;
+      }
+      .dark .text-black,
+      .dark .text-black\/60,
+      .dark .text-black\/70,
+      .dark .text-black\/50 {
+        color: #f8fafc !important;
+      }
+      .dark .bg-white,
+      .dark .bg-white\/90,
+      .dark .bg-white\/80,
+      .dark .bg-white\/70,
+      .dark .bg-white\/60,
+      .dark .bg-gray-50 {
+        background-color: #09101f !important;
+      }
+      .dark .hover\:text-black:hover {
+        color: #f8fafc !important;
+      }
+      .dark .hover\:text-white:hover {
+        color: #f8fafc !important;
+      }
+      .dark .hover\:bg-black:hover,
+      .dark .hover\:bg-black\/80:hover {
+        background-color: rgba(255, 255, 255, 0.12) !important;
+      }
+      .dark .hover\:bg-white:hover,
+      .dark .hover\:bg-white\/90:hover,
+      .dark .hover\:bg-white\/80:hover,
+      .dark .hover\:bg-white\/70:hover,
+      .dark .hover\:bg-white\/60:hover,
+      .dark .hover\:bg-gray-50:hover {
+        background-color: rgba(255, 255, 255, 0.12) !important;
+      }
+      .dark .ambient-bg {
+        background: radial-gradient(
+          circle at center,
+          #0b1220 0%,
+          #07101b 50%,
+          #060a16 100%
+        );
+        background-size: 200% 200%;
+      }
+      .dark body,
+      .dark html {
+        background: #060a16;
+      }
+      .dark .bg-black {
+        background-color: #0f172a !important;
+      }
+    </style>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem("theme");
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (savedTheme === "light") {
+          document.documentElement.classList.remove("dark");
+        } else if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (error) {
+        console.warn("Theme initialization failed", error);
+      }
+    </script>
+  </head>
+  <body
+    class="bg-white text-black dark:bg-[#060a16] dark:text-slate-100 font-sans antialiased selection:bg-black selection:text-white"
+  >
+    <!-- TopNavBar Shared Component -->
+    <header
+      class="bg-white/90 dark:bg-[#0f1323]/90 backdrop-blur-md fixed top-0 w-full border-b border-black dark:border-white/10 z-50 transition-all duration-300"
+    >
+      <div
+        class="flex justify-between items-center px-8 py-4 max-w-container-max mx-auto"
+      >
+        <!-- Brand -->
+        <a
+          class="font-sans text-2xl font-bold tracking-tighter text-black hover:opacity-70 transition-opacity"
+          href="#"
+        >
+          Vishnu
+        </a>
+        <!-- Navigation -->
+        <nav
+          class="hidden md:flex items-center gap-8 font-sans text-base font-medium"
+        >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="#offerings"
+            >Work</a
+          >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="#projects"
+            >Process</a
+          >
+          <a
+            class="text-black/60 dark:text-slate-300 hover:text-black dark:hover:text-white transition-colors duration-300"
+            href="#contact"
+            >About</a
+          >
+        </nav>
+        <div class="hidden md:flex items-center gap-4">
+          <a
+            class="px-6 py-2 bg-black text-white font-sans text-sm font-bold uppercase tracking-wider hover:bg-black/80 hover:scale-105 transition-all duration-300"
+            href="#contact"
+          >
+            Let's Talk
+          </a>
+          <button
+            id="themeToggle"
+            class="px-4 py-2 text-black dark:text-white bg-white dark:bg-[#0f172a] hover:bg-black hover:text-white transition-all duration-300"
+            aria-label="Toggle dark mode"
+          >
+            <span id="themeIcon" class="material-symbols-outlined">dark_mode</span>
+          </button>
+        </div>
+        <!-- Mobile Menu Toggle -->
+        <button
+          class="md:hidden text-black dark:text-white hover:opacity-70 transition-opacity"
+        >
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </header>
+    <main class="max-w-container-max mx-auto px-gutter w-full overflow-hidden">
+      <!-- Hero Section -->
+      <section
+        class="min-h-screen flex flex-col justify-center pt-32 pb-section-gap relative ambient-bg animate-shimmer"
+      >
+        <div
+          class="flex flex-col items-start gap-stack-md max-w-4xl relative z-10"
+        >
+          <div
+            class="reveal flex items-center gap-3 border border-black px-4 py-2 hover:bg-gray-50 transition-colors"
+          >
+            <span class="w-2 h-2 dot-availability"></span>
+            <span
+              class="font-mono text-xs text-black uppercase font-bold tracking-widest"
+              >Currently Available for Collaborations</span
+            >
+          </div>
+          <h2
+            class="reveal delay-100 font-mono text-sm text-black tracking-[0.2em] uppercase font-bold mt-4"
+          >
+            Crafted Experiences
+          </h2>
+          <h1
+            class="reveal delay-200 font-sans text-[64px] md:text-[96px] font-bold text-black leading-none tracking-tighter mt-2"
+          >
+            Hey — I'm Vishnu
+          </h1>
+          <p
+            class="reveal delay-300 font-sans text-xl md:text-2xl text-black/70 max-w-2xl mt-8 leading-relaxed font-medium"
+          >
+            I design and develop full-stack web applications, creative digital
+            experiences, and interactive products that balance functionality
+            with beauty. This site is more than a portfolio — it’s a living
+            example of how I build with precision, clarity, and motion.
+          </p>
+          <div class="reveal delay-400 flex flex-wrap items-center gap-4 mt-12">
+            <a
+              class="px-8 py-4 bg-black text-white font-sans text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black border border-black transition-all duration-300 hover:scale-[1.02]"
+              href="#projects"
+            >
+              View Projects
+            </a>
+            <a
+              class="px-8 py-4 bg-white text-black border border-black font-sans text-sm font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-all duration-300 hover:scale-[1.02]"
+              href="#contact"
+            >
+              Say Hello
+            </a>
+          </div>
+        </div>
+        <!-- Quick Stats -->
+        <div
+          class="reveal grid grid-cols-2 md:grid-cols-4 gap-8 mt-32 border-t border-black pt-12"
+        >
+          <div
+            class="flex flex-col gap-2 hover:-translate-y-1 transition-transform duration-300 cursor-default"
+          >
+            <span
+              class="font-sans text-5xl font-bold text-black tracking-tighter"
+              >17+</span
+            >
+            <span
+              class="font-mono text-xs uppercase tracking-widest text-black/60 font-bold"
+              >Years Exp.</span
+            >
+          </div>
+          <div
+            class="flex flex-col gap-2 hover:-translate-y-1 transition-transform duration-300 cursor-default"
+          >
+            <span
+              class="font-sans text-5xl font-bold text-black tracking-tighter"
+              >25+</span
+            >
+            <span
+              class="font-mono text-xs uppercase tracking-widest text-black/60 font-bold"
+              >Completed Projects</span
+            >
+          </div>
+          <div
+            class="flex flex-col gap-2 hover:-translate-y-1 transition-transform duration-300 cursor-default"
+          >
+            <span
+              class="font-mono text-xs uppercase tracking-widest text-black font-bold mb-1"
+              >FRONT-END</span
+            >
+            <span class="font-sans text-base text-black/70 font-medium"
+              >HTML • CSS • JS</span
+            >
+          </div>
+          <div
+            class="flex flex-col gap-2 hover:-translate-y-1 transition-transform duration-300 cursor-default"
+          >
+            <span
+              class="font-mono text-xs uppercase tracking-widest text-black font-bold mb-1"
+              >BACK-END</span
+            >
+            <span class="font-sans text-base text-black/70 font-medium"
+              >Firebase • Node.js</span
+            >
+          </div>
+        </div>
+      </section>
+      <!-- What I Offer -->
+      <section class="py-section-gap border-t border-black" id="offerings">
+        <div class="reveal">
+          <h2
+            class="font-sans text-5xl font-bold text-black tracking-tighter mb-stack-lg"
+          >
+            What I Offer
+          </h2>
+          <p
+            class="font-sans text-xl text-black/70 max-w-3xl mb-16 font-medium leading-relaxed"
+          >
+            I help individuals, startups, and organizations transform ideas into
+            interactive digital products. From front-end design to back-end
+            architecture, I deliver complete solutions that work seamlessly
+            across devices.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Offer Card 1 -->
+          <div
+            class="reveal bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >smartphone</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Mobile-First Design
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Modern, mobile-first website designs with highly responsive
+              layouts tailored for all screen sizes.
+            </p>
+          </div>
+          <!-- Offer Card 2 -->
+          <div
+            class="reveal delay-100 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >code_blocks</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Full-Stack Dev
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              End-to-end full-stack development focusing on clean architecture
+              and scalable codebases.
+            </p>
+          </div>
+          <!-- Offer Card 3 -->
+          <div
+            class="reveal delay-200 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >api</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              API Integration
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Seamless integration with external APIs, payment systems, and
+              real-time data pipelines.
+            </p>
+          </div>
+          <!-- Offer Card 4 -->
+          <div
+            class="reveal bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >speed</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Performance
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Deep performance tuning, accessibility improvements, and
+              comprehensive SEO setup.
+            </p>
+          </div>
+          <!-- Offer Card 5 -->
+          <div
+            class="reveal delay-100 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >dashboard</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Interactive UX
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Complex interactive dashboards, live state updates, and heavily
+              user-focused UX design.
+            </p>
+          </div>
+          <!-- Offer Card 6 -->
+          <div
+            class="reveal delay-200 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          >
+            <span
+              class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
+              >smart_toy</span
+            >
+            <h3 class="font-sans text-2xl font-bold mb-4 tracking-tight">
+              Automation &amp; IoT
+            </h3>
+            <p
+              class="font-sans text-base text-black/70 group-hover:text-white/70 font-medium leading-relaxed transition-colors duration-300"
+            >
+              Custom scripting for workflow automation and embedded systems
+              integration for hardware.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- Projects Section -->
+      <section class="py-section-gap border-t border-black dark:border-white/10" id="projects">
+        <div class="reveal">
+          <h2
+            class="font-sans text-5xl font-bold text-black dark:text-white tracking-tighter mb-stack-lg"
+          >
+            Featured Projects
+          </h2>
+        </div>
+        <div id="projectsLoading" class="text-center text-black/70 dark:text-white/70 mb-12">
+          Loading projects from Firebase...
+        </div>
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+      </section>
+      <!-- Contact Section -->
+      <section
+        class="py-section-gap border-t border-black flex flex-col items-center text-center"
+        id="contact"
+      >
+        <div class="reveal">
+          <h2
+            class="font-sans text-5xl md:text-7xl font-bold text-black tracking-tighter mb-8"
+          >
+            Let's build something.
+          </h2>
+          <p
+            class="font-sans text-xl text-black/70 max-w-xl mb-12 font-medium leading-relaxed mx-auto"
+          >
+            Whether it's a new product, a technical challenge, or just a
+            conversation about design and engineering, I'm open to connecting.
+          </p>
+          <a
+            class="text-2xl md:text-4xl font-sans font-bold text-black border-b-4 border-black pb-2 hover:bg-black hover:text-white transition-colors duration-300 mb-16 inline-block"
+            href="mailto:work.vishnushetty@gmail.com"
+          >
+            work.vishnushetty@gmail.com
+          </a>
+          <div class="flex flex-wrap justify-center gap-12">
+            <a
+              class="group font-mono text-sm font-bold text-black hover:text-gray-600 transition-colors uppercase tracking-widest flex items-center gap-2"
+              href="https://www.linkedin.com/in/vishnu-deviprasad-shetty-515429319"
+            >
+              LinkedIn
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                >north_east</span
+              >
+            </a>
+            <a
+              class="group font-mono text-sm font-bold text-black hover:text-gray-600 transition-colors uppercase tracking-widest flex items-center gap-2"
+              href="https://github.com/idkshetty"
+            >
+              GitHub
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                >north_east</span
+              >
+            </a>
+            <a
+              class="group font-mono text-sm font-bold text-black hover:text-gray-600 transition-colors uppercase tracking-widest flex items-center gap-2"
+              href="https://instagram.com/idkshetty"
+            >
+              Instagram
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+                >north_east</span
+              >
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer Shared Component -->
+    <footer
+      class="w-full py-stack-lg border-t border-black bg-white text-black font-mono text-sm"
+    >
+      <div
+        class="reveal flex flex-col md:flex-row justify-between items-center px-8 max-w-container-max mx-auto gap-stack-md"
+      >
+        <div
+          class="uppercase font-bold tracking-widest hover:opacity-70 transition-opacity cursor-default"
+        >
+          © 2024 Vishnu. Built with Precision.
+        </div>
+        <nav class="flex gap-8 font-bold">
+          <a
+            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
+            href="#"
+            >Github</a
+          >
+          <a
+            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
+            href="#"
+            >LinkedIn</a
+          >
+          <a
+            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
+            href="#"
+            >Source</a
+          >
+        </nav>
+      </div>
+    </footer>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        onValue,
+        push,
+        set,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCxc67ZQiY4hHfAkvNq1emVC8qUoT_diBQ",
+        authDomain: "portfoilio-manager.firebaseapp.com",
+        databaseURL:
+          "https://portfoilio-manager-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "portfoilio-manager",
+        storageBucket: "portfoilio-manager.appspot.com",
+        messagingSenderId: "1065030502150",
+        appId: "1:1065030502150:web:27e2601523587f4ac64087",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const projectsRef = ref(db, "portfolioProjects");
+      const projectsGrid = document.getElementById("projectsGrid");
+      const projectsLoading = document.getElementById("projectsLoading");
+      const themeToggle = document.getElementById("themeToggle");
+
+      const defaultProjects = [
+        {
+          title: "Know Your Plants",
+          subtitle: "Agritech · PWA · Data",
+          description:
+            "An agricultural guide for Indian farmers featuring district-wise crop recommendations, offline plant data, and smart crop planning tools.",
+          tags: ["Agritech", "PWA", "Data"],
+          link: "#",
+        },
+        {
+          title: "Mudball Federation",
+          subtitle: "Payments · Automation",
+          description:
+            "A secure donation platform with UPI payments, automated receipts, donor perks, and SEO optimization.",
+          tags: ["Payments", "Automation"],
+          link: "#",
+        },
+        {
+          title: "GeoCheckout",
+          subtitle: "Maps · UX",
+          description:
+            "A lightweight address finder using geolocation detection and draggable map markers for smooth checkout flows.",
+          tags: ["Maps", "UX"],
+          link: "#",
+        },
+        {
+          title: "Safemet",
+          subtitle: "IoT · Safety",
+          description:
+            "An IoT-based helmet add-on with fall detection, SOS alerts, and cancel timers designed to improve rider safety.",
+          tags: ["IoT", "Safety"],
+          link: "#",
+        },
+        {
+          title: "Marathon Enrollment",
+          subtitle: "Realtime · Admin",
+          description:
+            "An event registration system with QR check-ins and a realtime admin dashboard for race-day monitoring.",
+          tags: ["Realtime", "Admin"],
+          link: "#",
+        },
+        {
+          title: "Prove You Are Human",
+          subtitle: "Game UX · Psychology",
+          description:
+            "A deceptive and fun web game using logic traps, reaction tests, and misleading UI to verify human behavior.",
+          tags: ["Game UX", "Psychology"],
+          link: "#",
+        },
+        {
+          title: "Birthday Reminder App",
+          subtitle: "Flutter · SQLite · Mobile",
+          description:
+            "A Flutter-based offline app to store birthdays, notes, and reminders with a clean, minimal UI.",
+          tags: ["Flutter", "SQLite", "Mobile"],
+          link: "#",
+        },
+        {
+          title: "ESP32-CAM",
+          subtitle: "ESP32 · Embedded · IoT",
+          description:
+            "An embedded surveillance system with live video streaming, image capture, and remote monitoring.",
+          tags: ["ESP32", "Embedded", "IoT"],
+          link: "#",
+        },
+        {
+          title: "Chotulang",
+          subtitle: "Programming · Interpreter · Python",
+          description:
+            "A Python-based interpreted programming language featuring a lexer, parser, AST, lambdas, pipes, strict typing, and a full CLI.",
+          tags: ["Programming", "Interpreter", "Python"],
+          link: "#",
+        },
+        {
+          title: "CyberShield",
+          subtitle: "Cybersecurity · Flask · Awareness",
+          description:
+            "A controlled phishing simulation built with Flask to demonstrate real-world attack vectors and educate users about cybersecurity risks.",
+          tags: ["Cybersecurity", "Flask", "Awareness"],
+          link: "#",
+        },
+        {
+          title: "F1 Win Probability Finder",
+          subtitle: "Data Science · Python · Analytics",
+          description:
+            "A data-driven tool that uses Elo ratings, qualifying results, and recent form to predict Formula 1 race win probabilities.",
+          tags: ["Data Science", "Python", "Analytics"],
+          link: "#",
+        },
+        {
+          title: "Mental Health Support Platform",
+          subtitle: "Mental Health · Wellbeing · UX",
+          description:
+            "A mental health–focused project aimed at awareness, self-help, and support using calm design and guided user flows.",
+          tags: ["Mental Health", "Wellbeing", "UX"],
+          link: "#",
+        },
+        {
+          title: "Automation Scripts",
+          subtitle: "Python · Automation · CLI",
+          description:
+            "A collection of Python scripts for workflow automation, CLI utilities, and productivity enhancements.",
+          tags: ["Python", "Automation", "CLI"],
+          link: "#",
+        },
+        {
+          title: "Workspace",
+          subtitle: "Linux · LXC · DevOps · Automation",
+          description:
+            "A self-hosted development lab using Linux, containers, and automation to safely test and deploy systems.",
+          tags: ["Linux", "LXC", "DevOps", "Automation"],
+          link: "#",
+        },
+        {
+          title: "NASA Info Explorer",
+          subtitle: "NASA API · Space Data · Web",
+          description:
+            "An application that consumes NASA APIs to display space-related data such as astronomy images, mission info, and scientific insights in an interactive format.",
+          tags: ["NASA API", "Space Data", "Web"],
+          link: "#",
+        },
+        {
+          title: "After12",
+          subtitle: "Psychometrics · UI/UX · JavaScript · Web App",
+          description:
+            "An interactive psychometric-style career discovery experience that maps cognitive traits to career archetypes using animated UI, progress tracking, and dynamic results.",
+          tags: ["Psychometrics", "UI/UX", "JavaScript", "Web App"],
+          link: "#",
+        },
+      ];
+
+      function buildProjectCard(project) {
+        const tags = (project.tags || []).map(
+          (tag) =>
+            `<span class="border border-black dark:border-white/20 text-[10px] uppercase font-bold tracking-widest text-black dark:text-white px-4 py-2">${tag}</span>`
+        );
+
+        return `
+          <article class="reveal group bg-white dark:bg-[#0f172a] border border-black dark:border-white/10 flex flex-col hover:-translate-y-2 transition-transform duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+            <div class="flex flex-col flex-grow p-12">
+              <div class="flex items-center gap-3 mb-6 flex-wrap">${tags.join("")}</div>
+              <h3 class="font-sans font-bold text-black dark:text-white mb-4 tracking-tight group-hover:underline underline-offset-4 decoration-2 text-4xl">${project.title}</h3>
+              <p class="font-sans text-base text-black/70 dark:text-white/70 mb-8 font-medium leading-relaxed">${project.description}</p>
+              <a class="mt-auto flex items-center gap-2 font-sans font-bold text-sm uppercase tracking-wider text-black dark:text-white group-hover:gap-4 transition-all duration-300 w-fit" href="${project.link || '#'}" target="_blank" rel="noopener noreferrer">
+                View Case Study
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderProjects(data) {
+        if (!data) {
+          projectsGrid.innerHTML =
+            "<div class='col-span-full text-center text-black/70 dark:text-white/70'>No projects found yet.</div>";
+          projectsLoading.classList.add("hidden");
+          return;
+        }
+
+        const items = Object.values(data)
+          .sort((a, b) => (a.title || "").localeCompare(b.title || ""))
+          .map((project) => buildProjectCard(project));
+
+        projectsGrid.innerHTML = items.join("");
+        projectsLoading.classList.add("hidden");
+        requestAnimationFrame(() => {
+          document.querySelectorAll(".reveal").forEach((el) => el.classList.add("active"));
+        });
+      }
+
+      function seedInitialProjects() {
+        const initialData = {};
+        defaultProjects.forEach((project) => {
+          initialData[push(projectsRef).key] = project;
+        });
+        set(projectsRef, initialData);
+      }
+
+      onValue(projectsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (!data) {
+          seedInitialProjects();
+          return;
+        }
+        renderProjects(data);
+      });
+
+      function updateThemeButton() {
+        const isDark = document.documentElement.classList.contains("dark");
+        if (themeToggle) {
+          const icon = themeToggle.querySelector("#themeIcon");
+          if (icon) {
+            icon.textContent = isDark ? "light_mode" : "dark_mode";
+          }
+        }
+      }
+
+      function loadTheme() {
+        const saved = localStorage.getItem("theme");
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", prefersDark);
+        }
+        updateThemeButton();
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+          const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
+          localStorage.setItem("theme", current);
+          updateThemeButton();
+        });
+      }
+
+      loadTheme();
+
+      // Intersection Observer for scroll animations
+      document.addEventListener("DOMContentLoaded", () => {
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.1,
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+              observer.unobserve(entry.target); // Optional: Only animate once
+            }
+          });
+        }, observerOptions);
+
+        const revealElements = document.querySelectorAll(".reveal");
+        revealElements.forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>

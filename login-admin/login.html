@@ -145,7 +145,6 @@
       min-height: 18px;
       transition: all 0.3s ease;
     }
-
     @media(max-width: 420px) {
       .login-container {
         padding: 40px 20px;
@@ -160,8 +159,8 @@
     <a href="../index.html" class="back-button"><span class="material-symbols-outlined">arrow_back</span> Back</a>
     <h2>Admin Login</h2>
     <form id="adminLoginForm">
-      <label for="username">Username</label>
-      <input type="text" id="username" placeholder="Enter your username" required>
+      <label for="username">Email Address</label>
+      <input type="text" id="username" placeholder="Enter your email" required>
 
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="Enter your password" required>
@@ -171,6 +170,6 @@
     <p id="loginMessage"></p>
   </div>
 
-  <script src="./login.js"></script>
+  <script type="module" src="./login.js"></script>
 </body>
 </html>

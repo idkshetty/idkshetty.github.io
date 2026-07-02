@@ -4,6 +4,12 @@
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <!-- Prevent native smooth scroll bounce on load with hash -->
+    <script>
+      if (window.location.hash) {
+        document.documentElement.style.scrollBehavior = 'auto';
+      }
+    </script>
     <title>Vishnu - Crafted Experiences</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
@@ -192,11 +198,12 @@
       .ambient-bg {
         background: radial-gradient(
           circle at center,
-          #f5f5f5 0%,
-          #ffffff 50%,
-          #ffffff 100%
+          rgba(245, 245, 245, 0.4) 0%,
+          rgba(255, 255, 255, 0.4) 50%,
+          rgba(255, 255, 255, 0.4) 100%
         );
         background-size: 200% 200%;
+        backdrop-filter: blur(12px);
       }
 
       /* Reveal Animations */
@@ -254,6 +261,19 @@
       .dark .bg-white\/60 {
         background-color: rgba(26, 26, 26, 0.6) !important;
       }
+      .dark .bg-white\/50 {
+        background-color: rgba(26, 26, 26, 0.5) !important;
+      }
+      .dark .bg-white\/40 {
+        background-color: rgba(26, 26, 26, 0.4) !important;
+      }
+      .dark .bg-white\/30 {
+        background-color: rgba(26, 26, 26, 0.3) !important;
+      }
+      .dark .bg-white\/20 {
+        background-color: rgba(26, 26, 26, 0.2) !important;
+      }
+
       .dark .hover\:text-black:hover {
         color: #ffffff !important;
       }
@@ -275,11 +295,12 @@
       .dark .ambient-bg {
         background: radial-gradient(
           circle at center,
-          #1f1f1f 0%,
-          #161616 60%,
-          #121212 100%
+          rgba(31, 31, 31, 0.4) 0%,
+          rgba(22, 22, 22, 0.4) 60%,
+          rgba(18, 18, 18, 0.4) 100%
         );
         background-size: 200% 200%;
+        backdrop-filter: blur(12px);
       }
       .dark body,
       .dark html {
@@ -341,8 +362,11 @@
       })();
     </script>
     <!-- TopNavBar Shared Component -->
-    <header
-      class="bg-white/90 dark:bg-[#0f1323]/90 backdrop-blur-md fixed top-0 w-full border-b border-black dark:border-white/10 z-50 transition-all duration-300"
+    
+    <!-- Global Texture Overlay -->
+    <div class="fixed inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20 bg-[url('assests/bg-texture.jpg')] bg-cover bg-center mix-blend-multiply dark:mix-blend-overlay"></div>
+<header
+      class="bg-white/40 dark:bg-[#0f1323]/40 backdrop-blur-md fixed top-0 w-full border-b border-black dark:border-white/10 z-50 transition-all duration-300"
     >
       <div
         class="grid-container py-4 flex justify-between items-center w-full"
@@ -446,11 +470,11 @@
               >Currently Available for Collaborations</span
             >
           </div>
-          <h2
+          <!-- <h2
             class="reveal delay-100 font-mono text-sm text-black tracking-[0.2em] uppercase font-bold mt-4"
           >
-            Crafted Experiences
-          </h2>
+            look down not here!
+          </h2> -->
           <h1
             class="reveal delay-200 font-sans text-[64px] md:text-[96px] font-bold text-black leading-none tracking-tighter mt-2"
           >
@@ -488,7 +512,7 @@
           >
             <span
               class="font-sans text-5xl font-bold text-black tracking-tighter"
-              >17+</span
+              >5+</span
             >
             <span
               class="font-mono text-xs uppercase tracking-widest text-black/60 font-bold"
@@ -552,7 +576,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- Offer Card 1 -->
           <div
-            class="reveal bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            class="reveal bg-white/40 backdrop-blur-md border border-black p-8 hover:bg-black/80 hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
             <span
               class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
@@ -570,7 +594,7 @@
           </div>
           <!-- Offer Card 2 -->
           <div
-            class="reveal delay-100 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            class="reveal delay-100 bg-white/40 backdrop-blur-md border border-black p-8 hover:bg-black/80 hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
             <span
               class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
@@ -588,7 +612,7 @@
           </div>
           <!-- Offer Card 3 -->
           <div
-            class="reveal delay-200 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            class="reveal delay-200 bg-white/40 backdrop-blur-md border border-black p-8 hover:bg-black/80 hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
             <span
               class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
@@ -606,7 +630,7 @@
           </div>
           <!-- Offer Card 4 -->
           <div
-            class="reveal bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            class="reveal bg-white/40 backdrop-blur-md border border-black p-8 hover:bg-black/80 hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
             <span
               class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
@@ -624,7 +648,7 @@
           </div>
           <!-- Offer Card 5 -->
           <div
-            class="reveal delay-100 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            class="reveal delay-100 bg-white/40 backdrop-blur-md border border-black p-8 hover:bg-black/80 hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
             <span
               class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
@@ -642,7 +666,7 @@
           </div>
           <!-- Offer Card 6 -->
           <div
-            class="reveal delay-200 bg-white border border-black p-8 hover:bg-black hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            class="reveal delay-200 bg-white/40 backdrop-blur-md border border-black p-8 hover:bg-black/80 hover:text-white transition-all duration-300 hover:-translate-y-2 group shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
           >
             <span
               class="material-symbols-outlined text-4xl mb-6 group-hover:text-white transition-colors duration-300"
@@ -700,10 +724,17 @@
             conversation about design and engineering, I'm open to connecting.
           </p>
           <a
-            class="text-lg sm:text-2xl md:text-4xl font-sans font-bold text-black border-b-4 border-black px-4 md:px-0 pb-2 hover:bg-black hover:text-white transition-colors duration-300 mb-16 inline-block"
+            class="text-lg sm:text-2xl md:text-4xl font-sans font-bold text-black border-b-4 border-black px-4 md:px-0 pb-2 hover:bg-black hover:text-white transition-colors duration-300 mb-8 inline-block"
             href="mailto:work.vishnushetty@gmail.com"
           >
             work.vishnushetty@gmail.com
+          </a>
+          <br>
+          <a
+            class="text-lg sm:text-xl font-sans font-bold text-black/70 border-b-2 border-black/70 px-4 md:px-0 pb-1 hover:text-black hover:border-black transition-colors duration-300 mb-16 inline-block"
+            href="contact.html"
+          >
+            Or use the contact form &rarr;
           </a>
           <div class="flex flex-wrap justify-center gap-12">
             <a
@@ -716,7 +747,7 @@
                 >north_east</span
               >
             </a>
-            <a
+            <!-- <a
               class="group font-mono text-sm font-bold text-black hover:text-gray-600 transition-colors uppercase tracking-widest flex items-center gap-2"
               href="https://github.com/idkshetty"
             >
@@ -725,7 +756,7 @@
                 class="material-symbols-outlined text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
                 >north_east</span
               >
-            </a>
+            </a> -->
             <a
               class="group font-mono text-sm font-bold text-black hover:text-gray-600 transition-colors uppercase tracking-widest flex items-center gap-2"
               href="https://instagram.com/idkshetty"
@@ -751,23 +782,30 @@
         <div
           class="uppercase font-bold tracking-widest hover:opacity-70 transition-opacity cursor-default"
         >
-          © 2024 Vishnu. Built with Precision.
+          © 2024 Vishnu<a href="login-admin/login.html" class="text-inherit hover:text-inherit" style="text-decoration:none; cursor:default;">.</a>
         </div>
-        <nav class="flex gap-8 font-bold">
+        <nav class="flex flex-wrap gap-6 font-bold">
           <a
             class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
-            href="#"
-            >Github</a
-          >
-          <a
-            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
-            href="#"
+            href="https://www.linkedin.com/in/vishnu-deviprasad-shetty-515429319/"
+            target="_blank"
             >LinkedIn</a
           >
           <a
             class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
-            href="#"
-            >Source</a
+            href="https://instagram.com/idkshetty"
+            target="_blank"
+            >Instagram</a
+          >
+          <a
+            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
+            href="privacy.html"
+            >Privacy Policy</a
+          >
+          <a
+            class="text-black/60 hover:text-black hover:-translate-y-1 transition-all duration-300"
+            href="terms.html"
+            >Terms of Service</a
           >
         </nav>
       </div>
@@ -1005,7 +1043,7 @@
         );
 
         return `
-          <article class="reveal group bg-white dark:bg-[#0f172a] border border-black dark:border-white/10 flex flex-col hover:-translate-y-2 transition-transform duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
+          <article class="reveal group bg-white/40 backdrop-blur-md dark:bg-[#0f172a]/40 border border-black dark:border-white/10 flex flex-col hover:-translate-y-2 transition-transform duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]">
             <div class="flex flex-col flex-grow p-12">
               <div class="flex items-center gap-3 mb-6 flex-wrap">${tags.join("")}</div>
               <h3 class="font-sans font-bold text-black dark:text-white mb-4 tracking-tight group-hover:underline underline-offset-4 decoration-2 text-4xl">${project.title}</h3>
@@ -1037,7 +1075,7 @@
           );
 
           return `
-            <article class="project-card-enter group bg-white dark:bg-[#0f172a] border border-black dark:border-white/10 flex flex-col hover:-translate-y-2 transition-transform duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]" style="animation-delay: ${index * 80}ms">
+            <article class="project-card-enter group bg-white/40 backdrop-blur-md dark:bg-[#0f172a]/40 border border-black dark:border-white/10 flex flex-col hover:-translate-y-2 transition-transform duration-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)]" style="animation-delay: ${index * 80}ms">
               <div class="flex flex-col flex-grow p-12">
                 <div class="flex items-center gap-3 mb-6 flex-wrap">${tags.join("")}</div>
                 <h3 class="font-sans font-bold text-black dark:text-white mb-4 tracking-tight group-hover:underline underline-offset-4 decoration-2 text-4xl">${project.title}</h3>
@@ -1562,6 +1600,25 @@
         });
 
         renderProjects(data);
+
+        // Scroll to hash anchor after projects render (fixes #contact bouncing)
+        if (!window.hasScrolledToHash && window.location.hash) {
+          window.hasScrolledToHash = true;
+          
+          let scrollAttempts = 0;
+          const scrollInterval = setInterval(() => {
+            const target = document.querySelector(window.location.hash);
+            if (target) {
+              window.scrollTo({ top: target.offsetTop - 80, behavior: 'auto' });
+            }
+            scrollAttempts++;
+            if (scrollAttempts >= 8) { // Lock position for 800ms to combat layout shifts
+              clearInterval(scrollInterval);
+              // Restore normal smooth scrolling
+              document.documentElement.style.scrollBehavior = '';
+            }
+          }, 100);
+        }
       });
 
       function updateThemeButton() {
@@ -1638,19 +1695,7 @@
           overlayEl.remove();
         }
 
-        // Scroll to hash anchor after page loads (fixes #contact from case study)
-        if (window.location.hash) {
-          const scrollToHash = () => {
-            const target = document.querySelector(window.location.hash);
-            if (target) {
-              window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
-            }
-          };
-          // Retry a few times to handle lazy-loaded content shifting the layout
-          setTimeout(scrollToHash, 300);
-          setTimeout(scrollToHash, 800);
-          setTimeout(scrollToHash, 1500);
-        }
+
 
         // Handle browser back button restores (bfcache)
         window.addEventListener("pageshow", (event) => {

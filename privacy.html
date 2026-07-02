@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Privacy Policy - Vishnu</title>
+  
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Geist', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          spacing: {
+            "container-max": "1200px"
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Grid Container layout matching chotulang */
+      .grid-container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 64px;
+        width: 100%;
+      }
+      @media (max-width: 1024px) {
+        .grid-container {
+          padding: 0 32px;
+        }
+      }
+      @media (max-width: 767px) {
+        .grid-container {
+          padding: 0 24px;
+        }
+      }
+
+      /* ── Page Transition: Split-Panel Wipe ── */
+      .page-transition {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 99999;
+        pointer-events: none;
+        display: flex;
+      }
+      .page-transition .panel {
+        flex: 1;
+        background: #f9f9f9;
+        will-change: transform;
+      }
+      .dark .page-transition .panel {
+        background: #121212;
+      }
+
+      /* Exit: panels slide IN to cover the page */
+      .page-transition.exit .panel:first-child {
+        transform: translateX(-100%);
+        animation: panelSlideInLeft 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+      }
+      .page-transition.exit .panel:last-child {
+        transform: translateX(100%);
+        animation: panelSlideInRight 0.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+      }
+
+      /* Enter: panels slide OUT to reveal the page */
+      .page-transition.enter .panel:first-child {
+        transform: translateX(0);
+        animation: panelSlideOutLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+      }
+      .page-transition.enter .panel:last-child {
+        transform: translateX(0);
+        animation: panelSlideOutRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+      }
+
+      @keyframes panelSlideInLeft  { to { transform: translateX(0); } }
+      @keyframes panelSlideInRight { to { transform: translateX(0); } }
+      @keyframes panelSlideOutLeft  { to { transform: translateX(-100%); } }
+      @keyframes panelSlideOutRight { to { transform: translateX(100%); } }
+
+      body {
+        opacity: 1;
+      }
+
+      /* ── Skeleton Loading Shimmer ── */
+      @keyframes skeletonShimmer {
+        0% { background-position: -400px 0; }
+        100% { background-position: 400px 0; }
+      }
+      .skeleton {
+        background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 37%, #e0e0e0 63%);
+        background-size: 800px 100%;
+        animation: skeletonShimmer 1.8s ease-in-out infinite;
+        border-radius: 4px;
+      }
+      .dark .skeleton {
+        background: linear-gradient(90deg, #1e1e1e 25%, #2a2a2a 37%, #1e1e1e 63%);
+        background-size: 800px 100%;
+      }
+      .skeleton-card {
+        border: 1px solid rgba(0,0,0,0.08);
+        padding: 48px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .dark .skeleton-card {
+        border-color: rgba(255,255,255,0.08);
+      }
+
+      /* ── Staggered card entrance ── */
+      .project-card-enter {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: cardFadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes cardFadeUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .img-grayscale {
+        filter: grayscale(100%);
+        transition: filter 0.5s ease;
+      }
+      .group:hover .img-grayscale {
+        filter: grayscale(0%);
+      }
+
+      /* Availability dot: black in light, white in dark */
+      .dot-availability {
+        background-color: #000;
+      }
+      .dark .dot-availability {
+        background-color: #fff !important;
+      }
+
+      /* Ambient Hero Background */
+      .ambient-bg {
+        background: radial-gradient(
+          circle at center,
+          rgba(245, 245, 245, 0.4) 0%,
+          rgba(255, 255, 255, 0.4) 50%,
+          rgba(255, 255, 255, 0.4) 100%
+        );
+        background-size: 200% 200%;
+        backdrop-filter: blur(12px);
+      }
+
+      /* Reveal Animations */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Staggered Delays */
+      .delay-100 {
+        transition-delay: 100ms;
+      }
+      .delay-200 {
+        transition-delay: 200ms;
+      }
+      .delay-300 {
+        transition-delay: 300ms;
+      }
+      .delay-400 {
+        transition-delay: 400ms;
+      }
+
+      /* Dark mode color overrides (Darker Charcoal Theme) */
+      .dark .bg-white {
+        background-color: #1a1a1a !important;
+      }
+      .dark .border-black {
+        border-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .text-black,
+      .dark .text-black\/60,
+      .dark .text-black\/70,
+      .dark .text-black\/50 {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+      .dark .bg-white,
+      .dark .bg-gray-50 {
+        background-color: #1a1a1a !important;
+      }
+      .dark .bg-white\/90 {
+        background-color: rgba(26, 26, 26, 0.9) !important;
+      }
+      .dark .bg-white\/80 {
+        background-color: rgba(26, 26, 26, 0.8) !important;
+      }
+      .dark .bg-white\/70 {
+        background-color: rgba(26, 26, 26, 0.7) !important;
+      }
+      .dark .bg-white\/60 {
+        background-color: rgba(26, 26, 26, 0.6) !important;
+      }
+      .dark .bg-white\/50 {
+        background-color: rgba(26, 26, 26, 0.5) !important;
+      }
+      .dark .bg-white\/40 {
+        background-color: rgba(26, 26, 26, 0.4) !important;
+      }
+      .dark .bg-white\/30 {
+        background-color: rgba(26, 26, 26, 0.3) !important;
+      }
+      .dark .bg-white\/20 {
+        background-color: rgba(26, 26, 26, 0.2) !important;
+      }
+
+      .dark .hover\:text-black:hover {
+        color: #ffffff !important;
+      }
+      .dark .hover\:text-white:hover {
+        color: #ffffff !important;
+      }
+      .dark .hover\:bg-black:hover,
+      .dark .hover\:bg-black\/80:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .hover\:bg-white:hover,
+      .dark .hover\:bg-white\/90:hover,
+      .dark .hover\:bg-white\/80:hover,
+      .dark .hover\:bg-white\/70:hover,
+      .dark .hover\:bg-white\/60:hover,
+      .dark .hover\:bg-gray-50:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+      }
+      .dark .ambient-bg {
+        background: radial-gradient(
+          circle at center,
+          rgba(31, 31, 31, 0.4) 0%,
+          rgba(22, 22, 22, 0.4) 60%,
+          rgba(18, 18, 18, 0.4) 100%
+        );
+        background-size: 200% 200%;
+        backdrop-filter: blur(12px);
+      }
+      .dark body,
+      .dark html {
+        background: #121212;
+      }
+      .dark .bg-black {
+        background-color: #1a1a1a !important;
+      }
+      
+      /* Active outline and tap-highlight reset */
+      button, a {
+        -webkit-tap-highlight-color: transparent !important;
+        outline: none !important;
+      }
+      button:focus, a:focus, button:active, a:active {
+        outline: none !important;
+      }
+      .dark .btn-dark-mode-white {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border-color: #ffffff !important;
+      }
+      .dark .btn-dark-mode-white:hover {
+        background-color: transparent !important;
+        color: #ffffff !important;
+      }
+    </style>
+<script>
+      try {
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const isDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+        const bgColor = isDark ? "#121212" : "#f9f9f9";
+        if (isDark) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        document.documentElement.style.backgroundColor = bgColor;
+      } catch (error) {
+        console.warn("Theme initialization failed", error);
+      }
+    </script>
+</head>
+<body
+    class="bg-white text-black dark:bg-[#030712] dark:text-slate-100 font-sans antialiased selection:bg-black selection:text-white"
+  >
+    <!-- Static transition overlay: visible from first paint, removed/animated by JS -->
+    <div id="pageTransitionOverlay" class="page-transition" style="display:none">
+      <div class="panel"></div>
+      <div class="panel"></div>
+    </div>
+    <script>
+      (function(){
+        var el = document.getElementById('pageTransitionOverlay');
+        if (sessionStorage.getItem('page-transitioning')) {
+          el.style.display = 'flex';
+        }
+      })();
+    </script>
+  <!-- TopNavBar -->
+  
+    <!-- Global Texture Overlay -->
+    <div class="fixed inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20 bg-[url('assests/bg-texture.jpg')] bg-cover bg-center mix-blend-multiply dark:mix-blend-overlay"></div>
+<header class="bg-white/40 dark:bg-[#0f1323]/40 backdrop-blur-md sticky top-0 w-full border-b border-black/10 dark:border-white/10 z-50">
+    <div class="flex justify-between items-center px-8 py-6 max-w-container-max mx-auto">
+      <a class="font-sans text-2xl font-bold tracking-tighter text-black dark:text-white hover:opacity-70 transition-opacity" href="index.html">
+        Vishnu
+      </a>
+      <a href="index.html" class="px-6 py-2 border border-black dark:border-white/20 bg-white dark:bg-[#0f172a] text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black font-sans text-sm font-bold uppercase tracking-wider transition-all duration-300">
+        Go Back
+      </a>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-container-max mx-auto px-8 py-20 w-full">
+    <div class="bg-white/40 backdrop-blur-md p-10 md:p-16 border border-black dark:border-white/10 shadow-[12px_12px_0px_0px_rgba(0,0,0,0.1)] dark:shadow-none">
+      <h1 class="font-sans text-4xl md:text-5xl font-bold tracking-tighter text-black dark:text-white mb-8">Privacy Policy</h1>
+      <div class="prose prose-lg max-w-none text-black/80 dark:text-slate-300 space-y-6">
+        <p class="font-mono text-sm uppercase tracking-widest text-black/50 dark:text-slate-400">Last updated: June 2026</p>
+        
+        <h2 class="text-2xl font-bold text-black dark:text-white mt-8">1. Information We Collect</h2>
+        <p>This portfolio website generally does not collect personal data actively, except for any information you voluntarily submit through contact forms or email links. If we integrate analytics or authentication features (e.g., Firebase Auth for the admin panel), limited usage or account data may be securely processed.</p>
+        
+        <h2 class="text-2xl font-bold text-black dark:text-white mt-8">2. How We Use Your Information</h2>
+        <p>Any information collected is used solely for the purpose of communicating with you regarding your inquiries, maintaining the security of the admin portal, and improving the overall user experience.</p>
+        
+        <h2 class="text-2xl font-bold text-black dark:text-white mt-8">3. Cookies and Tracking</h2>
+        <p>This site may use essential cookies for authentication and basic functionality (such as dark mode preferences and routing). We do not use third-party advertising trackers.</p>
+        
+        <h2 class="text-2xl font-bold text-black dark:text-white mt-8">4. Third-Party Services</h2>
+        <p>We may use third-party services like Firebase for backend infrastructure. These services have their own privacy policies governing how they handle data.</p>
+        
+        <h2 class="text-2xl font-bold text-black dark:text-white mt-8">5. Contact Us</h2>
+        <p>If you have any questions about this Privacy Policy, please contact us through the links available in the footer.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full py-12 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#030712] text-black dark:text-slate-100 font-mono text-sm mt-auto">
+    <div class="max-w-container-max mx-auto px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="uppercase font-bold tracking-widest cursor-default text-black/70 dark:text-slate-400">
+        © 2024 Vishnu. Built with Precision.
+      </div>
+      <nav class="flex flex-wrap gap-6 font-bold">
+        <a class="text-black/60 dark:text-slate-400 hover:text-black dark:hover:text-white transition-all duration-300" href="https://linkedin.com/in/idkshetty" target="_blank">LinkedIn</a>
+        <a class="text-black/60 dark:text-slate-400 hover:text-black dark:hover:text-white transition-all duration-300" href="https://instagram.com/idkshetty" target="_blank">Instagram</a>
+        <a class="text-black/60 dark:text-slate-400 hover:text-black dark:hover:text-white transition-all duration-300" href="privacy.html">Privacy Policy</a>
+        <a class="text-black/60 dark:text-slate-400 hover:text-black dark:hover:text-white transition-all duration-300" href="terms.html">Terms of Service</a>
+      </nav>
+    </div>
+  </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const overlayEl = document.getElementById('pageTransitionOverlay');
+        if (sessionStorage.getItem('page-transitioning')) {
+          sessionStorage.removeItem('page-transitioning');
+          overlayEl.classList.add('enter');
+          overlayEl.querySelector('.panel:last-child').addEventListener('animationend', () => {
+            overlayEl.remove();
+          });
+        } else {
+          overlayEl.remove();
+        }
+
+        document.body.addEventListener("click", (e) => {
+          const a = e.target.closest("a");
+          if (!a || !a.href) return;
+          const url = new URL(a.href);
+          if (
+            url.origin === window.location.origin &&
+            url.pathname.endsWith(".html") &&
+            !a.hasAttribute("target") &&
+            !a.hasAttribute("download") &&
+            url.pathname !== window.location.pathname
+          ) {
+            e.preventDefault();
+            sessionStorage.setItem("page-transitioning", "true");
+            
+            const exitEl = document.createElement("div");
+            exitEl.className = "page-transition exit fixed inset-0 z-[100] pointer-events-none flex";
+            exitEl.innerHTML = `<div class="panel w-1/4 h-full"></div>
+                                <div class="panel w-3/4 h-full"></div>`;
+            document.body.appendChild(exitEl);
+            
+            exitEl.querySelector(".panel:last-child").addEventListener("animationend", () => {
+              window.location.href = a.href;
+            });
+          }
+        });
+      });
+    </script>
+
+</body>
+</html>

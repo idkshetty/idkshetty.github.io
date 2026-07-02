@@ -706,27 +706,9 @@
       class="w-full py-section-gap px-grid-margin flex flex-col md:flex-row justify-between items-center gap-base bg-surface-container-low border-t border-outline-variant"
     >
       <div id="footerCopyright" class="font-label-caps text-label-caps font-bold text-primary">
-        © 2024 VISHNU. BUILT WITH PRECISION.
+        <span id="footerProjectName">Project Name</span> | No copyright except for chotulang and its related project and safemet
       </div>
       <div class="flex gap-6">
-        <a
-          id="githubLink"
-          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200 hidden"
-          href="#"
-          >Github</a
-        >
-        <a
-          id="docsLink"
-          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200 hidden"
-          href="#"
-          >Documentation</a
-        >
-        <a
-          id="licenseLink"
-          class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200 hidden"
-          href="#"
-          >License</a
-        >
         <a
           class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-200"
           href="../index.html#contact"
@@ -812,9 +794,6 @@
       const conclusionContent = document.getElementById("conclusionContent");
 
       const footerCopyright = document.getElementById("footerCopyright");
-      const githubLink = document.getElementById("githubLink");
-      const docsLink = document.getElementById("docsLink");
-      const licenseLink = document.getElementById("licenseLink");
 
       // Retrieve ID parameter
       const urlParams = new URLSearchParams(window.location.search);
@@ -995,20 +974,7 @@
         }
 
         // Footer copyright & links
-        footerCopyright.textContent = `© 2024 ${project.title.toUpperCase()}. BUILT WITH PRECISION.`;
-        
-        if (cs.githubLink) {
-          githubLink.href = cs.githubLink;
-          githubLink.classList.remove("hidden");
-        }
-        if (cs.docsLink) {
-          docsLink.href = cs.docsLink;
-          docsLink.classList.remove("hidden");
-        }
-        if (cs.licenseLink) {
-          licenseLink.href = cs.licenseLink;
-          licenseLink.classList.remove("hidden");
-        }
+        footerCopyright.innerHTML = `<span id="footerProjectName">${project.title.toUpperCase()}</span> | No copyright except for chotulang and its related project and safemet`;
 
         // Show content & remove loader
         loader.classList.add("hidden");

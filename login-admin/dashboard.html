@@ -29,30 +29,9 @@
       rel="stylesheet"
     />
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
     <!-- Tailwind Config -->
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Geist", "sans-serif"],
-              mono: ["JetBrains Mono", "monospace"],
-            },
-            spacing: {
-              "margin-mobile": "20px",
-              "section-gap": "160px",
-              "stack-lg": "48px",
-              "stack-md": "24px",
-              "stack-sm": "8px",
-              gutter: "24px",
-              "container-max": "1200px",
-            },
-          },
-        },
-      };
-    </script>
+    
     <style>
       .material-symbols-outlined {
         font-variation-settings:
@@ -163,6 +142,7 @@
         console.warn("Theme initialization failed", error);
       }
     </script>
+      <link rel="stylesheet" href="dashboard.css" />
   </head>
   <body
     class="bg-[#f7f6f3] text-black dark:bg-[#030712] dark:text-slate-100 font-sans antialiased selection:bg-black selection:text-white min-h-screen transition-colors duration-300"

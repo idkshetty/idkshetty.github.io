@@ -21,23 +21,8 @@
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Geist', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          spacing: {
-            "container-max": "1200px"
-          }
-        }
-      }
-    }
-  </script>
+  
+  
   <style>
       .material-symbols-outlined {
         font-variation-settings:
@@ -322,7 +307,8 @@
         console.warn("Theme initialization failed", error);
       }
     </script>
-</head>
+    <link rel="stylesheet" href="contact.css" />
+  </head>
 <body
     class="bg-white text-black dark:bg-[#030712] dark:text-slate-100 font-sans antialiased selection:bg-black selection:text-white"
   >
